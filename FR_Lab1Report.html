@@ -1,5 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
+    <style>
+        .paragraph-container-narrow {
+            max-width: 800px; /* 设置最大宽度为600像素 */
+            margin: 0 auto;   /* 将段落文本居中显示，如果需要的话 */
+        }
+    </style>
+    <!-- 目录栏 -->
+    <aside id="toc">
+        <h2>目录</h2>
+        <ul>
+            <li><a href="#section1">1 Objectives</a></li>
+            <li><a href="#section2">2 Prelab</a></li>
+            <li><a href="#section3">3 Connecting</a></li>
+            <li><a href="#section4">4 Demo: Blinking</a></li>
+            <li><a href="#section5">5 Demo: Serial Communication</a></li>
+            <li><a href="#section6">6 Demo: Analog Reading</a></li>
+            <li><a href="#section7">7 Demo: Microphone Output</a></li>
+            <li><a href="#section8">8 Additional Task: Pitch Triggered LED</a></li>
+        </ul>
+    </aside>
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -30,7 +50,7 @@
         <header class="py-5 bg-image-full" style="background-image: url('https://github.com/ReavenH/zh444.github.io/blob/main/assets/atlas-duo-dance-darker.jpg?raw=true')">
             <div class="text-center my-5">
                 <h1 class="text-white fs-3 fw-bolder">ECE 5160 Fast Robots - Lab 1: The Artemis Board</h1>
-                <p class="text-white-50 mb-0">Lab 1 is the introduction to the basic manipulations, including getting hands on experience using Arduino IDE for some demo codes to be executed on the "SparkFun RedBoard Artemis Nano" board. After the development environment is set, some demo codes are tested on the board.</p>
+                <p class="text-white-50 paragraph-container-narrow">Lab 1 is the introduction to the basic manipulations, including getting hands on experience using Arduino IDE for some demo codes to be executed on the "SparkFun RedBoard Artemis Nano" board. After the development environment is set, some demo codes are tested on the board.</p>
             </div>
         </header>
         <!-- Content section-->
@@ -38,9 +58,21 @@
             <div class="container my-5">
                 <div class="row justify-content-center">
                     <div class="col-lg-6">
-                        <h2>1 Objective</h2>
-                        <p class="mb-0"></p>
-                        <h2>2 Prepare the Software</h2>
+                        <section id="#section1">
+                            <h2>1 Objectives</h2>
+                            <p class="mb-0">The goal is to gain basic experience on the software IDE and the connection of the Artemis Nano board. Also, several demo codes will be tested where we can learn the manipulation of fundamental peripherals.</p>
+                        </section>
+                        <section id="#section2">
+                            <h2>2 Prelab</h2>
+                            <p class="mb-0">Before we connect the board with the computer, we have to install Arduino IDE and get relative board definition files ready. For reference for later students, the lab is done with Windows 11.</p>
+                            <p class="mb-0">The Arduino IDE can be downloaded <a href="https://www.arduino.cc/en/software" target="_blank">here</a> within seconds. After finishing installation, we can click Tools -> Board -> Board Manager to select the board we need. There will be pre-installed the Arduino AVR series. If your are familiar with STM32 + Keil5, then you can compare the board manager with the menu in Keil where you install board description files. With the board description file, one can used predefined variables or functions which are already hard linked to the pins and registers of the MCU.</p>
+                            <p class="mb-0">Thus, we have to add new boards into the IDE, follow <a href="https://learn.sparkfun.com/tutorials/artemis-development-with-arduino" target="_blank">this page</a> to add the Artemis Apollo board series description file into the Arduino IDE. </p>
+                            <p class="mb-0">Now we have finished preparing the IDE, connect the board with PC. Through the Device Manager on the PC, we can see one new serial device connected to COM3 (usual cases). After that, we still have to select the board in the IDE to make sure the IDE recognizes the board. Refer to the image below.</p>
+                            <img src="assets/FRassets/lab1/lab1-board-selection.png" alt="Select Board" style="height: fit-content;">
+                        </section>
+                        <section>
+                            <h2>3 Connecting</h2>
+                        </section>
                     </div>
                 </div>
             </div>
