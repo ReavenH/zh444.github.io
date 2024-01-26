@@ -27,7 +27,7 @@
                 background-color: #f0f0f0; /* 背景颜色 */
                 padding: 20px; /* 内边距 */
                 box-sizing: border-box; /* 防止内边距增加宽度 */
-                position: fixed; /* 使目录栏固定在屏幕上 */
+                position: relative; /* 不使目录栏固定在屏幕上，原本使用的是relative */
                 height: 100%; /* 让目录栏铺满整个屏幕高度 */
                 overflow: auto; /* 当内容超出目录栏高度时允许滚动 */
             }
@@ -82,10 +82,13 @@
                     <div class="col-lg-6">
                         <section id="section1">
                             <h2>1 Objectives</h2>
+                            <br>
                             <p class="mb-0">The goal is to gain basic experience on the software IDE and the connection of the Artemis Nano board. Also, several demo codes will be tested where we can learn the manipulation of fundamental peripherals.</p>
+                            <br>
                         </section>
                         <section id="section2">
                             <h2>2 Prelab</h2>
+                            <br>
                             <p class="mb-0">Before we connect the board with the computer, we have to install Arduino IDE and get relative board definition files ready. For reference for later students, the lab is done with Windows 11.</p>
                             <br>
                             <p class="mb-0">The Arduino IDE can be downloaded <a href="https://www.arduino.cc/en/software" target="_blank">here</a> within seconds. After finishing installation, we can click Tools -> Board -> Board Manager to select the board we need. There will be pre-installed the Arduino AVR series. If your are familiar with STM32 + Keil5, then you can compare the board manager with the menu in Keil where you install board description files. With the board description file, one can used predefined variables or functions which are already hard linked to the pins and registers of the MCU.</p>
