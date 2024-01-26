@@ -486,6 +486,22 @@ progress {
   display: none !important;
 }
 
+/*新增video-container*/
+.video-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* 16:9 比例的视频，可以根据需要调整 */
+}
+
+/*新增video*/
+.video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
 .lead {
   font-size: 1.25rem;
   font-weight: 300;

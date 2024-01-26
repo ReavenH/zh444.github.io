@@ -50,6 +50,7 @@
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.html">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="https://github.com/ReavenH/zh444.github.io/blob/main/assets/Zhongming_Huang_Resume_Sep23.pdf">Resume</a></li>
                         <li class="nav-item"><a class="nav-link" href="#!">Contact</a></li>
+                        <li class="nav-item"><a class="nav-link" href="Fast_Robots_Labs.html">Fast Robots Labs</a></li>
                     </ul>
                 </div>
             </div>
@@ -95,15 +96,73 @@
                             <br>
                             <p class="mb-0">Thus, we have to add new boards into the IDE, follow <a href="https://learn.sparkfun.com/tutorials/artemis-development-with-arduino" target="_blank">this page</a> to add the Artemis Apollo board series description file into the Arduino IDE. </p>
                             <br>
-                            <p class="mb-0">Now we have finished preparing the IDE, connect the board with PC. Through the Device Manager on the PC, we can see one new serial device connected to port COM3 (usual cases). After that, we still have to select the board in the IDE to make sure the IDE recognizes the board. Refer to the image below.</p>
-                            <br>
-                            <img class="img-fluid mb-4" src="assets/FRassets/lab1/lab1-board-selection.png" alt="Select Board" style="height: fit-content;">
                         </section>
                         <section id="section3">
                             <h2>3 Connecting</h2>
                             <br>
-                            <p class="mb-0"></p>
+                            <p class="mb-0">Now we have finished preparing the IDE, connect the board with PC. Through the Device Manager on the PC, we can see one new serial device connected to port COM3 (usual cases). After that, we still have to select the board in the IDE to make sure the IDE recognizes the board. Refer to the image below.</p>
+                            <br>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab1/lab1-board-selection.png" alt="Select Board" style="height: fit-content;">
+                            <br>
+                            <p class="mb-0">We can open the serial monitor to check if the board is correctly connected. Make sure the Baud rate is set to 115200Hz, type in the box and the board will echo back the message you sent.</p>
+                            <br>
                         </section>
+                        <section id="section4">
+                            <h2>4 Demo: Blinking</h2>
+                            <br>
+                            <p class="mb-0">There's an example code in "File -> Examples -> 01 Basics -> Blink". Open the project (called "sketch" in Arduino IDE) and save as another local file. Upload it onto the board, we can observe the blue LED below the "RX" LED blinking at a constant interval (default set to 1000ms on and 1000ms off).</p>
+                            <br>
+                        </section>
+                        <section id="section5">
+                            <h2>5 Demo: Serial Communication</h2>
+                            <br>
+                            <p class="mb-0">Upload the serial communication demo code in "File -> Examples -> Apollo3 -> Example04 Serial". Open the Serial Monitor and type in the box (with 115200Hz Baud rate). The same text will be returned and displayed in the terminal. Refer to the image below.</p>
+                            <br>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab1/lab1-demo-serial-code-selection.png" alt="Select Serial Demo Code" style="height: fit-content;">
+                            <br>
+                            <p class="mb-0">The result is shown below.</p>
+                            <br>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab1/lab1-demo-serial.png" alt="Serial Echo Result" style="height: fit-content;">
+                            <br>
+                        </section>
+                        <section id="section6">
+                            <h2>6 Demo: Analog Reading</h2>
+                            <br>
+                            <p class="mb-0">Upload the temperature reading demo code in "File -> Examples -> Apollo3 -> Example02 AnalogRead". This section uses the temperature sensor on-board as the data source, the readings will be returned to the Serial Manager. It will return a group of data each time, including the analog voltage on the external ADC pin, the VCC across the 1/3 voltage divider, the reference VSS, the raw ADC counts from die temp sensor, the computed temp in F degrees and the computed supply voltage in V.</p>
+                            <br>
+                            <p class="mb-0">The result is shown in the video below. I held the whole board in hand, and released it after a while. The temperature climed slowly from 33F to 35F, and dropped at a faster speed to 33F after I released the board.</p>
+                            <br>
+                            <!-- 视频容器 -->
+                            <div class="video-container">
+                                <!-- 视频 -->
+                                <video class="video" controls>
+                                    <source src="assets/FRassets/lab1/lab1-demo-analog-reading.mp4?raw=true" type="video/mp4">
+                                </video>
+                            </div>
+                            <br>
+                        </section>
+                        <section id="section7">
+                            <h2>7 Demo: Microphone Output</h2>
+                            <br>
+                            <p class="mb-0">Upload the temperature reading demo code in "File -> Examples -> PDM -> Example1 MicrophoneOutput". The board will return the calculated effective sample sound frequency in the Serial Monitor. </p>
+                            <br>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab1/lab1-demo-mic-return-freq.png" alt="Mic Effective Frequency Reading" style="height: fit-content;">
+                            <br>
+                        </section>
+                        <section id="section8">
+                            <h2>8 Additional Task: Pitch Triggered LED</h2>
+                            <br>
+                            <p class="mb-0">In this section, I used the web piano to generate a standard musical A key (the tone "la", measured as 881Hz). When there is a A tone being generated, the blue LED will be activated. The result is shown in the video below.</p>
+                            <br>
+                            <div class="video-container">
+                                <!-- 视频 -->
+                                <video class="video" controls>
+                                    <source src="assets/FRassets/lab1/lab1-demo-extra-task.mp4?raw=true" type="video/mp4">
+                                </video>
+                            </div>
+                            <br>
+                        </section>
+                        <p class="lead">THE END</p>
                     </div>
                 </div>
             </div>
