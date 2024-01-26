@@ -6,20 +6,7 @@
             margin: 0 auto;   /* 将段落文本居中显示，如果需要的话 */
         }
     </style>
-    <!-- 目录栏 -->
-    <aside id="toc">
-        <h2>目录</h2>
-        <ul>
-            <li><a href="#section1">1 Objectives</a></li>
-            <li><a href="#section2">2 Prelab</a></li>
-            <li><a href="#section3">3 Connecting</a></li>
-            <li><a href="#section4">4 Demo: Blinking</a></li>
-            <li><a href="#section5">5 Demo: Serial Communication</a></li>
-            <li><a href="#section6">6 Demo: Analog Reading</a></li>
-            <li><a href="#section7">7 Demo: Microphone Output</a></li>
-            <li><a href="#section8">8 Additional Task: Pitch Triggered LED</a></li>
-        </ul>
-    </aside>
+
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -30,6 +17,23 @@
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="css/styles.css" rel="stylesheet" />
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            /* 左侧目录栏样式 */
+            .sidebar {
+                width: 200px; /* 左侧栏宽度 */
+                float: left;  /* 浮动到左侧 */
+                background-color: #f0f0f0; /* 背景颜色 */
+                padding: 20px; /* 内边距 */
+            }
+
+            /* 主内容区样式 */
+            .content {
+                margin-left: 220px; /* 左侧栏宽度 + 20px 的间隙 */
+                padding: 20px; /* 内边距 */
+            }
+        </style>
     </head>
     <body>
         <!-- Responsive navbar-->
@@ -58,6 +62,20 @@
             <div class="container my-5">
                 <div class="row justify-content-center">
                     <div class="col-lg-6">
+                        <!-- 目录栏 -->
+                        <div class="sidebar">
+                            <h2>Contents</h2>
+                            <ul>
+                                <li><a href="#section1">1 Objectives</a></li>
+                                <li><a href="#section2">2 Prelab</a></li>
+                                <li><a href="#section3">3 Connecting</a></li>
+                                <li><a href="#section4">4 Demo: Blinking</a></li>
+                                <li><a href="#section5">5 Demo: Serial Communication</a></li>
+                                <li><a href="#section6">6 Demo: Analog Reading</a></li>
+                                <li><a href="#section7">7 Demo: Microphone Output</a></li>
+                                <li><a href="#section8">8 Additional Task: Pitch Triggered LED</a></li>
+                            </ul>
+                        </div>
                         <section id="#section1">
                             <h2>1 Objectives</h2>
                             <p class="mb-0">The goal is to gain basic experience on the software IDE and the connection of the Artemis Nano board. Also, several demo codes will be tested where we can learn the manipulation of fundamental peripherals.</p>
@@ -70,8 +88,9 @@
                             <p class="mb-0">Now we have finished preparing the IDE, connect the board with PC. Through the Device Manager on the PC, we can see one new serial device connected to COM3 (usual cases). After that, we still have to select the board in the IDE to make sure the IDE recognizes the board. Refer to the image below.</p>
                             <img src="assets/FRassets/lab1/lab1-board-selection.png" alt="Select Board" style="height: fit-content;">
                         </section>
-                        <section>
+                        <section id="#section3">
                             <h2>3 Connecting</h2>
+                            <p class="mb-0"></p>
                         </section>
                     </div>
                 </div>
