@@ -26,6 +26,10 @@
                 float: left;  /* 浮动到左侧 */
                 background-color: #f0f0f0; /* 背景颜色 */
                 padding: 20px; /* 内边距 */
+                box-sizing: border-box; /* 防止内边距增加宽度 */
+                position: fixed; /* 使目录栏固定在屏幕上 */
+                height: 100%; /* 让目录栏铺满整个屏幕高度 */
+                overflow: auto; /* 当内容超出目录栏高度时允许滚动 */
             }
 
             /* 主内容区样式 */
