@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<!--NEW import javascript library to render math calculations-->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <html lang="en">
     <style>
         .paragraph-container-narrow {
@@ -58,9 +61,9 @@
         <!-- Header - set the background image for the header in the line below-->
         <header class="py-5 bg-image-full" style="background-image: url('https://github.com/ReavenH/zh444.github.io/blob/main/assets/atlas-duo-dance-darker.jpg?raw=true')">
             <div class="text-center my-5">
-                <h1 class="text-white fs-3 fw-bolder">ECE 5160 Fast Robots - Lab 2: The Artemis Board and Bluetooth</h1>
+                <h1 class="text-white fs-3 fw-bolder">ECE 5160 Fast Robots - Lab 2: IMU</h1>
                 <p class="text-white-50 paragraph-container-narrow">
-                    Lab 2 introduces the connection of Bluetooth between PC and the Artemis nano board, which includes establishing connection, defining transmission characteristics, callback function. After that, the relationship between data size and transmission rate has been studied.
+                    Lab 2 introduces experience to add the IMU to your robot, start running the Artemis+sensors from a battery, and record a stunt on your RC robot.
                 </p>
             </div>
         </header>
@@ -69,16 +72,12 @@
             <h2 style="color: whitesmoke;">Contents</h2>
             <ul>
                 <li style="color: aliceblue;"><a href="#section1">Objectives</a></li>
-                <li style="color: aliceblue;"><a href="#section2">Prelab</a></li>
-                <li style="color: aliceblue;"><a href="#section3">Task 1: Echo between Board and PC</a></li>
-                <li style="color: aliceblue;"><a href="#section4">Task 2: PC Sends GET_TIME_MILLIS and Receives Time String</a></li>
-                <li style="color: aliceblue;"><a href="#section5">Task 3: PC Sets Up Notification Handler</a></li>
-                <li style="color: aliceblue;"><a href="#section6">Task 4: PC Receives Continuous Time Stamps from Board</a></li>
-                <li style="color: aliceblue;"><a href="#section7">Task 5: Board Sends Time Stamps from an Array</a></li>
-                <li style="color: aliceblue;"><a href="#section8">Task 6: PC Sends GET_TEMP_READINGS to Get Temp Readings with Time</a></li>
-                <li style="color: aliceblue;"><a href="#section9">Discussion: Compare the Two Sending Methods</a></li>
-                <li style="color: aliceblue;"><a href="#section10">Additional Task 1: Effective Data Rate and Overhead</a></li>
-                <li style="color: aliceblue;"><a href="#section11">Additional Task 2: Reliability</a></li>
+                <li style="color: aliceblue;"><a href="#section2">Task 1: Set Up IMU</a></li>
+                <li style="color: aliceblue;"><a href="#section3">Task 2: Accelerometer</a></li>
+                <li style="color: aliceblue;"><a href="#section4">Task 3: Gyroscope</a></li>
+                <li style="color: aliceblue;"><a href="#section5">Task 4: Sample IMU Data</a></li>
+                <li style="color: aliceblue;"><a href="#section6">Task 5: Record a Stunt</a></li>
+                <li style="color: aliceblue;"><a href="#section7">Additional Record: what if defining the params inside the loop()</a></li>
             </ul>
         </div>
         <!-- Content section-->
@@ -89,211 +88,363 @@
                         <section id="section1">
                             <h2>Objectives</h2>
                             <br>
-                            <p class="mb-0">Continuing from the previous part, get familiar with BLE data transmission features between PC and board in addition to serial connection.</p>
+                            <p class="mb-0">Get familiar with the built in APIs to manipulate the ICM20948, learn how to access, store and transmit the data. Also get familiar with the RC car.</p>
+                            <br>
+                            <a href="https://github.com/sparkfun/SparkFun_ICM-20948_ArduinoLibrary/blob/main/examples/Arduino/">Here</a> links to the demo codes for the IMU configuration library.
+                            <br>
                             <br>
                         </section>
                         <section id="section2">
-                            <h2>Prelab</h2>
+                            <h2>Task 1: Set Up IMU</h2>
+                            <br>
                             <br>
                             <p class="mb-0">
-                                Same from the previous lab.
+                                Add a blinking feature to the board when the IMU is running. The result is shown in the video below.
+                                <br>
+                                <!-- Add video here -->
+                                <br>
+                                The blue LED will blink for three times when the IMU is initiated, and then blink rapidly when the program goes into "loop() -> myICM.dataReady()".
+                                <br>
+                                Next, I try to move the IMU around. The signs of returned data are determined by the direction of acceleration along the 3 axies, the direction of rotation around the axes and the pose of IMU related to the earth magnetic field.
+                                <br>
+                                The signs can be shown below:
+                                <br>
+                                Accelerometer-X: + when the board is accelerating towards the negative X axis or the negative X axis is pointed to the earth;
+                                <br>
+                                Accelerometer-Y: + when the board is accelerating towards the negative Y axis or the negative Y axis is pointed to the earth;
+                                <br>
+                                Accelerometer-Z: + when the top surface of the ICM20948 module is facing upwards, or the negative Z axis is pointed to the earth;
+                                <br>
+                                Gyrometer-X: + when the rotation decomposed to X axis is right handed.
+                                <br>
+                                Gyrometer-Y: + when the rotation decomposed to Y axis is right handed.
+                                <br>
+                                Gyrometer-Z: + when the rotation decomposed to Z axis is right handed.
+                                <br>
+                                Magnetometer-X: + when the positive X axis is faced towards the north.
+                                <br>
+                                Magnetometer-Y: + when the positive Y axis is faced towards the south.
+                                <br>
+                                Magnetometer-Z: + when the positive Z axis is faced towards the south.
+                                <br>
+                                The orientations can be illustrated below.
+                                <br>
+                                <!--Add the data sheet snapshot-->
                             </p>
                             <br>
                         </section>
                         <section id="section3">
-                            <h2>Task 1: Echo Between Board and PC</h2>
+                            <h2>Task 2: Accelerometer</h2>
+                            <br>
+                            <h3>Compute Pitch and Roll</h3>
                             <br>
                             <p class="mb-0">
-                                As the pictures below show, the computer sends a command "ECHO" along with an attached message to the board. The board returns the echoed message which starts with "ECHO BACK - " to the computer, along with the attached message from the computer.
+                                The result of calculating the Pitch and Roll angles using only the accelerometer can be illustrated in the following video.
                             </p>
+                            <!-- 视频容器 -->
+                            <div class="video-container">
+                                <!-- 视频 -->
+                                <video class="video" controls>
+                                    <source src="assets/FRassets/lab3/task2_pitchroll_acconly.mp4" type="video/mp4">
+                                </video>
+                            </div>
                             <br>
-                            <img class="img-fluid mb-4" src="assets/FRassets/lab2/task1_pc.png" style="height: fit-content;">
-                            <br>
-                            <img class="img-fluid mb-4" src="assets/FRassets/lab2/task1_board_code.png" style="height: fit-content;">
-                            <br>
-                            <img class="img-fluid mb-4" src="assets/FRassets/lab2/task1_board_rx.png" style="height: fit-content;">
-                            <br>
-                        </section>
-                        <section id="section4">
-                            <h2>Task 2: PC Sends GET_TIME_MILLIS and Receives Time Stamp</h2>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab3/task2_pitchroll_acconly.png" style="height: fit-content;">
                             <br>
                             <p class="mb-0">
-                                We first modify the command lists on both PC and the board. To ensure the commands match, make sure the order of added commands align. Below shows the modifed commands.
+                                The result is not very accurate, because the ranges are not perfectly matched with \( \pm 90 \). The actual range of roll when the Y-Z plane is horizontal is \( [-87.40, 88.65] \). 
+                                So that the factor should be \( k_{roll} = \frac{180}{88.65 + 87.40} = \frac{180}{176.05} = 1.02243 \), assuming the error is linear.
+                                Similarly, the pitch reading range is \( [-88 ,87] \), so the correction factor should be \( k_{pitch} = \frac{180}{175} = 1.02857 \).
                             </p>
                             <br>
-                            <img class="img-fluid mb-4" src="assets/FRassets/lab2/task2_board_command.png" style="height: fit-content;">
-                            <br>
-                            <img class="img-fluid mb-4" src="assets/FRassets/lab2/task2_pc_command.png" style="height: fit-content;">
+                            <h3>Noise Analysis Using FFT</h3>
+                            <!--Consider resample data from the serial-->
                             <br>
                             <p class="mb-0">
-                                Then, we add a new case branch to the board, which is executed when the given command is GET_TIME_MILLIS (int 6). The board will print the received command in the serial monitor.
+                                The traditional low pass filter in a physical circuit can be realized using a combination circuit of resistor and capacitor (RC). The first order low pass filter can be designed by specifying the cutoff frequency. 
+                                \( f_c = \frac{1}{2\pi\times RC} \to RC = \frac{1}{2\pi f_c} \to \alpha = \frac{T_s}{T_s + RC} = \frac{T_s}{T_s + \frac{1}{2\pi f_c}}\), where \( T_s, f_c \) represent the sampling period and the cutoff frequency.
+                                <br>
+                                Thus, the point is to select an appropriate cutoff frequency for the LPF. We can perform FFT on the collected continuous IMU data. The code and result of FFT are shown below. The data length is 16654 sample pairs for the Pitch and Roll.
+                                The sampling interval is approximately 0.00421212 second for each pair of data. The sampled data in the time domain can be shown below.
                             </p>
                             <br>
-                            <img class="img-fluid mb-4" src="assets/FRassets/lab2/task2_board_output.png" style="height: fit-content;">
-                            <br>
-                            <p class="mb-0">
-                                After those, we can establish connection and send command. The log information shows the received time stamp on the PC, which consists of the command sent and the returned time stamp in milliseconds. The result is shown below.
-                            </p>
-                            <br>
-                            <img class="img-fluid mb-4" src="assets/FRassets/lab2/task2_pc.png" style="height: fit-content;">
-                        </section>
-                        <section id="section5">
-                            <h2>Task 3: PC Sets Up Notification Handler</h2>
-                            <br>
-                            <p class="mb-0">
-                                Notification handler enables the receiver to wait for incoming data in the backstage, allowing main thread to proceed. In this task, the PC first defines a callback function (handler function) which is to be triggered by the incoming BLE message. Then we input the callback function to the "start_notify" function which monitors the incomming data. When there is an incoming data, it will be input into the callback function.
-                            </p>
-                            <br>
-                            <img class="img-fluid mb-4" src="assets/FRassets/lab2/task3_pc.png" style="height: fit-content;">
-                            <br>
-                            <p class="mb-0">
-                                The above picture shows we first start the notification handler, after that, we send a command "GET_TIME_MILLIS" to the board. The board will return a string as in task 2. The PC captures the time stamp and the handler prints the time stamp in the log info.
-                            </p>
-                            <br>
-                            <p class="mb-0">
-                                When we received the message, we can close the notification handler as the cell 78 shows in the above picture.
-                            </p>
-                            <br>
-                        </section>
-                        <section id="section6">
-                            <h2>Task 4: PC Receives Continuous Time Stamps from Board</h2>
-                            <br>
-                            <p class="mb-0">
-                                As the picture below shows, the PC sends a "MEASURE_SPEED" command and specify the time stamp samples needed by giving the attached message. When the attached message is 50, the board returns 50 time stamps continuously.
-                                In this task, the time stamps are collected while sending.
-                            </p>
-                            <br>
-                            <img class="img-fluid mb-4" src="assets/FRassets/lab2/task4_pc.png" style="height: fit-content;">
-                            <br>
-                            <p class="mb-0">
-                                Similar to the previous task, the PC gets incoming data by enabling the notification handler. The returned time stamps will be displayed using log info.
-                            </p>
-                            <br>
-                            <img class="img-fluid mb-4" src="assets/FRassets/lab2/task4_pc_1.png" style="height: fit-content;">
-                            <br>
-                            <p class="mb-0">
-                                Having stored all the data received, we can calculate the average speed for each cycle of reading time stamp and transmission, as printed below cell 19 in the picture above.
-                            </p>
-                            <br>
-                        </section>
-                        <section id="section7">
-                            <h2>Task 5: Board Sends Time Stamps from an Array</h2>
-                            <br>
-                            <p class="mb-0">
-                                As shown below, when the board receives command "SEND_TIME_DATA", it will firstly store 20 time stamps using a for loop. After that, the next for loop will read and send the stored elements from the array.
-                            </p>
-                            <br>
-                            <img class="img-fluid mb-4" src="assets/FRassets/lab2/task5_board.png" style="height: fit-content;">
-                            <br>
-                            <p class="mb-0">
-                                In the PC, it receives incoming data via the notification handler.
-                            </p>
-                            <br>
-                            <img class="img-fluid mb-4" src="assets/FRassets/lab2/task5_pc.png" style="height: fit-content;">
-                            <br>
-                            <p class="mb-0">
-                                As can be seen, the 20 received time stamps share the same value, but the it takes about 0.4s for the receiver to finish parsing data. In average, each transmission takes 20ms from board to the PC. which is slightly faster than the previous method.
-                            </p>
-                            <br>
-                        </section>
-                        <section id="section8">
-                            <h2>Task 6: PC Sends GET_TEMP_READINGS to Get Temperature Readings with Time Stamps</h2>
-                            <br>
-                            <p class="mb-0">
-                                Similar with the previous task, the board read 5 temperatures, fit the raw readings from die into F-degrees and convert them into strings to be stored in an array. After that, a for loop will send the data.
-                            </p>
-                            <br>
-                            <img class="img-fluid mb-4" src="assets/FRassets/lab2/task6_board.png" style="height: fit-content;">
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab3/task2_PR_RAW_Time.png" style="height: fit-content;">
                             <br>
                             <p class="mb=0">
-                                The PC receives messages using notification handler. As shown below. The notification handler will terminate itself when it gets desired amount of data.
-                            </p>
-                            <img class="img-fluid mb-4" src="assets/FRassets/lab2/task6_pc.png" style="height: fit-content;">
-                            <br>
-                        </section>
-                        <section id="section9">
-                            <h2>Discussion: Compare the Two Sending Methods</h2>
-                            <br>
-                            <p class="mb-0">
-                                The advantage of collecting data first before sending is that the data can be captured without large time intervals. The sampling frequency can be very high when we want to sample contunous signals. But when we are sampling at a very high frequency, the data can be huge for a MCU to store in the RAM.
-                                On the other hand, if we send each data immediately after we fetch it, the amount of RAM space needed is approximately equal to the size of each data. Also, if the master controller needs real-time data for processing, we have to send data while collecting them. However, it comes with larger sampling intervals and lower channel efficiency.
+                                Using the code below, we can get the frequency domain data.
                             </p>
                             <br>
-                        </section>
-                        <section id="section10">
-                            <h2>Additional Task 1: Effective Data Rate and Overhead</h2>
+                            <pre>
+                                <code>
+                                    # perform FFT using Scipy
+                                    # cutoff freq = 8~10Hz after observation
+                                    from scipy.fft import fft
+                                    
+                                    T = 0.00421212  # from the terminal, the sampling freq.
+                                    P_FFT = fft(P_ACC_RAW)/len(P_FFT)
+                                    R_FFT = fft(R_ACC_RAW)/len(R_FFT)
+                                    
+                                    freq_axis = np.fft.fftfreq(len(P_FFT), d = T)
+                                    
+                                    plt.figure(figsize=(15, 4))
+                                    pl1 = plt.plot(freq_axis, np.abs(P_FFT), label = "Pitch")
+                                    pl2 = plt.plot(freq_axis, np.abs(R_FFT), label = "Roll")
+                                    plt.xlabel('Frequency (Hz)')
+                                    plt.ylabel('Amplitude (Normalized)')
+                                    plt.title('FFT of Pitch and Roll')
+                                    plt.legend()
+                                    plt.grid()
+                                    plt.savefig("task2_FFT_Pitch_Roll.png")
+                                    plt.show()
+                                </code>
+                            </pre>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab3/task2_FFT_Pitch_Roll.png" style="height: fit-content;">
                             <br>
                             <p class="mb-0">
-                                As shown below, the board generates 5 and 120 byte long data and store them into arrays. Then it uses a for loop to send the data. The PC receives data using the notification handler and calculate the average time cost for each transmission.
+                                The figure above is a result of IMU data with handheld shakings.
+                                <br>
+                                If we initiate the DLPF (digital low pass filter) built in the IMU, the result itself can be rather smooth before any additional LPFs. The DLPF can be initiated in the setup() process.
+                                <br>
+                                Observing the curve above, we may select a cut-off frequency at 7~10Hz. We select 9Hz for further calculation.
+                                <br>
+                                Now we can implement the low-pass filter using the complementary filter, with \( \alpha = \frac{0.00421212}{0.00421212 + \frac{1}{2\pi \times 9}} \approx 0.1924 \). However, after implementing the filter the result will be distorted, meaning that we 
+                                do not need an extra complementary filter. The code for Pitch and Roll from accelerometer using the complementary filter as the DLPF is shown below.
+                                <br>
+                            </p>
+                            <pre>
+                                <code>
+                                    const float alpha = 0.1924;  // from the FFT result
+                                    pitch_a_LPF[n] = alpha*pitch_a + (1-alpha)*pitch_a_LPF[n-1];
+                                    pitch_a_LPF[n-1] = pitch_a_LPF[n];
+                                    roll_a_LPF[n] = alpha*roll_a + (1-alpha)*roll_a_LPF[n-1];
+                                    roll_a_LPF[n-1] = roll_a_LPF[n];
+                                </code>
+                            </pre>
+                            <br>
+                            <p class = "mb-0">
+                                The time domain and frequency domain curves can be seen below. When we choose \( \alpha = 0.1924 \), the Amplitude of the time domain frequency will be distorted, while the frequency domain becomes smoother.
                             </p>
                             <br>
-                            <img class="img-fluid mb-4" src="assets/FRassets/lab2/extratask1_board.png" style="height: fit-content;">
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab3/task2_PR_CF_0.19_Time.png" style="height: fit-content;">
+                            <br>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab3/task2_FFT_Pitch_Roll_LPF_0.19.png" style="height: fit-content;">
                             <br>
                             <p class="mb-0">
-                                The images below shows the average time cost for each transmission.
-                            </p>
-                            <img class="img-fluid mb-4" src="assets/FRassets/lab2/extratask1_pc.png" style="height: fit-content;">
-                            <br>
-                            <p class="mb-0">
-                                For the 5-byte data: 0.025228ms each, Byte Rate = 0.198k byte/s. See the picture below.
+                                Now we try \( \alpha = 0.2093, f_c = 10Hz \) to see what's different.
                             </p>
                             <br>
-                            <img class="img-fluid mb-4" src="assets/FRassets/lab2/extratask1_pc_1.png" style="height: fit-content;">
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab3/task2_PR_CF_0.2093_Time.png" style="height: fit-content;">
                             <br>
-                            <p class="mb-0">
-                                For the 120-byte data: 0.063462ms each, Byte Rate = 1.8k byte/s. See the picture below.
-                            </p>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab3/task2_FFT_Pitch_Roll_LPF_0.2093.png" style="height: fit-content;">
                             <br>
-                            <img class="img-fluid mb-4" src="assets/FRassets/lab2/extratask1_pc_2.png" style="height: fit-content;">
-                            <br>
-                            <p class="mb-0">
-                                Other data lengths are also tested, see results below.
-                                <br>
-                                5 byte: 0.025228ms each, Byte Rate = 0.198k byte/s.
-                                <br>
-                                10 byte: 0.022933ms each, Byte Rate = 0.436k byte/s.
-                                <br>
-                                20 byte: 0.025043ms each, Byte Rate = 0.798k byte/s.
-                                <br>
-                                30 byte: 0.040832ms each, Byte Rate = 0.743k byte/s.
-                                <br>
-                                40 byte: 0.048085ms each, Byte Rate = 0.831k byte/s.
-                                <br>
-                                50 byte: 0.036999ms each, Byte Rate = 1.351k byte/s.
-                                <br>
-                                60 byte: 0.060018ms each, Byte Rate = 0.999k byte/s.
-                                <br>
-                                70 byte: 0.059958ms each, Byte Rate = 1.167k byte/s.
-                                <br>
-                                80 byte: 0.063441ms each, Byte Rate = 1.261k byte/s.
-                                <br>
-                                90 byte: 0.067232ms each, Byte Rate = 1.338k byte/s.
-                                <br>
-                                100 byte: 0.063595ms each, Byte Rate = 1.572k byte/s.
-                                <br>
-                                110 byte: 0.127272ms each, Byte Rate = 0.864k byte/s.
-                                <br>
-                                120 byte: 0.063462ms each, Byte Rate = 1.891k byte/s
-                                <br>
-                                130 byte: 0.165644ms each, Byte Rate = 0.784k byte/s.
-                                <br>
-                                150 byte: 0.102010ms each, Byte Rate = 1.470k byte/s.
-                                <br>
-                                The data rate diagram is shown below.
-                            </p>
-                            <br>
-                            <img class="img-fluid mb-4" src="assets/FRassets/lab2/extratask1_diagram.png" style="height: fit-content;">
-                            <br>
-                        </section>
-                        <section id="section11">
-                            <h2>Additional Task 2: Reliability</h2>
-                            <br>
-                            <p class="mb-0">
-                                Usually, the receiver will run an individual thread (tasks in RTOS) to detect whether there's an incoming data in the register. When the data is available, the receiver will be able to retrieve the new data and be ready for the next data.
-                                The speed of such process is largely dependent on the operating frequency of the controller. The Artemis is not likely to exceed the limit of PC's receiving capacity. Thus the PC will always read all data published from the board.
-                                On the other hand, if the receiver's buffer is not enough to save a whole data, it is likely to lose some part of the original data.
+                            <p class="mb=0">
+                                As we increase the \( \alpha \), we are giving more trust to the current reading and less trust to the previous data. In other words, the cut-off frequency is increased. In the frequency domain, we can see the subtle fluctuations are more than that in the previous setting with smaller \( \alpha \).
+                                Considering that most ICM20948 boards will be initiated with the DLPFs on (for example, 6-order LPFs for the Accelerometer or Gyroscope are commonly seen, which is better than the first order LPF we are trying to implement here), we do not use LPF when we are solely relying on the accelerometer.
                             </p>
                         </section>
+                        <br>
+                        <section id="section4">
+                            <h2>Task 3: Gyroscope</h2>
+                            <p class="mb-0">
+                                We can use the following code to compute the pitch, roll and yaw by integrating the Accelerometer and Gyroscope. There's a 1-order LPF for integrating the gyroscope and accelerometer readings. We test the IMU when it is placed still and is moving around.
+                            </p>
+                            <br>
+                            <pre>
+                                <code>
+                                    pitch_a = k_pitch*atan2(myICM.accY(),myICM.accZ())*180/M_PI; 
+                                    roll_a  = k_roll*atan2(myICM.accX(),myICM.accZ())*180/M_PI;
+                                    // incorporating gyroscope.
+                                    dt = (micros()-last_time)/1000000.;
+                                    last_time = micros();
+                                    pitch_g = pitch_g + myICM.gyrX()*dt;
+                                    roll_g = roll_g + myICM.gyrY()*dt;
+                                    yaw_g = yaw_g + myICM.gyrZ()*dt;
+
+                                    // integrating AG
+                                    const float alpha_AG = 0.1924;  // cut off freq = 9Hz 
+                                    pitch = (pitch+myICM.gyrX()*dt)*(1 - alpha_AG) + pitch_a*alpha_AG;
+                                    roll = (roll+myICM.gyrY()*dt)*(1 - alpha_AG) + roll_a*alpha_AG;
+                                    yaw_g = yaw_g + myICM.gyrZ()*dt;
+                                </code>
+                            </pre>
+                            <br>
+                            <p class="mb-0">
+                                When we select \( \alpha = 0.1924 \) and the IMU is placed still, the results are shown below.
+                            </p>
+                            <br>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab3/task3_PR_ACC_GYR_Alpha0.1924_Still_dt.png" style="height: fit-content;">
+                            <br>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab3/task3_FFT_Pitch_Roll_AG_LPF_0.1924_0.01.png" style="height: fit-content;">
+                            <br>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab3/task3_PR_GYR_Still_dt.png" style="height: fit-content;">
+                            <br>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab3/task3_dt_out_of_loop.png" style="height: fit-content;">
+                            <br>
+                            <p class="mb-0">
+                                Analyzing the figures above, we can see that the pitch, roll and yaw readings from solely the gyroscope will drift overtime. But the fused pitch and roll angles remains near the time axis.
+                                Next, let's see what'll happen if we rotate the IMU and whether we should retune the \( \alpha \).
+                            </p>
+                            <br>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab3/task3_PR_ACC_GYR_Alpha0.1924_Rot_dt.png" style="height: fit-content;">
+                            <br>
+                            <p class="mb-0">
+                                The figure below may be clearer for comparing the acc data and fused data.
+                            </p>
+                            <br>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab3/task3_PR_ACC_GYR_Alpha0.1924_Rot_dt_selected.png" style="height: fit-content;">
+                            <br>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab3/task3_FFT_Pitch_Roll_AG_LPF_0.1924_0.01_rot.png" style="height: fit-content;">
+                            <br>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab3/task3_PR_GYR_Rot_dt.png" style="height: fit-content;">
+                            <br>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab3/task3_PR_ACC_GYR_Alpha0.1924_Rot_dt_error.png" style="height: fit-content;">
+                            <br>
+                            <p class="mb-0">
+                                As can be seen from the diagram above, there are several large spikes in the error curve. The mean error of pitch between accelerometer and fused data is \( 0.026707730212503725 \), and \( 0.14622728672620905  \) for roll. 
+                                The standard deviation of pitch decreased from 63.50 to 60.09 (5% drop), and from 57.33 to 50.57 for roll (12% drop).
+                                Next, we try  \(  \alpha = 0.3859 \) (dt = 0.01s, \( f_c = 10Hz \)). <!--\(  \alpha = 0.1116 \) (dt = 0.01s, \( f_c = 2Hz \)) and-->
+                            </p>
+                            <br>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab3/task3_PR_ACC_GYR_Alpha0.3859_Rot_dt.png" style="height: fit-content;">
+                            <br>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab3/task3_PR_ACC_GYR_Alpha0.3859_Rot_dt_selected.png" style="height: fit-content;">
+                            <br>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab3/task3_FFT_Pitch_Roll_AG_LPF_0.3859_0.01_rot.png" style="height: fit-content;">
+                            <br>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab3/task3_PR_ACC_GYR_Alpha0.3859_Rot_dt_error.png" style="height: fit-content;">
+                            <br>
+                            <p class="mb-0">
+                                The mean error between ACC and fused data for pitch and roll are \(  0.030882352941176555  \) and \( 0.02507270323859883  \) degree respectively. 
+                                The standard deviation of pitch decreased from 48.69 to 44.20 (9% drop), and from 57.05 to 50.52 for roll (11% drop).
+                                <br>
+                                <br>
+                                Personally, I would choose \( \alpha = 0.1924 \) since its result is smoother and does not lose much info compared to a greater cut off frequency. The error when \( \alpha = 0.3859 \) is smaller because the filtered curve is closer to the raw acc data.
+                                <br>
+                                <br>
+                                The gyroscope raw data is not susceptible for quick shakes because the sampling rate of the Artemis Nano is not high enough to discretize the angles from the gyroscope readings. 
+                                If we are shaking the IMU too fast, the angular acceleration is still read each 0.01s, but the accelerating process may be much shorter than 0.01s. Imagine you are quickly shaking the IMU, it will speed up first and slow down to still at last. 
+                                If the whole process happend within 0.01s, the recorded data may be a huge number indicating only the accelerating process.
+                                <br>
+                                <br>
+                                The result of quickly shaking the IMU can be shown below. Note that the pitch and roll from gyro have much more drift after shaking, compared to the beginning.
+                            </p>
+                            <br>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab3/task3_PR_ACC_GYR_Alpha0.1924_QuickRot_dt.png" style="height: fit-content;">
+                            <br>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab3/task3_PR_ACC_GYR_Alpha0.1924_QuickRot_dt_selected.png" style="height: fit-content;">
+                            <br>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab3/task3_FFT_Pitch_Roll_AG_LPF_0.1924_0.01_quickrot.png" style="height: fit-content;">
+                            <br>
+                            <p class="mb-0">
+                                However, the fused data is quite robust even after quick shakings.
+                            </p>
+                            <br>
+                        </section>
+                        <section id="section5">
+                            <h2>Task 4: Sampling IMU Data and BLE Transmission</h2>
+                            <p class="mb=0">
+                            It is not reasonable to use a large array to store all the sensor data for a long period, especially using char for array storage, the artemis' main thread overflows when trying to store a 128*7 float array (28.6kbits) if declaring the variable inside loop(). 
+                            More memory can be stored using the static declaration. When using a float array to store data and sending each float sequentially, the data caputuring rate is 2.4375ms for each set of data (containing acc, gyro readings plus a time stamp). 
+                            In average, the main loop reads each reading of the 7 at 2.871kHz, which is way faster than the IMU (the frequency divider is greater than 1, the internal sampling speed is around 1.1kHz for ICM20948, so the maximum data update speed is around 1.1kHz). 
+                            But since each loop takes 2.4~2.6ms (around 410Hz), the IMU data cannot be fetched at maximum speed.
+                            </p>
+                            <br>
+                            <br>
+                            The pictures below show the result of requesting and decoding the float characteristic data via BLE.
+                            <br>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab3/task4_PC1.png" style="height: fit-content;">
+                            <br>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab3/task4_PC2.png" style="height: fit-content;">
+                            <br>
+                            The code in the board's main loop is shown below.
+                            <pre>
+                                <code>
+                                    float time_p = millis();
+                                    #define max_data_length 1280
+                                    static float collected_data[max_data_length][7];
+
+                                    void loop()
+                                    {
+                                      BLEDevice central = BLE.central();
+                                    
+                                      if(central){
+                                        digitalWrite(LED_BUILTIN, HIGH);
+                                        Serial.print("Connected to: ");
+                                        Serial.println(central.address());
+                                        while(central.connected()){
+                                          // float collected_data[max_data_length][7];  // 4bytes for each float, 57kb if 1024 bits.
+                                          unsigned int i = 0;
+                                        
+                                          // write_data();  // keep PC awaiting
+                                          read_data();
+                                          if(start_send){
+                                            time_p = millis();
+                                            while(millis() - time_p <= 1*1000 && i < max_data_length){  // 1s
+                                              myICM.getAGMT();
+                                              collected_data[i][0] = millis();
+                                              collected_data[i][1] = myICM.accX();
+                                              collected_data[i][2] = myICM.accY();
+                                              collected_data[i][3] = myICM.accZ();
+                                              collected_data[i][4] = myICM.gyrX();
+                                              collected_data[i][5] = myICM.gyrY();
+                                              collected_data[i][6] = myICM.gyrZ();
+                                              i += 1;
+                                            }
+                                            // SEND_IMU_DATA
+                                            start_send = false;
+                                            for(unsigned int j = 0; j < i; j++){
+                                              // send via BLE, PC uses notification handler.
+                                              if(j == 0){
+                                                Serial.println("Sending...");
+                                              }
+                                              for(unsigned int k = 0; k < 7; k++){
+                                                tx_characteristic_float.writeValue(collected_data[j][k]);
+                                              }
+                                            }
+                                            Serial.println("Finished Sending");
+                                            Serial.print("Last stamp: ");
+                                            Serial.println(collected_data[i - 1][0]);
+                                          }
+                                        }
+                                        digitalWrite(LED_BUILTIN, LOW);
+                                        Serial.println("Disconnected...");
+                                        delay(100);
+                                      }
+                                    }
+                                </code>
+                            </pre>
+                            <p class="mb=0">
+                                To store 5s IMU data, if we need to use the float array to store all the data, we will need a 1871*7 array, which occupies around 420kbit storage. We can only allocate this into the static program storage. 
+                                The static memory of Artemis Nano has a maximum 983040 bytes, meaning we can store 35108 groups of 7 floats. This allows a theoretical upper limit of 84 seconds's IMU acc and gyro data plus time stamps.
+                                <br>
+                                <br>
+                                The code above does not optimize the transmission speed. Which is to be polished later.
+                                <br>
+                                <br>
+                                As the figure below shows, a 1280*7 static float array is able to store IMU data during 4.389s, but transmission from board to PC takes 10min if conducted in sequential.
+                            </p>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab3/task4_PC3.png" style="height: fit-content;">
+                        </section>
+                        <br>
+                        <section id="section6">
+                            <h2>Task 5: Record a Stunt</h2>
+                            <p class="mb-0">To be done. Remote does not work for now.</p>
+                        </section>
+                        <br>
+                        <section id="section7">
+                            <h2>Additional Record: Defining Params Inside Loop() Causes What</h2>
+                            <p class="mb-0">
+                                When filtering the IMU data in real-time, if we write those variable declarations inside the loop, it will cause the loop become slower as it iterates. 
+                                Incorporating the acc and gyro for the pitch and roll angles, we can see the effective of increasing dt below.
+                            </p>
+                            <br>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab3/task3_dt.png" style="height: fit-content;">
+                            <br>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab3/task3_PR_ACC_GYR_Alpha0.1924_Still.png" style="height: fit-content;">
+                            <br>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab3/task3_PR_GYR_Still.png" style="height: fit-content;">
+                        </section>
+                        <br>
                         <br>
                         <p class="lead">THE END</p>
                     </div>

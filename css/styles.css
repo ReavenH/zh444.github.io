@@ -10853,3 +10853,17 @@ textarea.form-control-lg {
   background-position: center;
   background-size: 30% auto; /*original: cover*/
 }
+
+pre {
+  background-color: #f4f4f4;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin: 0;
+}
+
+code {
+  font-family: Consolas, monospace;
+  font-size: 14px;
+  color: #333;
+}
