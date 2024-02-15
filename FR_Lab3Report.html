@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<!--NEW import javascript library to render math calculations-->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<html lang="en">
+    <style>
+        .paragraph-container-narrow {
+            max-width: 800px; /* 设置最大宽度为600像素 */
+            margin: 0 auto;   /* 将段落文本居中显示，如果需要的话 */
+        }
+    </style>
+
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Zhongming Huang - Fast Robots Labs</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/styles.css" rel="stylesheet" />
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            /* 左侧目录栏样式 */
+            .sidebar {
+                width: 300px; /* 左侧栏宽度 */
+                float: left;  /* 浮动到左侧 */
+                background-color: #343a40; /* 背景颜色 */
+                padding: 20px; /* 内边距 */
+                box-sizing: border-box; /* 防止内边距增加宽度 */
+                position: relative; /* 不使目录栏固定在屏幕上，原本使用的是relative */
+                height: 100%; /* 让目录栏铺满整个屏幕高度 */
+                overflow: auto; /* 当内容超出目录栏高度时允许滚动 */
+            }
+
+            /* 主内容区样式，并未使用 */
+            .content {
+                margin-left: 220px; /* 左侧栏宽度 + 20px 的间隙 */
+                padding: 20px; /* 内边距 */
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Responsive navbar-->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#!">ECE 5160 Fast Robots - Lab 3</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.html">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="https://github.com/ReavenH/zh444.github.io/blob/main/assets/Zhongming_Huang_Resume.pdf">Resume</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#!">Contact</a></li>
+                        <li class="nav-item"><a class="nav-link" href="Fast_Robots_Labs.html">Fast Robots Labs</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Header - set the background image for the header in the line below-->
+        <header class="py-5 bg-image-full" style="background-image: url('https://github.com/ReavenH/zh444.github.io/blob/main/assets/atlas-duo-dance-darker.jpg?raw=true')">
+            <div class="text-center my-5">
+                <h1 class="text-white fs-3 fw-bolder">ECE 5160 Fast Robots - Lab 3: Time of Flight Sensors (ST VL53L1X)</h1>
+                <p class="text-white-50 paragraph-container-narrow">
+                    Lab 3 introduces the hardware soldering for connecting the ToF sensors and the battery to the Artemis Nano board. The performance of the ToF sensors will be exploredm, 
+                    including the speed, accuracy and range, etc. Also, we will design a method involving wiring and coding to acquire the two ToF sensors' data given the same I2C address.
+                </p>
+            </div>
+        </header>
+        <!-- 目录栏 -->
+        <div class="sidebar">
+            <h2 style="color: whitesmoke;">Contents</h2>
+            <ul>
+                <li style="color: aliceblue;"><a href="#section1">Objectives</a></li>
+                <li style="color: aliceblue;"><a href="#section2">Prelab</a></li>
+                <li style="color: aliceblue;"><a href="#section3">Task 1: Connect ToF to QUIIC breakout board</a></li>
+                <li style="color: aliceblue;"><a href="#section4">Task 2: Scanning for I2C Devices and Discuss I2C Address</a></li>
+                <li style="color: aliceblue;"><a href="#section5">Task 3: Acquiring Data from a Single ToF</a></li><!--specify the mode chosen, include pictures of data.-->
+                <li style="color: aliceblue;"><a href="#section6">Task 4: Two Parallel ToF Sensors</a></li>
+                <li style="color: aliceblue;"><a href="#section7">Task 5: Assessing the Speed of the ToF</a></li>
+                <li style="color: aliceblue;"><a href="#section8">Task 6: Transmission of Two ToF Data via BLE</a></li><!--include graph, use txstring-->
+                <li style="color: aliceblue;"><a href="#section9">Additional Task 1: Discussion on IR based Sensors</a></li>
+                <li style="color: aliceblue;"><a href="#section10">Additional Task 2: Explore the Sensitivity of Sensors to Colors and Textures</a></li>
+            </ul>
+        </div>
+        <!-- Content section-->
+        <section class="py-5">
+            <div class="container my-5"> <!---original my-5--->
+                <div class="row justify-content-center">
+                    <div class="col-lg-10"> <!-- original col-lg-5 -->
+                        <section id="section1">
+                            <h2>Objectives</h2>
+                            <br>
+                            <p class="mb-0">
+                                The purpose of this lab is to equip the robot with sensors - the faster the robot can sample and the more it can trust a sensor reading, the faster it is able to drive.
+                            </p>
+                            <br>
+                            <a href="https://cdn.sparkfun.com/assets/e/1/8/4/e/VL53L1X_API.pdf">Here</a> links to the manual for the ST VL53L1X mounted on the PCB board.
+                            <br>
+                            <br>
+                        </section>
+                        <section id="section2">
+                            <h2>Prelab</h2>
+                            <br>
+                            <h3>Performance under Casual Lighting Conditions</h3>
+                            <p class="mb=0">
+                                According the datasheet, the sensor performs best under dark conditions (no IR interference within the operating spectrum) with light-colored objects (max 3.4m operating range). 
+                                When the color of object gets darker, the operating range of the ToF sensor will degrade.
+                                Also, as the ambient light gets stronger, the operating range of the ToF sensor also degrades. When there is sunlight from outside a clear window and there's direct illumination, 
+                                the ToF sensor's operating range will be limited within 73cm, given a light-colored object.
+                                <br>
+                                <br>
+                                Below are the key measurements from the datasheet.
+                                <br>
+                            </p>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/prelab_test_conditions.png" style="height: fit-content;">
+                            <br>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/prelab_performance_in_ambient_light.png" style="height: fit-content;">
+                            <br>
+                            <h3>The I2C Address of the ToF Sensor</h3>
+                            <br>
+                            <p class="mb=0">
+                                Default value: 0x52 (82d). Can be changed by programming (see code below).
+                                <br>
+                                <pre>
+                                    <code>
+                                        #include "SparkFun_VL53L1X.h"
+                                        SFEVL53L1X distanceSensor;  // instantiate
+                                        #define dSensorAddr 88  // define a new I2C address in int, e.g. 88
+                                        Wire.begin();
+                                        distanceSensor.setI2CAddress(dSensorAddr);
+                                    </code>
+                                </pre>
+                                <br>
+                                The newly assigned address will remain valid until the power is off. Reassigning is necessary the next time booting up.
+                                <br>
+                                Also, the address can be requested using the code below.
+                                <br>
+                                <pre>
+                                    <code>
+                                        int currentAddr = distanceSensor.getI2CAddress()
+                                    </code>
+                                </pre>
+                                <br>
+                            </p>
+                            <h3>Parallel Reading Design</h3>
+                            <br>
+                            <p class="mb-0">
+                                The XSHUT hole on the Pololu VL53L1X board is connected to the XSHUT pin of the sensor itself. It is activated given digital LOW. The sensor will be powered off 
+                                if the XSHUT is given LOW. When the power supply is present and XSHUT is LOW, the sensor goes into hardware standby period. Then if we set XSHUT to HIGH, the sensor
+                                will boot up for less than 1.2ms and stand by.
+                                <br>
+                                <br>
+                                Thus, to control the two sensors in parallel, we can use QUIIC to connect the two sensors to the breakout board and solder wires connecting the XSHUT pins with two available pins on the Artemis Nano board.
+                                Inside the code, we can use two different instances of the SFEVL53L1X struct to control the two ToF sensors independently.
+                                When the program goes into setup(), we can boot up one of the sensors first by setting the XSHUT to HIGH and use the first instance of SFEVL53L1X to assign it a new I2C address. When this finishes, we can do some initial settings. 
+                                After that, we can boot up the other sensor without assigning a new I2C address. Then use the second instance of SFEVL53L1X to do some initial settings.
+                            </p>
+                            <br>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/prelab_XSHUT.png" style="height: fit-content;">
+                            <br>
+                            <h3>Sensitivity and Where to Mount the Sensors</h3>
+                            <br>
+                            <p class="mb=0">
+                                The range sensitivity has been discussed above. For the angular operating range, we can refer to the schematic below. The emitter operates within \( \pm 18.25 \) degrees, the receiver \( \pm 18.3 \) degrees.
+                                So it is reasonable to mount the ToF sensors on the front of the RC car. Also, their center beams should point staright forward and be within the same horizontal plane. 
+                                But the distance between the sensors should be experimented to avoid mutual interference.
+                            </p>
+                            <br>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/prelab_angular_range.png" style="height: fit-content;">
+                            <br>
+                        </section>
+                        <section id="section3">
+                            <h2>Task 1: Connect One ToF to the QUIIC Breakout Board</h2>
+                            <br>
+                            <p class="mb=0">
+                                Below is the picture showing the soldering outcome and the connection.
+                            </p>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/task1_connection.jpg" style="height: fit-content;">
+                            <br>
+                        </section>
+                        <section id="section4">
+                            <h2>Task 2: Scanning the I2C Addresses and Discuss</h2>
+                            <br>
+                            <p class="mb=0">
+                                First, we scan the I2C addresses when 1 ToF is connected.
+                            </p>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/task2_1tof.png" style="height: fit-content;">
+                            <br>
+                            <p class="mb-0">
+                                The Artemis MCU supports 6 I2C ports including multiplex ports. Among them, the Port 2 and Port 3 has been pre-defined in the schematic diagram. So the scanning result contains two ports, one 
+                                is connected to the ToF via QUIIC (Port 2), and the other port is not connected (the Port 3 on pin 6 and pin 7).
+                                <br>
+                                <br>
+                                The returned address is 0x29 (0010 1001b) on I2C Port 2, which differs from the default address of ToF (0x52, 0101 0010b). This is because the I2C address is consisted of only 7 bits, we should left-shift for 1 bit when reading received slave address.
+                                When we are writing to the slave, the address is consisted of 8bits, the MSB (bit 7) to bit 1 are the actual chip address of the slave, while the LSB (bit 0) is the R/W flag bit. 
+                            </p>
+                            <br>
+                        </section>
+                        <section id="section5">
+                            <h2>Task 3: Acquiring Distance Measurements from a Single ToF Sensor</h2>
+                            <br>
+                            <p class="mb-0">
+                                TBD.<!--measure the speed and accuracy, and the effect of changing angles. Plot the returned value using matplotlib-->
+                            </p>
+                        <br>
+                        <br>
+                        <p class="lead">THE END</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Image element - set the background image for the header in the line below-->
+        <div class="py-5 bg-image-small" style="background-image: url('https://github.com/ReavenH/zh444.github.io/blob/main/assets/Cornell-University-Logo-768x432.png?raw=true')">
+            <!-- Put anything you want here! The spacer below with inline CSS is just for demo purposes!-->
+            <div style="height: 8rem"></div>
+        </div>
+        <!-- Footer-->
+        <footer class="py-5 bg-dark">
+            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Zhongming Huang 2024 (adapted from startbootstrap.com)</p></div>
+        </footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
+    </body>
+</html>
