@@ -199,11 +199,320 @@
                             <br>
                         </section>
                         <section id="section5">
-                            <h2>Task 3: Acquiring Distance Measurements from a Single ToF Sensor</h2>
+                            <h2>Task 3: Acquiring Distance Measurements in the Selected Distance Mode</h2>
                             <br>
                             <p class="mb-0">
-                                TBD.<!--measure the speed and accuracy, and the effect of changing angles. Plot the returned value using matplotlib-->
+                                <!--measure the speed and accuracy, and the effect of changing angles. Plot the returned value using matplotlib-->
+                                It is more convenient to compare the differences of measuring ranges if we mount the two ToFs in parallel and set them in different range modes. 
+                                In the experiment below, I set one sensor at Short and the other at Long. The diagram below is the comparison of the readings of the two sensors.
+                                (The sensors operate at 10Hz, so the readings from the two sensors may not be perfectly synchronized, so I tried to move the ToFs as slowly as possible to keep the data sync)
                             </p>
+                            <br>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/task3_diagram1.png" style="height: fit-content;">
+                            <br>
+                            <p class="mb-0">
+                                The two ToFs are temporarily binded together to keep them roughly parallel.
+                            </p>
+                            <br>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/task3_paralleltofs.jpg" style="height: fit-content;">
+                            <br>
+                            <p class="mb-0">
+                                As we can see from the diagram, the readings from the two sensors are approximately equal for most of the time. 
+                                But the short range sensor appears to be more accurate when the distance of object is below 1000mm (see the diagram between 27~30s).
+                            </p>
+                            <br>
+                        </section>
+                        <section id="section6">
+                            <h2>Task 4: Two Parallel Sensors</h2>
+                            <p class="mb-0">
+                                After connecting PIN-14 and PIN-15 of the Artemis board to the two ToFs' XSHUT pins, we can assign them different addresses and control them using Two
+                                instantiated structs.
+                                <pre>
+                                    <code>
+                                        #define DS1_PIN 14
+                                        #define DS2_PIN 15
+
+                                        SFEVL53L1X distanceSensor1(Wire, DS1_PIN);
+                                        SFEVL53L1X distanceSensor2(Wire, DS2_PIN);
+
+                                        #define dSensorAddr 88
+                                    </code>
+                                </pre>
+                                <br>
+                                <pre>
+                                    <code>
+                                        Serial.begin(115200);
+
+                                        distanceSensor1.sensorOff();
+                                        distanceSensor2.sensorOff();
+                                        Serial.println("Sensors Off");
+
+                                        Wire.begin();
+
+                                        Serial.println("VL53L1X Qwiic Test");
+
+                                        // set DS1 to a new address
+                                        distanceSensor1.sensorOn();
+                                        delay(2);
+                                        distanceSensor1.setI2CAddress(dSensorAddr);
+                                        // set the range mode
+                                        distanceSensor1.setDistanceModeLong();
+                                        Serial.print("Set Distance Sensor 1 Address: ");
+                                        Serial.println(dSensorAddr);
+
+                                        // check if DS1 is online
+                                        if (distanceSensor1.begin() != 0) //Begin returns 0 on a good init
+                                        {
+                                          Serial.println("Sensor 1 failed to begin. Please check wiring. Freezing...");
+                                          while (1)
+                                            ;
+                                        }
+                                        Serial.println("Sensor 1 online!");
+                                    
+                                    
+                                        // boot up another DS2
+                                        distanceSensor2.sensorOn();
+                                        // set distance mode
+                                        distanceSensor2.setDistanceModeShort();
+                                        delay(2);
+                                    
+                                        if (distanceSensor2.begin() != 0) //Begin returns 0 on a good init
+                                        {
+                                          Serial.println("Sensor 2 failed to begin. Please check wiring. Freezing...");
+                                          while (1)
+                                            ;
+                                        }
+                                        Serial.println("Sensor 2 online!");
+
+                                    </code>
+                                </pre>
+                            </p>
+                            <br>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/task4_parallel_screenshot.png" style="height: fit-content;">
+                            <br>
+                            <p class="mb-0">
+                                The two ToF sensors may not return the data at the same frequency and speed, so the way we retrieve data in the main loop() will affect the 
+                                frequency we print the data in the serial. If we print data when at least one of the sensors is ready, one of the sensors may be faster than the other.
+                                But if we print data only when the two sensors have updated new data, the average data updating rate will be lowered.
+                            </p>
+                        </section>
+                        <br>
+                        <section id="section7">
+                            <h2>Task 5: Assessing the Speed of the ToF Sensors</h2>
+                            <br>
+                            <p class="mb-0">
+                                As was mentioned in the previous task, the two sensors may be ready at different frequencies. 
+                                This brings about prblems when trying to synchornize the data. 
+                                <br>
+                                <br>
+                                There are two methods to check the data status from the two sensors and send the data via Serial, as the code blocks shown below. We can compare the two methods as
+                                a reference for later developments.
+                                <br>
+                                <br>
+                                Method 1: check for the data from sensor 1, and check sensor 2 after data from sensor 1 has been fetched.
+                                <br>
+                                <pre>
+                                    <code>
+                                        bool isDS1Ready, isDS2Ready;
+
+                                        void loop(void)
+                                        {
+                                          distanceSensor1.startRanging(); //Write configuration bytes to initiate measurement
+
+                                          while (!distanceSensor1.checkForDataReady())
+                                          {
+                                            delay(1);
+                                          }
+
+                                          if(distanceSensor1.checkForDataReady()){
+                                            int distance1 = distanceSensor1.getDistance(); //Get the result of the measurement from the sensor
+                                            distanceSensor1.clearInterrupt();
+                                            distanceSensor1.stopRanging();
+                                        
+                                            Serial.print("Address 1 [");
+                                            Serial.print(distanceSensor1.getI2CAddress());  // 0x52 = 82d for both of the sensors.
+                                        
+                                            Serial.print("] Distance 1 (mm) [");
+                                            Serial.print(distance1);
+                                            Serial.print("]");
+                                        
+                                            Serial.println();
+                                          }
+                                      
+                                          distanceSensor2.startRanging();
+                                      
+                                          while (!distanceSensor2.checkForDataReady())
+                                          {
+                                            delay(1);
+                                          }
+                                      
+                                          if(distanceSensor2.checkForDataReady()){
+                                        
+                                            int distance2 = distanceSensor2.getDistance(); //Get the result of the measurement from the sensor
+                                            distanceSensor2.clearInterrupt();
+                                            distanceSensor2.stopRanging();
+                                        
+                                            Serial.print("Address 2 [");
+                                            Serial.print(distanceSensor2.getI2CAddress());  // 0x52 = 82d for both of the sensors.
+                                        
+                                            Serial.print("] Distance 2 (mm) [");
+                                            Serial.print(distance2);
+                                            Serial.print("]");
+
+                                            Serial.println();
+                                          }
+                                        }
+                                    </code>
+                                </pre>
+                                <br>
+                                <p class="mb-0">
+                                    Such method checks the two sensors in turn, so the output data will always be "sensor 1, sensor 2, sensor 1, sensor 2, ...". 
+                                    As we can see below, the time interval between two consecutive data points from sensor 1 or 2 will be \( 209 \pm 1 \)ms, the time interval between data from sensor 2 and 1 in the same loop
+                                    will be \(  105 \) ms when the system runs for 40 data points.
+                                </p>
+                                <br>
+                                <img class="img-fluid mb-4" src="assets/FRassets/lab4/task5_sequential1.png" width="4000" height="1600">
+                                <br>
+                                <p class="mb-0">
+                                    As can be seen from the diagram above, the data rate is steady. Consecutive incoming data points are at an interval of ~0.104s.
+                                </p>
+                                <br>
+                                <img class="img-fluid mb-4" src="assets/FRassets/lab4/task5_sequential_dt.png" style="height: fit-content;">
+                                <br>
+                                <img class="img-fluid mb-4" src="assets/FRassets/lab4/task5_sequential_dt_s1s2.png" style="height: fit-content;">
+                                <br>
+                                Method 2: check both sensors to see if at least one of the sensors has data, then transimit the data immediately via Serial.
+                                <br>
+                                <pre>
+                                    <code>
+                                        bool isDS1Ready, isDS2Ready;
+                                        distanceSensor1.startRanging(); //Write configuration bytes to initiate measurement
+                                        distanceSensor2.startRanging(); //Write configuration bytes to initiate measurement
+
+                                        void loop(void)
+                                        {
+
+                                          while(1){
+                                            isDS1Ready = distanceSensor1.checkForDataReady();
+                                            isDS2Ready = distanceSensor2.checkForDataReady();
+                                            if(isDS1Ready || isDS2Ready){
+                                              break;
+                                            }
+                                          }
+                                          
+                                          if(isDS1Ready){
+                                            int distance1 = distanceSensor1.getDistance(); //Get the result of the measurement from the sensor
+                                            distanceSensor1.clearInterrupt();
+                                            distanceSensor1.stopRanging();
+                                        
+                                            Serial.print("Address 1 [");
+                                            Serial.print(distanceSensor1.getI2CAddress());  // 0x52 = 82d for both of the sensors.
+                                        
+                                            Serial.print("] Distance 1 (mm) [");
+                                            Serial.print(distance1);
+                                            Serial.print("]");
+                                        
+                                            Serial.println();
+
+                                            distanceSensor1.startRanging(); //Write configuration bytes to initiate measurement
+                                          }
+                                      
+
+                                          if(isDS2Ready){
+                                            int distance2 = distanceSensor2.getDistance(); //Get the result of the measurement from the sensor
+                                            distanceSensor2.clearInterrupt();
+                                            distanceSensor2.stopRanging();
+                                        
+                                            Serial.print("Address 2 [");
+                                            Serial.print(distanceSensor2.getI2CAddress());  // 0x52 = 82d for both of the sensors.
+                                        
+                                            Serial.print("] Distance 2 (mm) [");
+                                            Serial.print(distance2);
+                                            Serial.print("]");
+
+                                            Serial.println();
+
+                                            distanceSensor2.startRanging(); //Write configuration bytes to initiate measurement
+                                          }
+                                        }
+                                    </code>
+                                </pre>
+                                <br>
+                                As can be seen from the diagrams below, the mean data rate fluctuates near 10Hz, which is 2x faster than the previous method. But this new method brings much less time lag between the two sensors' data.
+                                So the two curves in the following diagram are much closer than they are in the previous method. This is much more favorable for synchornizing the data from two sensors.
+                                <br>
+                                <br>
+                                (Both experiments have the same amount of sample data points, which is 55.)
+                                <br>
+                            </p>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/task5_firstresponse.png" style="height: fit-content;">
+                            <br>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/task5_firstresponse_dt.png" style="height: fit-content;">
+                            <br>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/task5_firstresponse_dt_s1s2.png" style="height: fit-content;">
+                            <br>
+                            <p class="mb-0">
+                                the diagrams are too small for browsing, please click <a href="https://github.com/ReavenH/zh444.github.io/blob/main/assets/FRassets/lab4/">HERE</a>. Or please 
+                                open the images in a new page.
+                                <br>
+                                <br>
+                                Below is a small experiment about how sampling rate affects the safety of the RC car. When I fix the two ToF sensors and let them measure their distance to my cellphone, I move my
+                                cellphone back and forth very quickly to see the results from the above two data retrieving methods. See the figures below, if we use the 1st method, the measured distance will be 
+                                smaller than actual (the picks of distance is actually > 500mm, but the sensors missed the measurements since I moved my cellphone too quickly).
+                                <br>
+                                <br>
+                                Below is the result of Method 1.
+                            </p>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/task5_sequential_rate.png" style="height: fit-content;">
+                            <br>
+                            <p class="mb-0">
+                                Below is the result of Method 2, which has smoother and more synchronized curves.
+                            </p>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/task5_firstresponse_rate.png" style="height: fit-content;">
+                            <br>
+                        </section>
+                        <section id="section8">
+                            <h2>Task 6: ToF Data Transmission via BLE</h2>
+                            <br>
+                            <p class="mb-0">
+                                We collect 500 pairs of data from the two sensors, the data frame format is "stamp address distance". See the screenshots below.
+                            </p>
+                            <br>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/task6_board.png" style="height: fit-content;">
+                            <br>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/task6_pc1.png" style="height: fit-content;">
+                            <br>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/task6_pc2.png" style="height: fit-content;">
+                            <br>
+                        </section>
+                        <section id="section9">
+                            <h2>Additional Task 1: Discussion on IR based Sensors</h2>
+                            <br>
+                            <p class="mb-0">
+                                Most ToF sensors are based on infrered, which is relatively cheap and simple compared to those sensors using UV for long range applications. However, the low frequency of IR rays
+                                causes them to be prone to be absorbed as heat by the object it bumps into. Thus, IR is prone to be affected by the color and texture of the object. 
+                                <br>
+                                But for now, most ranging sensors still adopt IR based sensing, due to the accuracy, low cost, small size and accuracy it brings.
+                                <br>
+                                Aside from ranging, there are other sensors that uses the reflection characters of infrered rays, such as IR thermometer, IR human motion sensors, etc. Both of them are prone to be 
+                                affected by ambient light, and the IR motion sensors are always relatively large in size. But their pros include the energy efficiency, accuracy under preferred operating environments
+                                and low cost.
+                            </p>
+                            <br>
+                        </section>
+                        <section id="section10">
+                            <h2>Additional Task 2: Explore the Sensitivity of Sensors to Colors and Textures</h2>
+                            <br>
+                            <p class="mb-0">
+                                The color of object mainly affects the absorbing percentage of the IR rays. As is mentioned in the datasheet, we should consider the color of object in addition to the 
+                                ambient light when discussing the operation accuracy (see the figure below).
+                                <br>
+                                <img class="img-fluid mb-4" src="assets/FRassets/lab4/task8_performance.png" style="height: fit-content;">
+                                <br>
+                                The texture of object contributes to the reflection of the emitted IR rays. If the object is smooth and polished, the IR rays may not return to the sensor due to the specular reflection.
+                                Diffuse reflection is preferred for ToF sensors.
+                            </p>
+                        </section>
                         <br>
                         <br>
                         <p class="lead">THE END</p>
