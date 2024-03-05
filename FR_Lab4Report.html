@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<!--NEW import javascript library to render math calculations-->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<html lang="en">
+    <style>
+        .paragraph-container-narrow {
+            max-width: 800px; /* 设置最大宽度为600像素 */
+            margin: 0 auto;   /* 将段落文本居中显示，如果需要的话 */
+        }
+    </style>
+
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Zhongming Huang - Fast Robots Labs</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/styles.css" rel="stylesheet" />
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            /* 左侧目录栏样式 */
+            .sidebar {
+                width: 300px; /* 左侧栏宽度 */
+                float: left;  /* 浮动到左侧 */
+                background-color: #343a40; /* 背景颜色 */
+                padding: 20px; /* 内边距 */
+                box-sizing: border-box; /* 防止内边距增加宽度 */
+                position: relative; /* 不使目录栏固定在屏幕上，原本使用的是relative */
+                height: 100%; /* 让目录栏铺满整个屏幕高度 */
+                overflow: auto; /* 当内容超出目录栏高度时允许滚动 */
+            }
+
+            /* 主内容区样式，并未使用 */
+            .content {
+                margin-left: 220px; /* 左侧栏宽度 + 20px 的间隙 */
+                padding: 20px; /* 内边距 */
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Responsive navbar-->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#!">ECE 5160 Fast Robots - Lab 4</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.html">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="https://github.com/ReavenH/zh444.github.io/blob/main/assets/Zhongming_Huang_Resume.pdf">Resume</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#!">Contact</a></li>
+                        <li class="nav-item"><a class="nav-link" href="Fast_Robots_Labs.html">Fast Robots Labs</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Header - set the background image for the header in the line below-->
+        <header class="py-5 bg-image-full" style="background-image: url('https://github.com/ReavenH/zh444.github.io/blob/main/assets/atlas-duo-dance-darker.jpg?raw=true')">
+            <div class="text-center my-5">
+                <h1 class="text-white fs-3 fw-bolder">ECE 5160 Fast Robots - Lab 4: Motors and Open Loop Control</h1>
+                <p class="text-white-50 paragraph-container-narrow">
+                    Lab 4 involves final assembly of the car: hook up the dual motor drivers (TI DRV8833) and put the components into the RC car. The car is expected to move straight and spin. 
+                    <br>
+                    <br>
+                    <b>You can click on the image to view it in a larger window.</b>
+                </p>
+            </div>
+        </header>
+        <!-- 目录栏 -->
+        <div class="sidebar">
+            <h2 style="color: whitesmoke;">Contents</h2>
+            <ul>
+                <li style="color: aliceblue;"><a href="#section1">Objectives</a></li>
+                <li style="color: aliceblue;"><a href="#section2">Prelab</a></li>
+                <li style="color: aliceblue;"><a href="#section3">Task 1: Set Up and Oscilliscope Connection</a></li>
+                <li style="color: aliceblue;"><a href="#section4">Task 2: Power Supply Setting Discussion</a></li>
+                <li style="color: aliceblue;"><a href="#section5">Task 3: Code Snippet for Motor Testing</a></li>
+                <li style="color: aliceblue;"><a href="#section6">Task 4: Images of Oscilliscope</a></li>
+                <li style="color: aliceblue;"><a href="#section7">Task 5: Video of Wheels Spinning as Expected (with code)</a></li>
+                <li style="color: aliceblue;"><a href="#section8">Task 6: Video of Both Wheels Running</a></li>
+                <li style="color: aliceblue;"><a href="#section9">Task 7: Picture of All Components Secured in the Car</a></li>
+                <li style="color: aliceblue;"><a href="#section10">Task 8: Lower Limit PWM Discussion</a></li>
+                <li style="color: aliceblue;"><a href="#section11">Task 9: Calibration of Two Motors</a></li>
+                <li style="color: aliceblue;"><a href="#section12">Task 10: Open Loop Control Demo</a></li>
+                <li style="color: aliceblue;"><a href="#section13">Additional Task 1: analogWrite Frequency Discussion</a></li>
+                <li style="color: aliceblue;"><a href="#section14">Additional Task 2: Lowest PWM Speed (once in motion) Discussion</a></li>
+            </ul>
+        </div>
+        <script>
+            // JavaScript for open image on click
+            function openImage(imageSrc) {
+              window.open(imageSrc, '_blank');
+            }
+        </script>
+        <!-- Content section-->
+        <section class="py-5">
+            <div class="container my-5"> <!---original my-5--->
+                <div class="row justify-content-center">
+                    <div class="col-lg-10"> <!-- original col-lg-5 -->
+                        <section id="section1">
+                            <h2>Objectives</h2>
+                            <br>
+                            <p class="mb-0">
+                                This lab is to hook up the motors, DRV8833 drivers and the Artemis board. After installing all the components into the RC car, it is expected to perform 
+                                open loop stright movements and turns. <a href="https://www.ti.com/lit/gpn/DRV8833">Here</a> links to the datasheet of the DRV8833 dual channel motor driver.
+                            </p>
+                            <br>
+                        </section>
+                        <section id="section2">
+                            <h2>Prelab</h2>
+                            <br>
+                            <h3>Intended Connection Schematic</h3>
+                            <br>
+                            <p class="mb-0">
+                                Refer to the datasheet for the parallel connection:
+                            </p>
+                            <br>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab5/Parallel Connection.png" style="height: fit-content;" onclick="openImage(this.src)">
+                            <br>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab5/Bridge Control and Decay Modes.png" style="height: fit-content;" onclick="openImage(this.src)">
+                            <br>
+                            <p class="mb-0">
+                                The intended connection is shown below.
+                            </p>
+                            <br>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab5/Prelab_Connection_Schematic.png" style="height: fit-content;"  onclick="openImage(this.src)">
+                            <br>
+                            <h3>Battery Discussion</h3>
+                            <p class="mb-0">
+                                The reason to use a seperate battery to power the drivers is to isolate voltage fluctuations to the Artemis board. As can be seen in the 
+                                Oscilliscope, the pins on the motors displays large peak-to-peak voltage even if there is a capacitor on each of the motors.
+                            </p>
+                            <br>
+                        </section>
+                        <section id="section3">
+                            <h2>Task 1: Set Up and Oscilliscope Connection</h2>
+                            <p class="mb-0">
+                                After hooking up Artemis board and the driver input pins and connecting battery to the two drivers,
+                                 we test the waveshape of the input and output pins of the drivers.
+                                <br>
+                                We first test the waveshape from the input pins of the drivers.
+                                <br>
+                                <img class="img-fluid mb-4" src="assets/FRassets/lab5/task1_pwm_output.jpg" style="height: fit-content;" onclick="openImage(this.src)">
+                                <br>
+                                <img class="img-fluid mb-4" src="assets/FRassets/lab5/task1_pwm_output_waveshape.jpg" style="height: fit-content;" onclick="openImage(this.src)">
+                                <br>
+                                Then, we test the waveshape from the output pins of the drivers.
+                                <br>
+                                <img class="img-fluid mb-4" src="assets/FRassets/lab5/task1_drv_osci_connection_1.jpg" style="height: fit-content;" onclick="openImage(this.src)">
+                                <br>
+                                <img class="img-fluid mb-4" src="assets/FRassets/lab5/task1_drv_osci_waveshape_1.jpg" style="height: fit-content;" onclick="openImage(this.src)">
+                                <br>
+                                If we give the driver a intermittent PWM signal, we can see the following result from the output pins.
+                                <br>
+                                <!-- 视频容器 -->
+                                <div class="video-container">
+                                    <!-- 视频 -->
+                                    <video class="video" controls>
+                                        <source src="assets/FRassets/lab5/task1_drv_osci_waveshape_1.mp4?raw=true" type="video/mp4">
+                                    </video>
+                                </div>
+                            </p>
+                            <br>
+                        </section>
+                        <br>
+                        <section id="section4">
+                            <h2>Task 2: Power Supply Setting Discussion</h2>
+                            <br>
+                            <p class="mb-0">
+                                Refer to the video in the previous task, it can be seen that the output pins of the drivers will show the same patterns as the input pins receives from the Artemis board.
+                                Thus the drivers are able to modulate the input signal to power the motors as PWM power supplies.
+                            </p>
+                            <br>
+                        </section>
+                        <section id="section5">
+                            <h2>Task 3: Code Snippet for Motor Testing</h2>
+                            <p class="mb-0">
+                                The following code is to test the two motors in the forward and reverse directions.
+                                <br>
+                                <pre>
+                                    <code>
+                                        #define MT1A1_PIN 1
+                                        #define MT1A2_PIN 0
+                                        #define MT2A1_PIN 2
+                                        #define MT2A2_PIN 3 
+                                                                            
+                                                                            
+                                        void setup() {
+                                          Serial.begin(115200);
+                                          Serial.println("Motor Test");
+                                        
+                                          // pinMode is not needed for PWM output
+                                          // NEW set pinmode for digital write
+                                          pinMode(MT1A1_PIN, OUTPUT);
+                                          pinMode(MT1A2_PIN, OUTPUT);
+                                          pinMode(MT2A1_PIN, OUTPUT);
+                                          pinMode(MT2A2_PIN, OUTPUT);
+                                          Serial.println("Set pin modes...");
+                                        }
+                                        
+                                        void loop() {
+                                        
+                                          // Test motor driver 1
+                                          Serial.println("Testing MT Drv 1: ");
+                                          Serial.println("MT1A1 200, MT1A2 0");
+                                          analogWrite(MT1A1_PIN, 200);  // duty is 100/255
+                                          // digitalWrite(MT1A2_PIN, LOW);  // motor 1 forward or fast decay
+                                          analogWrite(MT1A2_PIN, 0);
+                                          delay(2000);
+                                        
+                                          // digitalWrite(MT1A1_PIN, LOW);
+                                          analogWrite(MT1A1_PIN, 0);
+                                          Serial.println("MT1A1 0, MT1A2 200");
+                                          analogWrite(MT1A2_PIN, 200);  // motor 1 reverse or fast decay
+                                          delay(2000);
+                                        
+                                          // digitalWrite(MT1A2_PIN, LOW);  // coast mode (neutral)
+                                          analogWrite(MT1A2_PIN, 0);
+                                          delay(100);
+                                        
+                                        
+                                          // Test motor driver 2
+                                          Serial.println("Testing MT Drv 2: ");
+                                          Serial.println("MT2A1 200, MT2A2 0");
+                                          analogWrite(MT2A1_PIN, 200);  // duty is 100/255
+                                          analogWrite(MT2A2_PIN, 0);  // motor 1 forward or fast decay
+                                          delay(2000);
+                                          analogWrite(MT2A1_PIN, 0);
+                                          Serial.println("MT2A1 0, MT2A2 200");
+                                          analogWrite(MT2A2_PIN, 200);  // motor 1 reverse or fast decay
+                                          delay(2000);
+                                        
+                                          analogWrite(MT2A2_PIN, 0);  // coast mode (neutral)
+                                          delay(100);
+                                        
+                                        }
+                                    </code>
+                                </pre>
+                            <br>
+                            </p>
+                        </section>
+                        <section id="section6">
+                            <h2>Task 4: Images of the Oscilliscope</h2>
+                            <br>
+                            <p class="mb-0">
+                                Refer to Task 1.
+                            </p>
+                            <br>
+                        </section>
+                        <section id="section7">
+                            <h2>Task 5: Video of Wheels Spinning as Expected (with code)</h2>
+                            <br>
+                            <p class="mb-0">
+                                Using the code in Task 3, the motors will move following this sequence: "Right Wheels Reverse -> Right Wheels Forward -> Left Wheels Reverse -> Right Wheels Forward".
+                                The PWM duty is \( \frac{100}{256} \approx  39.06 %\)
+                                <br>
+                                <!-- 视频容器 -->
+                                <div class="video-container">
+                                    <!-- 视频 -->
+                                    <video class="video" controls>
+                                        <source src="assets/FRassets/lab5/task5_motor_test.mp4?raw=true" type="video/mp4">
+                                    </video>
+                                </div>
+                            </p>
+                            <br>
+                        </section>
+                        <section id="section8">
+                            <h2>Task 6: Video of Both Wheels Running</h2>
+                            <br>
+                            <p class="mb-0">
+                                Use analogWrite to give \( \frac{120}{256} \approx  46.88 %\) to both motors, the result is shown below.
+                                <br>
+                                <div class="video-container">
+                                    <video class="video" controls>
+                                        <source src="assets/FRassets/lab5/task6_both_wheels_running.mp4?raw=true" type="video/mp4">
+                                    </video>
+                                </div>
+                            </p>
+                            <br>
+                        </section>
+                        <section id="section9">
+                            <h2>Task 7: Picture of All Components Secured in the Car</h2>
+                            <br>
+                            <p class="mb-0">
+                                <img class="img-fluid mb-4" src="assets/FRassets/lab5/task7_front_view.png" style="height: fit-content;" onclick="openImage(this.src)">
+                                <br>
+                                <br>
+                                <img class="img-fluid mb-4" src="assets/FRassets/lab5/task7_top_view.png" style="height: fit-content;" onclick="openImage(this.src)">
+                            </p>
+                            <br>
+                        </section>
+                        <section id="section10">
+                            <h2>Task 8: Lower Limit PWM Discussion</h2>
+                            <br>
+                            <p class="mb-0">
+                                Firstly, the tested lower limit of duty to move forward is \( \frac{50}{256} \sim \frac{60}{256} \). See the video below. At analog 100, 
+                                the car needs external force to start moving, then it can move at a slow speed.
+                                <br>
+                                Below is the demo at \(\frac{50}{256} \).
+                                <br>
+                                <div class="video-container">
+                                    <video class="video" controls>
+                                        <source src="assets/FRassets/lab5/task8_50vs256.mp4?raw=true" type="video/mp4">
+                                    </video>
+                                </div>
+                                <br>
+                                The following is the demo at \( \frac{60}{256} \). The car can start moving without external force.
+                                <br>
+                                <div class="video-container">
+                                    <video class="video" controls>
+                                        <source src="assets/FRassets/lab5/task8_60vs256.mp4?raw=true" type="video/mp4">
+                                    </video>
+                                </div>
+                            </p>
+                            <br>
+                        </section>
+                        <section id="section11">
+                            <h2>Task 9: Calibration of Two Motors</h2>
+                            <br>
+                            <p class="mb-0">
+                                After experiments, a suitable calibration factor is \( 1.21 \) to be applied to the wheels on the right. The RC car can now go straight line in an open loop manner, as the video shown below.
+                            </p>
+                            <br>
+                            <div class="video-container">
+                                <video class="video" controls>
+                                    <source src="assets/FRassets/lab5/task9_calibration_of_motors.mp4?raw=true" type="video/mp4">
+                                </video>
+                            </div>
+                            <br>
+                        </section>
+                        <section id="section12">
+                            <h2>Task 10: Open Loop Control Demo</h2>
+                            <br>
+                            <p class="mb-0">
+                                The motion sequence: go straight for 2 seconds -> turn left for 1.4 seconds -> go straight for 2 seconds -> apply break (fast decay) -> rotation in place. The parameters of PWM duty should be 
+                                fine-tuned in future uses.
+                            </p>
+                            <br>
+                            <div class="video-container">
+                                <video class="video" controls>
+                                    <source src="assets/FRassets/lab5/task10_openloop.mp4?raw=true" type="video/mp4">
+                                </video>
+                            </div>
+                            <br>
+                        </section>
+                        <section id="section13">
+                            <h2>Additional Task 1: analogWrite Frequency Discussion</h2>
+                            <br>
+                            <p class="mb-0">
+                                The analogWrite function sets the duty of the PWM timer each time it is called. Normally the default frequency for the artemis apollo processors will be below 500Hz. We can change the 
+                                configurations of the timers manually to achieve higher PWM frequency.
+                                <br>
+                                <br>
+                                Reference link for register configurations: <a href="chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://cdn.sparkfun.com/assets/6/3/9/3/1/Apollo3_Blue_MCU_Data_Sheet_v0_9_1.pdf">click here</a>.
+                                <br>
+                                <br>
+                                In our practice, we can see the PWM frequency via the Oscilliscope, as shown below.
+                                <br>
+                                <img class="img-fluid mb-4" src="assets/FRassets/lab5/additional_task1_PWM_freq.jpg" style="height: fit-content;" onclick="openImage(this.src)">
+                                <br>
+                                The red arrow in the above image points to the measured frequency of the actual output from the pin of Artemis, which is operating at \( 183.20Hz \).
+                            </p>
+                            <br>
+                        </section>
+                        <section id="section14">
+                            <h2>Additional Task 2: Lowest PWM Speed (in motion) Discussion</h2>
+                            <br>
+                            TBD.
+                        </section>
+                        <br>
+                        <br>
+                        <p class="lead">THE END</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Image element - set the background image for the header in the line below-->
+        <div class="py-5 bg-image-small" style="background-image: url('https://github.com/ReavenH/zh444.github.io/blob/main/assets/Cornell-University-Logo-768x432.png?raw=true')">
+            <!-- Put anything you want here! The spacer below with inline CSS is just for demo purposes!-->
+            <div style="height: 8rem"></div>
+        </div>
+        <!-- Footer-->
+        <footer class="py-5 bg-dark">
+            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Zhongming Huang 2024 (adapted from startbootstrap.com)</p></div>
+        </footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
+    </body>
+</html>

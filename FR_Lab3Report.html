@@ -84,6 +84,12 @@
                 <li style="color: aliceblue;"><a href="#section10">Additional Task 2: Explore the Sensitivity of Sensors to Colors and Textures</a></li>
             </ul>
         </div>
+        <script>
+            // JavaScript for open image on click
+            function openImage(imageSrc) {
+              window.open(imageSrc, '_blank');
+            }
+        </script>
         <!-- Content section-->
         <section class="py-5">
             <div class="container my-5"> <!---original my-5--->
@@ -114,9 +120,9 @@
                                 Below are the key measurements from the datasheet.
                                 <br>
                             </p>
-                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/prelab_test_conditions.png" style="height: fit-content;">
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/prelab_test_conditions.png" style="height: fit-content;" onclick="openImage(this.src)">
                             <br>
-                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/prelab_performance_in_ambient_light.png" style="height: fit-content;">
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/prelab_performance_in_ambient_light.png" style="height: fit-content;" onclick="openImage(this.src)">
                             <br>
                             <h3>The I2C Address of the ToF Sensor</h3>
                             <br>
@@ -158,7 +164,7 @@
                                 After that, we can boot up the other sensor without assigning a new I2C address. Then use the second instance of SFEVL53L1X to do some initial settings.
                             </p>
                             <br>
-                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/prelab_XSHUT.png" style="height: fit-content;">
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/prelab_XSHUT.png" style="height: fit-content;" onclick="openImage(this.src)">
                             <br>
                             <h3>Sensitivity and Where to Mount the Sensors</h3>
                             <br>
@@ -168,7 +174,7 @@
                                 But the distance between the sensors should be experimented to avoid mutual interference.
                             </p>
                             <br>
-                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/prelab_angular_range.png" style="height: fit-content;">
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/prelab_angular_range.png" style="height: fit-content;" onclick="openImage(this.src)">
                             <br>
                         </section>
                         <section id="section3">
@@ -177,7 +183,7 @@
                             <p class="mb=0">
                                 Below is the picture showing the soldering outcome and the connection.
                             </p>
-                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/task1_connection.jpg" style="height: fit-content;">
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/task1_connection.jpg" style="height: fit-content;" onclick="openImage(this.src)">
                             <br>
                         </section>
                         <section id="section4">
@@ -186,7 +192,7 @@
                             <p class="mb=0">
                                 First, we scan the I2C addresses when 1 ToF is connected.
                             </p>
-                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/task2_1tof.png" style="height: fit-content;">
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/task2_1tof.png" style="height: fit-content;" onclick="openImage(this.src)">
                             <br>
                             <p class="mb-0">
                                 The Artemis MCU supports 6 I2C ports including multiplex ports. Among them, the Port 2 and Port 3 has been pre-defined in the schematic diagram. So the scanning result contains two ports, one 
@@ -208,13 +214,13 @@
                                 (The sensors operate at 10Hz, so the readings from the two sensors may not be perfectly synchronized, so I tried to move the ToFs as slowly as possible to keep the data sync)
                             </p>
                             <br>
-                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/task3_diagram1.png" style="height: fit-content;">
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/task3_diagram1.png" style="height: fit-content;" onclick="openImage(this.src)">
                             <br>
                             <p class="mb-0">
                                 The two ToFs are temporarily binded together to keep them roughly parallel.
                             </p>
                             <br>
-                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/task3_paralleltofs.jpg" style="height: fit-content;">
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/task3_paralleltofs.jpg" style="height: fit-content;" onclick="openImage(this.src)">
                             <br>
                             <p class="mb-0">
                                 As we can see from the diagram, the readings from the two sensors are approximately equal for most of the time. 
@@ -288,7 +294,7 @@
                                 </pre>
                             </p>
                             <br>
-                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/task4_parallel_screenshot.png" style="height: fit-content;">
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/task4_parallel_screenshot.png" style="height: fit-content;" onclick="openImage(this.src)">
                             <br>
                             <p class="mb-0">
                                 The two ToF sensors may not return the data at the same frequency and speed, so the way we retrieve data in the main loop() will affect the 
@@ -371,15 +377,15 @@
                                     will be \(  105 \) ms when the system runs for 40 data points.
                                 </p>
                                 <br>
-                                <img class="img-fluid mb-4" src="assets/FRassets/lab4/task5_sequential1.png" width="4000" height="1600">
+                                <img class="img-fluid mb-4" src="assets/FRassets/lab4/task5_sequential1.png" width="4000" height="1600" onclick="openImage(this.src)">
                                 <br>
                                 <p class="mb-0">
                                     As can be seen from the diagram above, the data rate is steady. Consecutive incoming data points are at an interval of ~0.104s.
                                 </p>
                                 <br>
-                                <img class="img-fluid mb-4" src="assets/FRassets/lab4/task5_sequential_dt.png" style="height: fit-content;">
+                                <img class="img-fluid mb-4" src="assets/FRassets/lab4/task5_sequential_dt.png" style="height: fit-content;" onclick="openImage(this.src)">
                                 <br>
-                                <img class="img-fluid mb-4" src="assets/FRassets/lab4/task5_sequential_dt_s1s2.png" style="height: fit-content;">
+                                <img class="img-fluid mb-4" src="assets/FRassets/lab4/task5_sequential_dt_s1s2.png" style="height: fit-content;" onclick="openImage(this.src)">
                                 <br>
                                 Method 2: check both sensors to see if at least one of the sensors has data, then transimit the data immediately via Serial.
                                 <br>
@@ -445,11 +451,11 @@
                                 (Both experiments have the same amount of sample data points, which is 55.)
                                 <br>
                             </p>
-                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/task5_firstresponse.png" style="height: fit-content;">
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/task5_firstresponse.png" style="height: fit-content;" onclick="openImage(this.src)">
                             <br>
-                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/task5_firstresponse_dt.png" style="height: fit-content;">
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/task5_firstresponse_dt.png" style="height: fit-content;" onclick="openImage(this.src)">
                             <br>
-                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/task5_firstresponse_dt_s1s2.png" style="height: fit-content;">
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/task5_firstresponse_dt_s1s2.png" style="height: fit-content;" onclick="openImage(this.src)">
                             <br>
                             <p class="mb-0">
                                 the diagrams are too small for browsing, please click <a href="https://github.com/ReavenH/zh444.github.io/blob/main/assets/FRassets/lab4/">HERE</a>. Or please 
@@ -463,12 +469,12 @@
                                 <br>
                                 Below is the result of Method 1.
                             </p>
-                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/task5_sequential_rate.png" style="height: fit-content;">
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/task5_sequential_rate.png" style="height: fit-content;" onclick="openImage(this.src)">
                             <br>
                             <p class="mb-0">
                                 Below is the result of Method 2, which has smoother and more synchronized curves.
                             </p>
-                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/task5_firstresponse_rate.png" style="height: fit-content;">
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/task5_firstresponse_rate.png" style="height: fit-content;" onclick="openImage(this.src)">
                             <br>
                         </section>
                         <section id="section8">
@@ -478,11 +484,11 @@
                                 We collect 500 pairs of data from the two sensors, the data frame format is "stamp address distance". See the screenshots below.
                             </p>
                             <br>
-                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/task6_board.png" style="height: fit-content;">
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/task6_board.png" style="height: fit-content;" onclick="openImage(this.src)">
                             <br>
-                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/task6_pc1.png" style="height: fit-content;">
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/task6_pc1.png" style="height: fit-content;" onclick="openImage(this.src)">
                             <br>
-                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/task6_pc2.png" style="height: fit-content;">
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab4/task6_pc2.png" style="height: fit-content;" onclick="openImage(this.src)">
                             <br>
                         </section>
                         <section id="section9">
@@ -507,7 +513,7 @@
                                 The color of object mainly affects the absorbing percentage of the IR rays. As is mentioned in the datasheet, we should consider the color of object in addition to the 
                                 ambient light when discussing the operation accuracy (see the figure below).
                                 <br>
-                                <img class="img-fluid mb-4" src="assets/FRassets/lab4/task8_performance.png" style="height: fit-content;">
+                                <img class="img-fluid mb-4" src="assets/FRassets/lab4/task8_performance.png" style="height: fit-content;" onclick="openImage(this.src)">
                                 <br>
                                 The texture of object contributes to the reflection of the emitted IR rays. If the object is smooth and polished, the IR rays may not return to the sensor due to the specular reflection.
                                 Diffuse reflection is preferred for ToF sensors.
