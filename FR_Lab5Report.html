@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<!--NEW import javascript library to render math calculations-->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<!-- 配置Mermaid -->
+<script>
+  // 初始化Mermaid
+  mermaid.initialize({
+    startOnLoad: true
+  });
+</script>
+<html lang="en">
+    <style>
+        .paragraph-container-narrow {
+            max-width: 800px; /* 设置最大宽度为600像素 */
+            margin: 0 auto;   /* 将段落文本居中显示，如果需要的话 */
+        }
+    </style>
+
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Zhongming Huang - Fast Robots Labs</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/styles.css" rel="stylesheet" />
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            /* 左侧目录栏样式 */
+            .sidebar {
+                width: 300px; /* 左侧栏宽度 */
+                float: left;  /* 浮动到左侧 */
+                background-color: #343a40; /* 背景颜色 */
+                padding: 20px; /* 内边距 */
+                box-sizing: border-box; /* 防止内边距增加宽度 */
+                position: relative; /* 不使目录栏固定在屏幕上，原本使用的是relative */
+                height: 100%; /* 让目录栏铺满整个屏幕高度 */
+                overflow: auto; /* 当内容超出目录栏高度时允许滚动 */
+            }
+
+            /* 主内容区样式，并未使用 */
+            .content {
+                margin-left: 220px; /* 左侧栏宽度 + 20px 的间隙 */
+                padding: 20px; /* 内边距 */
+            }
+        </style>
+        <!--The style of code blocks-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/default.min.css">
+        <!-- 引入 Highlight.js JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/languages/arduino.min.js"></script>
+    </head>
+    <body>
+        <!-- Responsive navbar-->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#!">ECE 5160 Fast Robots - Lab 5</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.html">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="https://github.com/ReavenH/zh444.github.io/blob/main/assets/Zhongming_Huang_Resume.pdf">Resume</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#!">Contact</a></li>
+                        <li class="nav-item"><a class="nav-link" href="Fast_Robots_Labs.html">Fast Robots Labs</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Header - set the background image for the header in the line below-->
+        <header class="py-5 bg-image-full" style="background-image: url('https://github.com/ReavenH/zh444.github.io/blob/main/assets/atlas-duo-dance-darker.jpg?raw=true')">
+            <div class="text-center my-5">
+                <h1 class="text-white fs-3 fw-bolder">ECE 5160 Fast Robots - Lab 5: Linear PID and Linear Interpolation</h1>
+                <p class="text-white-50 paragraph-container-narrow">
+                    Lab 5 involves implementing a linear PID controller based on a ToF sensor to maintain constant distance from the wall after the car shoots towards the wall. The debug data should be able to be transmitted via BLE.
+                    <br>
+                    <br>
+                    <b>You can click on the image to view it in a larger window.</b>
+                </p>
+            </div>
+        </header>
+        <!-- 目录栏 -->
+        <div class="sidebar">
+            <h2 style="color: whitesmoke;">Contents</h2>
+            <ul>
+                <li style="color: aliceblue;"><a href="#section1">Objectives</a></li>
+                <li style="color: aliceblue;"><a href="#section2">Prelab</a></li>
+                <li style="color: aliceblue;"><a href="#section3">Task 1: P/I/D Discussion</a></li>
+                <li style="color: aliceblue;"><a href="#section4">Task 2: Range / Sample Time Discussion</a></li>
+                <li style="color: aliceblue;"><a href="#section5">Task 3: Demos of Reaching Task Goal</a></li>
+                <li style="color: aliceblue;"><a href="#section6">Additional Task: Wind-up Implementation and Discussion</a></li>
+            </ul>
+        </div>
+        <script>
+            // JavaScript for open image on click
+            function openImage(imageSrc) {
+              window.open(imageSrc, '_blank');
+            }
+        </script>
+        <!-- Content section-->
+        <section class="py-5">
+            <div class="container my-5"> <!---original my-5--->
+                <div class="row justify-content-center">
+                    <div class="col-lg-10"> <!-- original col-lg-5 -->
+                        <section id="section1">
+                            <h2>Objectives</h2>
+                            <br>
+                            <p class="mb-0">
+                                This lab introduces hands-on experience about tuning a linear PID controller to control a car's distance from an object, utilizing data sent via BLE for debugging.
+                            </p>
+                            <br>
+                        </section>
+                        <section id="section2">
+                            <h2>Prelab</h2>
+                            <br>
+                            <p class="mb-0">
+                                <b>Code on the Stunt Car: </b>The PID controller is wrapped in the function PID_FB(). Once the PID controller is enabled, it will store ToF data from the sensor pointing forwards for 5 seconds (yielding around 235 data 
+                                points). When reaching the time limit, the PID controller will shutdown itself and apply the break to stop the car. After that, function sendToF() will be called to send the collected ToF readings 
+                                via BLE. When exiting the PID controller, parameters will be reset so that experiments can be conducted without rebooting the board.
+                                <br>
+                                <br>
+                                <pre>
+                                    <code class="arduino">
+                                        void loop() {
+  
+                                            // only move when ble connected.
+                                            BLEDevice central = BLE.central();
+                                            if(central){
+                                          
+                                              digitalWrite(LED_BUILTIN, HIGH);
+                                              Serial.print("Connected to: ");
+                                              Serial.println(central.address());
+                                          
+                                              while(central.connected()){
+                                                read_data(); // get the robot command and related messages from BLE
+                                          
+                                                // wheel control and PID based on ToF sensors
+                                                // ---- check ToF data ----
+                                                tofUpdate();
+                                                if(printToF){
+                                                  printDS();
+                                                }
+                                          
+                                                // ---- PID to refresh the speedL and speedR according to ToF readings ----
+                                                PID_FB();
+                                                
+                                                // ---- wheel control ----
+                                                wheelCtrl(speedL, speedR);  // with delay built in.
+                                          
+                                                // ---- send data over BLE ----
+                                                if(startSend){
+                                                  sendToF();
+                                                }
+                                          
+                                              }
+                                          
+                                              // if not connected to central
+                                              digitalWrite(LED_BUILTIN, LOW);
+                                              wheelBrkCtrl(100);  // will clear the speedL and speedR.
+                                              delay(10);
+                                          
+                                            }
+                                          
+                                          }
+                                    </code>
+                                </pre>
+                                <br>
+                                <br>
+                                <b>Code on PC: </b>As usual, after PC is connected to the car via BLE, we set the P/I/D parameters and the desired distance from object using "ble.send_command()". Then, we enable the notification handler
+                                 and trigger PID controller using command. After that, we wait for 5 seconds and then turn off the notification handler. About 230~240 data points of ToF are stored as a global variable after this process.
+                                <br>
+                                <br>
+                                Check out the screenshot below to see the implementation.
+                                <br>
+                                <br>
+                                <img class="img-fluid mb-4" src="assets/FRassets/lab6/prelab_ble.png" style="height: fit-content;" onclick="openImage(this.src)">
+                                <br>
+                                <br>
+                                Here is a screen recording showing the whole process (connecting the car via BLE -> set parameters & enable notification handler -> trigger PID controller & record ToF data -> PID controller self-shutdown after 5sec -> apply break -> send collected data via BLE -> 
+                                check out received data & disable notification handler). The car is connected to PC via serial for displaying debugging status.
+                                <br>
+                                <br>
+                                <div class="video-container">
+                                    <video class="video" controls>
+                                        <source src="assets/FRassets/lab6/prelab_ble_demo.mp4?raw=true" type="video/mp4">
+                                    </video>
+                                </div> 
+                            </p>
+                            <br>
+                        </section>
+                        <section id="section3">
+                            <h2>Task 1: P/I/D Discussion</h2>
+                            <br>
+                            <!--add a formula block here to demonstrate PID algorithm-->
+                            <p class="mb-0">
+                                As a feedback controller, the Proportional-Integral-Derivative controller (PID controller) takes the error between desired control goal and the actual status as the input. The math expression
+                                 is listed below.
+                                <br>
+                                <br>
+                                \( 
+                                    u(t) = K_p e(t) + K_i \int_{0}^t e(\tau) d\tau + K_d \frac{d e(t)}{d t}
+                                \)
+                                <br>
+                                <br>
+                                This mermaid flowchart may help explain the data stream of a PID controller:
+                                <br>
+                                <br>
+                                <div class="mermaid">
+                                    graph LR
+
+                                    S(Desired Setpoint) -->|+| A[Sum] --> P[Proportional Error] --> B[Sum] --> C[Control Output] --> O[Actual State]
+                                    A --> I[Integrational Error] --> B
+                                    A --> D[Derivative Error] --> B
+                                    O -->|-|A
+
+                                    style C direction:right;
+                                </div>
+                                <br>
+                                <br>
+                                <b>\( K_p \): Proportional parameter</b>, to be multiplied with the residual between actual state and the desired setpoint. Increasing \( K_p \) helps accelerate the convergence speed, 
+                                but with risk of adding overshoot.
+                                <br>
+                                <br>
+                                <b>\( K_i \): Integrational parameter</b>, to be multiplied with the integration (accumulated error over the timeline) of error. An appropriate value of \( K_i \) helps maintain the 
+                                accuracy to the setpoint when the system converges. An excessively large \( K_i \) will introduce fluctuations to the system.
+                                <br>
+                                <br>
+                                <b>\( K_d \): Derivational parameter</b>, to be multiplied with the derivation (or the residual between consecutive errors in the timeline) of error. Increasing \( K_d \) strengthens 
+                                the system's stability and responsing speed to sudden changes to the state. An appropriate value of \( K_d \) helps suppress the overshoot of the system.
+                            </p>
+                            <br>
+                        </section>
+                        <section id="section4">
+                            <h2>Task 2: Range / Sample Time Discussion</h2>
+                            <br>
+                            <p class="mb-0">
+                                <b>Range Discussion</b>: we use the Sparkfun head file to instantiate the distance sensors, so there are 2 modes to choose. The long range mode has a max range at ~4m, the short range mode
+                                 has a max range at ~1.3m. So here we choose the long range mode for the sensor mounted at the front of the car.
+                                <br>
+                                <br>
+                                <b>Sample Time Discussion</b>: the loop speed may be faster than the ToF sampling rate (~10Hz), so Interpolation is needed for predicting the current error to be fed into the PID controller.
+                                In the following screenshot, the robot is placed still, measuring a fixed distance. In the serial monitor on the right hand side, the printed data are (from left to right): 
+                                calculated (including interpolated) error, current time stamp of the ToF data, current reading of the ToF sensor, the output PWM for the motors(ignore this). 
+                                During 5 seconds, there are 57 data points from the ToF sensor collected (11.4Hz), the main loop will call the PID controller 5~7 times during the inverval of ToF time stamp updates. 
+                                Thus we can conclude that, after implementing all the main features of the program, the main loop runs 5~7 times faster than the ToF update rate. The interpolation algorithm will be in use during such period 
+                                where no ToF data is updated.
+                                <br>
+                                <br>
+                                <img class="img-fluid mb-4" src="assets/FRassets/lab6/task2_loop&sample.png" style="height: fit-content;" onclick="openImage(this.src)">
+                            </p>
+                            <br>
+                            <br>
+                        </section>
+                        <section id="section5">
+                            <h2>Task 3: Demos of Reaching Task Goal</h2>
+                            <br>
+                            <p class="mb-0">
+                                The code implementation of the PID controller is shown below:
+                                <br>
+                                <pre>
+                                    <code class="arduino">
+                                        // INPUT: interval vals, including dt and error;
+                                        // OUTPUT: change the global of speedL and speedR.
+                                        void PID_FB(){
+                                        
+                                          static float lastTime = millis();
+                                          static float lastToF = 0.0;  // to compare if the tof is new. If not, use interpolation.
+                                          static bool extrapolateReady = false;
+                                          static unsigned int idxPointer = 0;
+                                        
+                                          // ---- PID parameters ----
+                                          float error = 0.0;  // the residue between desired and actual measure
+                                          static float errorI = 0.0;  // the accumulated error (integration of error over dt)
+                                          float errorD = 0.0;
+                                          float errorP = 0.0;
+                                          static float errorExtra = 0.0; // the previous extrapolated distance.
+                                        
+                                          // ---- acquire the time interval between two loops
+                                          float dt = (millis() - lastTime) / 1050;
+                                          lastTime = millis();
+                                        
+                                          // ---- control the duration ----
+                                          static float startTime = 0.0;
+                                        
+                                          if(PID_TOF_IS_ON){
+                                            // ---- calculate error, update eror history.
+                                            // extrapolate when at least 2 tofs are acquired.
+                                        
+                                            // try to fetch ToF
+                                            if(d1[0] != lastToF){
+                                              error = d1[1] - desired_distance;
+                                              lastToF = d1[0]; // update the record.
+                                              errorHistory[0][0] = errorHistory[1][0];  // shift stamp
+                                              errorHistory[0][1] = errorHistory[1][1];  // shift error readings.
+                                              errorHistory[1][0] = d1[0]; // update the stamp (pop in)
+                                              errorHistory[1][1] = error; // update the reading (pop in)
+                                              if(errorHistory[0][0] != 0.0 && extrapolateReady == false){
+                                                // acquired 2 tof data, extrapolation is ready.
+                                                extrapolateReady = true;
+                                              }
+                                              errorExtra = error;
+                                              // decide whether to stop and send via BLE
+                                              if(startTime == 0.0){
+                                                startTime = millis();
+                                              }
+                                              static unsigned int idxStorage = 0;
+                                              if(millis() - startTime <= maxDuration && idxStorage < maxToFAmount){
+                                                itoa(int(d1[1]), tofStorage[idxStorage], 10);  // int to char
+                                                itoa(int(d1[0]), tofStamps[idxStorage], 10); // store the stamps
+                                                idxStorage += 1;
+                                              }
+                                              else{
+                                                actualAmount = idxStorage;  // pass to global
+                                                idxStorage = 0;  // reset
+                                                PID_TOF_IS_ON = false;  // turn off PID
+                                                startSend = true;  // in main loop
+                                                startTime = 0.0;
+                                              }
+                                            }
+                                            else if(extrapolateReady = true && d1[0] == lastToF){
+                                              // no new ToF, use extrapolation
+                                              // use uniformly accelerated motion model.
+                                              float vel = (errorHistory[1][1] - errorHistory[0][1]) / ((errorHistory[1][0] - errorHistory[0][0]) / 1000);
+                                              float acc = vel / ((errorHistory[1][0] - errorHistory[0][0]) / 1000);
+                                              errorExtra = errorExtra + 0.5 * acc * sq(dt) + vel * dt;
+                                              // errorExtra = errorExtra + vel * dt;
+                                              error = errorExtra;
+                                            }
+                                        
+                                            // ---- pop the consistent error history ----
+                                            errorHistoryConsistent[0] = errorHistoryConsistent[1];
+                                            errorHistoryConsistent[1] = error;
+
+                                            Serial.print(error);
+                                            Serial.print("   ");
+
+                                            // Serial.print(d1[0]);
+                                            // Serial.print("   ");
+                                            // Serial.print(millis());
+                                            // Serial.print(lastToF);
+                                            // Serial.print("   ");
+                                            Serial.print(d1[1]);
+                                            Serial.print("   ");
+
+                                        
+                                            // ---- implement PID speed update----
+                                            if(lastToF != 0.0){  // when we have at least one ToF reading.
+                                              // calculate the d-error and i-error
+                                              errorD = errorHistoryConsistent[1] - errorHistoryConsistent[1];
+                                              errorI = errorI + error * dt;
+                                              // implement PID filter
+                                              speedFB = Kp * error + Ki * errorI + Kd * errorD;  // distance is in mm unit。
+                                              Serial.println(speedFB);
+                                              if(speedFB > maxPWM){ // max pwm will be 255 / caliFactor
+                                                speedFB = maxPWM;
+                                              }
+                                              else if(speedFB < -maxPWM){
+                                                speedFB = -maxPWM;
+                                              }
+                                              else if(speedFB >= -93 && speedFB < 0){
+                                                speedFB = -93;
+                                              }
+                                              else if(speedFB <= 93 && speedFB > 0){
+                                                speedFB = 93;
+                                              }
+                                              speedL = speedFB;
+                                              speedR = speedFB;
+                                            }
+                                          }
+                                          else if(extrapolateReady == true){
+                                            // clear the statics, only once.
+                                            // errorHistory and errorHistoryConsistent has been cleared in the handle_command() function.
+                                            wheelBrkCtrl(100);
+                                            extrapolateReady = false;
+                                            idxPointer = 0;
+                                            errorI = 0.0;
+                                            errorExtra = 0.0;
+                                            lastToF = 0.0;
+                                            speedFB = 0.0;
+                                            speedL = 0.0;
+                                            speedR = 0.0;
+                                            errorHistory[0][0] = 0.0;
+                                            errorHistory[0][1] = 0.0;
+                                            errorHistory[1][0] = 0.0;
+                                            errorHistory[1][1] = 0.0;
+                                            errorHistoryConsistent[0] = 0.0;
+                                            errorHistoryConsistent[1] = 0.0;
+                                            Serial.println("Cleared statics.");
+                                          }
+                                        }
+                                    </code>
+                                </pre>
+                                Initially, we use conservative settings for exploring an approximate range of the parameters. The desired distance to the wall is set to \( 304 \)mm (i.e. length of one tile). 
+                                The deadband of the motors are set to \( [93, 180] \), since the minimum duty to overcome static friction is 93/255, and the maximum duty before multiplying by the calibration factor 
+                                is 180/255. During each run, the time stamps and corresponding ToF readings are recorded and they will be sent over BLE after 5s.
+                                <br>
+                                <br>
+                                At 71cm, start the car at max speed (duty = \( \frac{180}{255} \)), with \( K_p = 0.45, K_i = 0.46, K_d = 0.95 \), the car crushes into the wall. Refer to the diagram below.
+                                <br>
+                                <img class="img-fluid mb-4" src="assets/FRassets/lab6/ToF_Debug1.png" style="height: fit-content;" onclick="openImage(this.src)">
+                                <br>
+                                Increasing \( K_p, K_d \), we can see the car is able to stop before crushing into the wall, but it converges inaccurately.
+                                <br>
+                                <img class="img-fluid mb-4" src="assets/FRassets/lab6/ToF_Debug2.png" style="height: fit-content;" onclick="openImage(this.src)">
+                                <br>
+                                Adjusting \( K_p, K_i \), the car converges to the proximity of 304mm, and stops at the 5th second running the PID controller. In this case, the system still converges slowly and the undershoot is 
+                                larger than the overshoot. 
+                                <br>
+                                <img class="img-fluid mb-4" src="assets/FRassets/lab6/ToF_Debug3.png" style="height: fit-content;" onclick="openImage(this.src)">
+                                <br>
+                                If we increase \( K_d \) to 1.60, \( K_p \) to 2.20, the system convergence speed will be largely improved. But the system undershoot appears more obvious than before. Consider increasing \( K_i \) and fine-tuning \( K_d, K_p \).
+                                <br>
+                                <img class="img-fluid mb-4" src="assets/FRassets/lab6/ToF_Debug7.png" style="height: fit-content;" onclick="openImage(this.src)">
+                                <br>
+                                At this parameter setting, the behavior of the car can be seen below. The function to apply break should be adapted to cater to different speeds.
+                                <br>
+                                <div class="video-container">
+                                    <video class="video" controls>
+                                        <source src="assets/FRassets/lab6/task3_1.mp4?raw=true" type="video/mp4">
+                                    </video>
+                                </div>
+                            </p>
+                            <br>
+                        </section>
+                        <section id="section6">
+                            <h2>Additional Task: Wind-up Implementation and Discussion</h2>
+                            <br>
+                            <p class="mb-0">
+                                Wind-up in the PID controller refers to the phenomenon when the integration error accumulates over time, it dominates over the all 3 error inputs and causes slow response and fluctuations to the system. 
+                                When the car approaches to the setpoint, the control output should slowly decrease (the motor speed should slowly decrease). But a large integrational term will make the sum of P/I/D terms still very large, 
+                                the decreasing rate of P/D terms is subtle compared with the increasing rate of the I term. Thus the motor will actually speed up instead of slowing down.
+                            </p>
+                        </section>
+                        <br>
+                        <br>
+                        <p class="lead">THE END</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <script>
+            // 在页面加载后初始化 Highlight.js
+            document.addEventListener('DOMContentLoaded', (event) => {
+                document.querySelectorAll('pre code').forEach((block) => {
+                    hljs.highlightBlock(block);
+                });
+            });
+        </script>
+        <!-- Image element - set the background image for the header in the line below-->
+        <div class="py-5 bg-image-small" style="background-image: url('https://github.com/ReavenH/zh444.github.io/blob/main/assets/Cornell-University-Logo-768x432.png?raw=true')">
+            <!-- Put anything you want here! The spacer below with inline CSS is just for demo purposes!-->
+            <div style="height: 8rem"></div>
+        </div>
+        <!-- Footer-->
+        <footer class="py-5 bg-dark">
+            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Zhongming Huang 2024 (adapted from startbootstrap.com)</p></div>
+        </footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
+    </body>
+</html>
