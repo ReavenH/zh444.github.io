@@ -457,6 +457,17 @@
                                 Wind-up in the PID controller refers to the phenomenon when the integration error accumulates over time, it dominates over the all 3 error inputs and causes slow response and fluctuations to the system. 
                                 When the car approaches to the setpoint, the control output should slowly decrease (the motor speed should slowly decrease). But a large integrational term will make the sum of P/I/D terms still very large, 
                                 the decreasing rate of P/D terms is subtle compared with the increasing rate of the I term. Thus the motor will actually speed up instead of slowing down.
+                                <pre>
+                                    <code>
+                                        float maxErrorI = 150.0;  // in mms.
+                                        float cutoffErrorI(float ErrorI){
+                                            if(ErrorI > maxErrorI){
+                                                ErrorI = maxErrorI;
+                                            }
+                                            return ErrorI;
+                                        }
+                                    </code>
+                                </pre>
                             </p>
                         </section>
                         <br>
