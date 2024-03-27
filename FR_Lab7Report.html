@@ -179,7 +179,7 @@
                                 The car was driving at PWM = 183, so \( u = 183/255 \). Thus, \( d = \frac{u}{v_s} = \frac{183}{1.125\times 255} \approx 0.3986928104575163 \).
                                 <br>
                                 <br>
-                                Plugging \( d = 0.3986928104575163 \) into \( m =- \frac{d}{\log(0.1)}t_{0.9rise} \), we have \( m = -\frac{88.8889}{-2.3026\times 1.125} = 0.48858129214115836 \)
+                                Plugging \( d = 0.3986928104575163 \) into \( m =- \frac{d}{\log(0.1)}t_{0.9rise} \), we have \( m = -\frac{0.3986\times 1.125}{-2.3026} = 0.1947 \)
                             </p>
                         </section>
                         <br>
@@ -202,7 +202,7 @@
                                         vel = 1.8  # m/s
                                         d = u/vel
                                         dt = 1.125  # 90% rise time, sec. 1.125.
-                                        m = -dt/(np.log(0.1))
+                                        m = -dt*d/(np.log(0.1))
 
                                         class KF():
                                             def __init__(self, d, m, sigma1, sigma2, sigma3):
