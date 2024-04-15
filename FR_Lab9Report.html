@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<!--NEW import javascript library to render math calculations-->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<!-- 配置Mermaid -->
+<script>
+  // 初始化Mermaid
+  mermaid.initialize({
+    startOnLoad: true
+  });
+</script>
+<html lang="en">
+    <style>
+        .paragraph-container-narrow {
+            max-width: 800px; /* 设置最大宽度为600像素 */
+            margin: 0 auto;   /* 将段落文本居中显示，如果需要的话 */
+        }
+    </style>
+
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Zhongming Huang - Fast Robots Labs</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/styles.css" rel="stylesheet" />
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            /* 左侧目录栏样式 */
+            .sidebar {
+                width: 300px; /* 左侧栏宽度 */
+                float: left;  /* 浮动到左侧 */
+                background-color: #343a40; /* 背景颜色 */
+                padding: 20px; /* 内边距 */
+                box-sizing: border-box; /* 防止内边距增加宽度 */
+                position: relative; /* 不使目录栏固定在屏幕上，原本使用的是relative */
+                height: 100%; /* 让目录栏铺满整个屏幕高度 */
+                overflow: auto; /* 当内容超出目录栏高度时允许滚动 */
+            }
+
+            /* 主内容区样式，并未使用 */
+            .content {
+                margin-left: 220px; /* 左侧栏宽度 + 20px 的间隙 */
+                padding: 20px; /* 内边距 */
+            }
+        </style>
+        <!--The style of code blocks-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/default.min.css">
+        <!-- 引入 Highlight.js JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/languages/arduino.min.js"></script>
+    </head>
+    <body>
+        <!-- Responsive navbar-->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#!">ECE 5160 Fast Robots - Lab 9</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.html">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="https://github.com/ReavenH/zh444.github.io/blob/main/assets/Zhongming_Huang_Resume.pdf">Resume</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#!">Contact</a></li>
+                        <li class="nav-item"><a class="nav-link" href="Fast_Robots_Labs.html">Fast Robots Labs</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Header - set the background image for the header in the line below-->
+        <header class="py-5 bg-image-full" style="background-image: url('https://github.com/ReavenH/zh444.github.io/blob/main/assets/atlas-duo-dance-darker.jpg?raw=true')">
+            <div class="text-center my-5">
+                <h1 class="text-white fs-3 fw-bolder">ECE 5160 Fast Robots - Lab 9: Mapping (real)</h1>
+                <p class="text-white-50 paragraph-container-narrow">
+                    Lab 9 requires the robot to rotate in place and collect ToF readings with corresponding yaw angles. With those data, we can create a point based 2D map of the 
+                    experiment environment.
+                    <br>
+                    <br>
+                    <b>You can click on the image to view it in a larger window.</b>
+                </p>
+            </div>
+        </header>
+        <!-- 目录栏 -->
+        <div class="sidebar">
+            <h2 style="color: whitesmoke;">Contents</h2>
+            <ul>
+                <li style="color: aliceblue;"><a href="#section1">Objectives</a></li>
+                <li style="color: aliceblue;"><a href="#section2">Orientational PID Control</a></li>
+                <li style="color: aliceblue;"><a href="#section3">Merge and Plot the Readings</a></li>
+                <li style="color: aliceblue;"><a href="#section4">Convert to Line Based Map</a></li>
+        </div>
+        <script>
+            // JavaScript for open image on click
+            function openImage(imageSrc) {
+              window.open(imageSrc, '_blank');
+            }
+        </script>
+        <!-- Content section-->
+        <section class="py-5">
+            <div class="container my-5"> <!---original my-5--->
+                <div class="row justify-content-center">
+                    <div class="col-lg-10"> <!-- original col-lg-5 -->
+                        <section id="section1">
+                            <h2>Objectives</h2>
+                            <br>
+                            <p class="mb-0">
+                                Lab 9 requires the robot to rotate in place and collect ToF readings with corresponding yaw angles. With those data, we can create a point based 2D map of the 
+                                experiment environment. Finally, the point clusters should be converted to a line based map consisted of start and end points of each line segment for future use.
+                            </p>
+                            <br>
+                        </section>
+                        <section id="section2">
+                            <h2>Orientational PID Control</h2>
+                            <p class="mb-0">
+                                To reduce the friction, I attached tapes to the rims of the wheels. The tapes in practice help the car to make turns smoothly. 
+                                <br>
+                                <br>
+                                <img class="img-fluid mb-4" src="assets/FRassets/lab10/tapes.jpg" style="height: fit-content;" onclick="openImage(this.src)">
+                                <br>
+                                <br>
+                                The PID parameters for rotational control are retuned for faster convergence (\( K_p = 14.00, K_i = 7.50, K_d = 0.80 \)), with wind-up protection at \( E_i = 400 deg \).
+                                <br>
+                                <br>
+                                We can use the following code to control the robot to do periodical turning via BLE.
+                                <br>
+                                <pre>
+                                    <code>
+                                        MAP_data = np.array([])
+                                        numSamples = 20
+                                        interval = 400 / numSamples
+                                        ble.send_command(CMD.PID_ROT_ON, "")
+                                        for i in range(numSamples):
+                                            ble.send_command(CMD.SET_TARGET_YAW, str(interval*i))
+                                            time.sleep(1.5)
+                                            ble.send_command(CMD.GET_DS, "")
+                                            s = ble.receive_string(ble.uuid['RX_STRING'])
+                                            MAP_data = np.append(MAP_data, s.split())
+                                            print(s)
+                                        ble.send_command(CMD.PID_ROT_OFF, "")
+                                        print(MAP_data)
+                                    </code>
+                                </pre>
+                                The PID controller will converge within 1.5 seconds, so the car is set to take a 20 degree turn in every 1.5 seconds. The car turning at the designated spots are shown in 
+                                the videos below.
+                                <br>
+                                <br>
+                                <div class="video-container">
+                                    <video class="video" controls>
+                                        <source src="assets/FRassets/lab10/location3.mp4?raw=true" type="video/mp4">
+                                    </video>
+                                </div>
+                                <br>
+                                <br>
+                                <div class="video-container">
+                                    <video class="video" controls>
+                                        <source src="assets/FRassets/lab10/location4.mp4?raw=true" type="video/mp4">
+                                    </video>
+                                </div>
+                            </p>
+                        </section>
+                        <br>
+                        <br>
+                        <section id="section3">
+                            <h2>Merge and Plot the Readings</h2>
+                            <br>
+                            <p class="mb-0">
+                                We can use the following equations for converting the polar coordinates into Cartesian coordinates.
+                                <br>
+                                \( x = \rho\times \cos(\psi)\) <br> \(y = \rho\times \sin(\psi) \)
+                                <br>
+                                <br>
+                                Using the following code, we can draw the contours along with the original point measurements, and save the map's vertices into csv files.
+                                <br>
+                                <br>
+                                <pre>
+                                    <code lang="python">
+                                        plt.figure()
+                                        plt.axis('equal')
+                                        plt.scatter(ds2Map1[:, 0], ds2Map1[:, 1], color = 'b', s = 15)
+                                        plt.scatter(ds2Map2[:, 0] + 304*6, ds2Map2[:, 1], color = 'b', s = 15)
+                                        plt.scatter(ds2Map3[:, 0] + 304*6, ds2Map3[:, 1] + 304*5, color = 'b', s = 15)
+                                        plt.scatter(ds2Map4[:, 0] + 304*3, ds2Map4[:, 1] + 304*5, color = 'b', s = 15)
+                                        plt.scatter(ds2Map5[:, 0] + 304, ds2Map5[:, 1] + 304*8, color = 'b', s = 15)
+                                        # plot the contour lines.
+                                        vertices = np.array([[-350, -500], [2350, -500], [2350, 2000], [1500, 2000], [1500, 3100], [-350, 3100], [-350, -500]])
+                                        np.savetxt("vertices.csv", vertices, delimiter = ',')
+                                        object1 = np.array([[750, 100], [1650, 100], [1650, 700], [750, 700], [750, 100]])
+                                        np.savetxt("object1.csv", object1, delimiter = ',')
+                                        object2 = np.array([[-350, 1400], [300, 1400], [300, 1800], [-350, 1800], [-350, 1400]])
+                                        np.savetxt("object2.csv", object2, delimiter = ',')
+                                        locations = np.array([[0, 0], [304*6, 0], [304*6, 304*5], [304*3, 304*5], [304, 304*8]])
+                                        np.savetxt("locations.csv", locations, delimiter = ',')
+                                        plt.plot(vertices[:, 0], vertices[:, 1], color = 'r', label = "Contour")
+                                        plt.plot(object1[:, 0], object1[:, 1], color = 'g', label = "Object 1")
+                                        plt.plot(object2[:, 0], object2[:, 1], color = 'c', label = "Object 2")
+                                        plt.scatter(locations[:, 0], locations[:, 1], marker = "x", color = "k", label = "Locations of Measurements")
+                                        plt.title("Map of the Designated Area")
+                                        plt.legend()
+                                        plt.xlabel("X (mm)")
+                                        plt.ylabel("Y (mm)")
+                                        plt.savefig("Mapping2_2.png")
+                                        plt.show()
+                                    </code>
+                                </pre>
+                                <br>
+                                <br>
+                                The polar plot of the readings at the upper-left spot is shown below.
+                                <br>
+                                <br>
+                                <img class="img-fluid mb-4" src="assets/FRassets/lab10/Polar Plot at the Upper-left Spot.png" style="height: fit-content;" onclick="openImage(this.src)">
+                                <br>
+                                <br>
+                                The map obtained is shown below.
+                                <br>
+                                <img class="img-fluid mb-4" src="assets/FRassets/lab10/Mapping2_2.png" style="height: fit-content;" onclick="openImage(this.src)">
+                            </p>
+                        </section>
+                        <br>
+                        <br>
+                        <section id="section4">
+                            <h2>Obtain Line-based Map</h2>
+                            <br>
+                            <br>
+                            In the previous step, we have obtained the vertices of the map contour and objects within the setting. We can draw the line-based map below using these vertices:
+                            <br>
+                            <br>
+                            <pre>
+                                <code lang="python">
+                                    vertices = np.array([[-350, -500], [2350, -500], [2350, 2000], [1500, 2000], [1500, 3100], [-350, 3100], [-350, -500]])
+                                    np.savetxt("vertices.csv", vertices, delimiter = ',')
+                                    object1 = np.array([[750, 100], [1650, 100], [1650, 700], [750, 700], [750, 100]])
+                                    np.savetxt("object1.csv", object1, delimiter = ',')
+                                    object2 = np.array([[-350, 1400], [300, 1400], [300, 1800], [-350, 1800], [-350, 1400]])
+                                    np.savetxt("object2.csv", object2, delimiter = ',')
+                                    locations = np.array([[0, 0], [304*6, 0], [304*6, 304*5], [304*3, 304*5], [304, 304*8]])
+                                    np.savetxt("locations.csv", locations, delimiter = ',')
+                                </code>
+                            </pre>
+                            <br>
+                            <br>
+                            The line-based map is shown below.
+                            <br>
+                            <br>
+                            <img class="img-fluid mb-4" src="assets/FRassets/lab10/Line-based Map.png" style="height: fit-content;" onclick="openImage(this.src)">
+                        </section>
+                        <br>
+                        <br>
+                        <p class="lead">THE END</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <script>
+            // 在页面加载后初始化 Highlight.js
+            document.addEventListener('DOMContentLoaded', (event) => {
+                document.querySelectorAll('pre code').forEach((block) => {
+                    hljs.highlightBlock(block);
+                });
+            });
+        </script>
+        <!-- Image element - set the background image for the header in the line below-->
+        <div class="py-5 bg-image-small" style="background-image: url('https://github.com/ReavenH/zh444.github.io/blob/main/assets/Cornell-University-Logo-768x432.png?raw=true')">
+            <!-- Put anything you want here! The spacer below with inline CSS is just for demo purposes!-->
+            <div style="height: 8rem"></div>
+        </div>
+        <!-- Footer-->
+        <footer class="py-5 bg-dark">
+            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Zhongming Huang 2024 (adapted from startbootstrap.com)</p></div>
+        </footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
+    </body>
+</html>
