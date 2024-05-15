@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<!--NEW import javascript library to render math calculations-->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<!-- 配置Mermaid -->
+<script>
+  // 初始化Mermaid
+  mermaid.initialize({
+    startOnLoad: true
+  });
+</script>
+<html lang="en">
+    <style>
+        .paragraph-container-narrow {
+            max-width: 800px; /* 设置最大宽度为600像素 */
+            margin: 0 auto;   /* 将段落文本居中显示，如果需要的话 */
+        }
+    </style>
+
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Zhongming Huang - Fast Robots Labs</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/styles.css" rel="stylesheet" />
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            /* 左侧目录栏样式 */
+            .sidebar {
+                width: 300px; /* 左侧栏宽度 */
+                float: left;  /* 浮动到左侧 */
+                background-color: #343a40; /* 背景颜色 */
+                padding: 20px; /* 内边距 */
+                box-sizing: border-box; /* 防止内边距增加宽度 */
+                position: relative; /* 不使目录栏固定在屏幕上，原本使用的是relative */
+                height: 100%; /* 让目录栏铺满整个屏幕高度 */
+                overflow: auto; /* 当内容超出目录栏高度时允许滚动 */
+            }
+
+            /* 主内容区样式，并未使用 */
+            .content {
+                margin-left: 220px; /* 左侧栏宽度 + 20px 的间隙 */
+                padding: 20px; /* 内边距 */
+            }
+        </style>
+        <!--The style of code blocks-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/default.min.css">
+        <!-- 引入 Highlight.js JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/languages/arduino.min.js"></script>
+    </head>
+    <body>
+        <!-- Responsive navbar-->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#!">ECE 5160 Fast Robots - Lab 12</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.html">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="https://github.com/ReavenH/zh444.github.io/blob/main/assets/Zhongming_Huang_Resume.pdf">Resume</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#!">Contact</a></li>
+                        <li class="nav-item"><a class="nav-link" href="Fast_Robots_Labs.html">Fast Robots Labs</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Header - set the background image for the header in the line below-->
+        <header class="py-5 bg-image-full" style="background-image: url('https://github.com/ReavenH/zh444.github.io/blob/main/assets/atlas-duo-dance-darker.jpg?raw=true')">
+            <div class="text-center my-5">
+                <h1 class="text-white fs-3 fw-bolder">ECE 5160 Fast Robots - Lab 12: Path Planning and Execution</h1>
+                <p class="text-white-50 paragraph-container-narrow">
+                    Lab 12 is based on everything we have put onto the car, and let the car hit the waypoints in the lab environment.
+                    <br>
+                    <br>
+                    <b>You can click on the image to view it in a larger window.</b>
+                </p>
+            </div>
+        </header>
+        <!-- 目录栏 -->
+        <div class="sidebar">
+            <h2 style="color: whitesmoke;">Contents</h2>
+            <ul>
+                <li style="color: aliceblue;"><a href="#section1">Objectives</a></li>
+                <li style="color: aliceblue;"><a href="#section2">1 Design</a></li>
+                <li style="color: aliceblue;"><a href="#section3">2 Results</a></li>
+                <li style="color: aliceblue;"><a href="#section4">Acknowledgement</a></li>
+        </div>
+        <script>
+            // JavaScript for open image on click
+            function openImage(imageSrc) {
+              window.open(imageSrc, '_blank');
+            }
+        </script>
+        <!-- Content section-->
+        <section class="py-5">
+            <div class="container my-5"> <!---original my-5--->
+                <div class="row justify-content-center">
+                    <div class="col-lg-10"> <!-- original col-lg-5 -->
+                        <section id="section1">
+                            <h2>Objectives</h2>
+                            <br>
+                            <p class="mb-0">
+                                Theoretically, this lab should be implemented based on the full Bayes Filter or at least the update step of the Bayes Filter. But after trying three weeks to solve some 
+                                kind of weird bugs that interfere my localization result, I incline to implement something new instead of sticking to the lab requirements.
+                                <br>
+                                <br>
+                                <h3>Bug in Localization Part</h3>
+                                <br>
+                                The update step will result in 60cm error even if the ToF scans are overall accurate.
+                                <br>
+                                Here's the map collected from the bottom-right corner of the environment:
+                                <br>
+                                <img class="img-fluid mb-4" src="assets/FRassets/lab13/Polar Map.png" style="height: fit-content;" onclick="openImage(this.src)">
+                                <br>
+                                <img class="img-fluid mb-4" src="assets/FRassets/lab13/Point Map.png" style="height: fit-content;" onclick="openImage(this.src)">
+                                <br>
+                                The data for map was saved in the format of bearing and range readings. But if I directly feed the data into the update step of the Bayes Filter,
+                                The result is:
+                                <br>
+                                <img class="img-fluid mb-4" src="assets/FRassets/lab12/BottomRight_Map.png" style="height: fit-content;" onclick="openImage(this.src)">
+                                which is roughly 2 tiles away from the actual point. This bug is yet to be fixed even after talking to the TAs. Thus in this lab I will try realizing a different 
+                                function using the car. 
+                            </p>
+                            <br>
+                        </section>
+                        <section>
+                            <h2>1 Design</h2>
+                            <p class="mb-0">
+                                My goal in this lab is to let the car follow the wall, and it decides when to take a turn as it is at the corner. To achieve stable speed, I utilize the distance PID controller to divide the whole route into 
+                                20cm segments. This can prevent the speed being too fast to avoid crashing. When it detects it is in the corner, it will decide which direction to turn according to the readings of the two ToF sensors (one on the front and the 
+                                other one on the left side). 
+                                <br>
+                                When the car is supposed to take a turn, the rotation PID controller will be activated until a 90 / -90 degree turn is achieved. 
+                                <br>
+                                The code is shown below. The car is set to follow the wall on the left side since this is where the other ToF sensor is mounted. It turns right only when the distance from the two sensors are both limited.
+                                <br>
+                                <pre>
+                                    <code>
+                                    try:
+                                        while(True):
+                                            ble.send_command(CMD.GET_DS, "")
+                                            time.sleep(0.2)
+                                            s = ble.receive_string(ble.uuid['RX_STRING']).split()
+                                            s = np.array(s).astype('int')
+                                            print(s)
+
+                                            if s[1] > 200 and s[2] < 600 :
+                                                cmd = "forward"
+                                            elif s[1] > 200 and s[2] >= 600 :
+                                                cmd = "left"
+                                            elif s[1] <= 200 and s[2] < 600:
+                                                cmd = "right"
+                                            elif s[1] <= 200 and s[2] >= 600:
+                                                cmd = "left"
+
+                                            print(cmd)
+
+                                            if cmd == "forward":
+                                                # ble.send_command(CMD.MOVE_FB, str(minPWM))
+                                                ble.send_command(CMD.SET_MAX_PWM, "220")  # 145
+                                                time.sleep(0.2)
+                                                ble.send_command(CMD.SET_TARGET_DIS, str(max(s[1] - 200, 120)))
+                                                time.sleep(0.2)
+                                                ble.send_command(CMD.PID_TOF_ON, "145")
+                                                time.sleep(2)
+                                                ble.send_command(CMD.PID_TOF_OFF, "")
+                                                time.sleep(0.2)
+                                                cmd = "none"
+
+                                            elif cmd == "left":
+                                                ble.send_command(CMD.SET_MAX_PWM, "165")  # 145
+                                                ble.send_command(CMD.STOP, "")
+                                                ble.send_command(CMD.PID_ROT_ON, "")
+                                                ble.send_command(CMD.SET_TARGET_YAW, "0")
+                                                ble.send_command(CMD.SET_TARGET_YAW, "90")
+                                                time.sleep(2.5)
+                                                ble.send_command(CMD.PID_ROT_OFF, "")
+                                                cmd = "none"
+
+                                            elif cmd == "right":
+                                                ble.send_command(CMD.SET_MAX_PWM, "165")  # 145
+                                                ble.send_command(CMD.STOP, "")
+                                                ble.send_command(CMD.PID_ROT_ON, "")
+                                                ble.send_command(CMD.SET_TARGET_YAW, "0")
+                                                ble.send_command(CMD.SET_TARGET_YAW, "-90")
+                                                time.sleep(2.5)
+                                                ble.send_command(CMD.PID_ROT_OFF, "")
+                                                cmd = "none"
+
+                                            elif cmd == "none":
+                                                pass
+
+                                            time.sleep(1)
+
+                                    except KeyboardInterrupt:
+                                        ble.send_command(CMD.STOP, "")
+                                        print("Exit program")
+                                    </code>
+                                </pre>
+                                <br>
+                                Before that, we should set appropriate PID parameters to the distance and rotation PID controllers.
+                                <pre>
+                                    <code lang="python">
+                                        ble.send_command(CMD.SET_CAL_FAC, "1.05")
+                                        ble.send_command(CMD.SET_MAX_PWM, "145")  # 145
+                                        ble.send_command(CMD.SET_CAL_DT, "1.09")  # 1.3752, 1.2117, 1.3126. 1.23967, 1.1664, 1.1958, 1.2434
+                                        
+                                        Kp_R = 12.00
+                                        Ki_R = 8.5
+                                        Kd_R = 0.5
+
+                                        ble.send_command(CMD.SET_P_ROT, str(Kp_R))  # to be modified
+                                        ble.send_command(CMD.SET_I_ROT, str(Ki_R)) 
+                                        ble.send_command(CMD.SET_D_ROT, str(Kd_R))
+                                    </code>
+                                </pre>
+                                <pre>
+                                    <code lang="python">
+                                        Kp = 0.35
+                                        Ki = 0.015
+                                        Kd = 0.15
+                                        
+                                        ble.send_command(CMD.SET_P, str(Kp))  # to be modified
+                                        ble.send_command(CMD.SET_I, str(Ki))  
+                                        ble.send_command(CMD.SET_D, str(Kd))  
+                                    </code>
+                                </pre>
+                            </p>
+                        </section>
+                        <br>
+                        <section>
+                            <h2>2 Results</h2>
+                            <p class="mb-0">
+                                The car is tested in a \( 1.8m \times 1.5m \) environment. Please refer to the videos below.
+                                <div class="video-container">
+                                    <video class="video" controls>
+                                        <source src="assets/FRassets/lab13/result1.mp4?raw = true" type="video/mp4">
+                                    </video>
+                                </div>
+                                <br>
+                                <div class="video-container">
+                                    <video class="video" controls>
+                                        <source src="assets/FRassets/lab13/result2.mp4?raw = true" type="video/mp4">
+                                    </video>
+                                </div>
+                                <br>
+                                From the video, the main idea of the design can be verified, but the car is not able to execute for a long enough duration. 
+                                There are some problems that always happens but hard to debug, which might lead to the unreliability of the car: 1) the Artemis board will 
+                                crash after consecutively running two rotation PID controllers; 2) the three sensors connected via the IIC port randomly fail to transmit the 
+                                readings to the board, resulting in all zeros; 3) the IMU will randomly fail if it is touched by hand, meaning its readings are frozen to some value; 4) the messages or values sent via BLE 
+                                may not take effect to change the global values in the Artemis board, to which its value is assigned, this happens especially when the BLE has transmitted 
+                                several commands; 5) the Artemis board will randomly freeze for no reason. During labs 11~12, I have attended every open lab hour and most of the time was devoted to fixing bugs other than designing a 
+                                fancy algorithms. I wish I could redo all the hardward from the beginning so that I can figure out which part goes wrong. 
+                                <br>
+                                <br>
+                                Actually I have tested the car to run the first three waypoints in the lab, but I did not record it and the line queueing for this lab never reached me. Here's the code for the first several waypoints. 
+                                <pre>
+                                    <code>
+                                        # Use Distance and Orientation PID controllers.
+                                        cmdr.reset_plotter()
+                                        cmdr.plot_bel(-4*0.302, -3*0.302)
+                                        # (-4, -3, 45deg) -> (-2, -1, 0deg)
+                                        # get the tof reading
+                                        ble.send_command(CMD.GET_DS, "")
+                                        s = ble.receive_string(ble.uuid['RX_STRING']).split()
+                                        DS1 = float(s[1])
+                                        print("Distance Sensor 1: {}".format(DS1))
+                                        # calculate the distance between waypoints
+                                        distance = np.sqrt(np.sum((np.array([-4, -3]) - np.array([-2, -1])) ** 2)) * 0.302 * 1000
+                                        print("Distance between two points: {}".format(distance))
+                                        # go straight line using distance PID
+                                        ble.send_command(CMD.SET_MAX_PWM, "80")
+                                        ble.send_command(CMD.SET_TARGET_DIS, str(DS1 - distance))
+                                        ble.send_command(CMD.PID_TOF_ON, "80")
+                                        print("Set goal distance to {}".format(DS1 - distance))
+                                        time.sleep(5.5)
+                                        ble.send_command(CMD.PID_TOF_OFF, "")
+                                        # turn using rotational PID
+                                        ble.send_command(CMD.SET_MAX_PWM, "145")
+                                        ble.send_command(CMD.PID_ROT_ON, "")
+                                        ble.send_command(CMD.SET_TARGET_YAW, "-45")
+                                        print("Set goal yaw to {}".format(-45))
+                                        time.sleep(3)
+                                        ble.send_command(CMD.PID_ROT_OFF, "")
+                                        cmdr.plot_bel(-2 * 0.304, -1 * 0.304)
+                                        time.sleep(1)
+
+
+                                        # (-2, -1, 0deg) -> (1, -1, -75deg)
+                                        # get the tof reading
+                                        ble.send_command(CMD.GET_DS, "")
+                                        s = ble.receive_string(ble.uuid['RX_STRING']).split()
+                                        DS1 = float(s[1])
+                                        print("Distance Sensor 1: {}".format(DS1))
+                                        # calculate the distance between waypoints
+                                        distance = np.sqrt(np.sum((np.array([-2, -1]) - np.array([1, -1])) ** 2)) * 0.302 * 1000
+                                        print("Distance between two points: {}".format(distance))
+                                        # go straight line using distance PID
+                                        ble.send_command(CMD.SET_MAX_PWM, "80")
+                                        ble.send_command(CMD.SET_TARGET_DIS, str(DS1 - distance))
+                                        ble.send_command(CMD.PID_TOF_ON, "80")
+                                        print("Set goal distance to {}".format(DS1 - distance))
+                                        time.sleep(2)
+                                        ble.send_command(CMD.PID_TOF_OFF, "")
+                                        # turn using rotational PID
+                                        ble.send_command(CMD.SET_MAX_PWM, "145")
+                                        targetYaw = -np.arctan(4) * 180 / np.pi
+                                        ble.send_command(CMD.PID_ROT_ON, "")
+                                        ble.send_command(CMD.SET_TARGET_YAW, str(targetYaw))
+                                        print("Set goal yaw to {}".format(targetYaw))
+                                        time.sleep(2)
+                                        ble.send_command(CMD.PID_ROT_OFF, "")
+                                        cmdr.plot_bel(1 * 0.304, -1 * 0.304)
+                                        time.sleep(1)
+
+                                        # (1, -1) -> (2, -3, 0deg)
+                                        ble.send_command(CMD.GET_DS, "")
+                                        s = ble.receive_string(ble.uuid['RX_STRING']).split()
+                                        DS1 = float(s[1])
+                                        print("Distance Sensor 1: {}".format(DS1))
+                                        # calculate the distance between waypoints
+                                        distance = np.sqrt(np.sum((np.array([2, -3]) - np.array([1, -1])) ** 2)) * 0.302 * 1000
+                                        print("Distance between two points: {}".format(distance))
+                                        # go straight line using distance PID
+                                        ble.send_command(CMD.SET_MAX_PWM, "80")
+                                        ble.send_command(CMD.SET_TARGET_DIS, str(DS1 - distance))
+                                        ble.send_command(CMD.PID_TOF_ON, "80")
+                                        print("Set goal distance to {}".format(DS1 - distance))
+                                        time.sleep(2)
+                                        ble.send_command(CMD.PID_TOF_OFF, "")
+                                        # turn using rotational PID
+                                        ble.send_command(CMD.SET_MAX_PWM, "145")
+                                        targetYaw = np.arctan(4) * 180 / np.pi
+                                        ble.send_command(CMD.PID_ROT_ON, "")
+                                        ble.send_command(CMD.SET_TARGET_YAW, str(targetYaw))
+                                        print("Set goal yaw to {}".format(targetYaw))
+                                        time.sleep(2)
+                                        ble.send_command(CMD.PID_ROT_OFF, "")
+                                        cmdr.plot_bel(2 * 0.304, -3 * 0.304)
+                                        time.sleep(1)
+                                    </code>
+                                </pre>
+                            </p>
+                        </section>
+                        <br>
+                        <section>
+                            <h2>Acknowledgement</h2>
+                            <p class="mb-0">
+                                Many thanks to our instructor Dr. Jonathan Jaramillo and those helpful TAs, and also to Prof. Kirstin Petersen who established this course. I have learned how to build a fast-operating robot from scratch and it is my first time 
+                                implementing a PID controller, a Kalman Filter and a Gaussian Filter. 
+                                <br>
+                                <br>
+                                Despite what I have learned, I am not very satisfied with the robot I made. The robot is supposed to be "fast", but I don't think I have successfully achieved this goal. There're a lot of bugs I may not be able to solve before the deadline, many apologies if you're grading my report. But 
+                                I have concluded something for myself in case I have other robots to build in the future:
+                                <br>
+                                1. Always think ahead. Once the wires are soldered, it is hard to make adjustments. It is necessary to think in the system level to prevent bugs in the hardware level.
+                                <br>
+                                2. Code according to the hardware capacity. I thought I did a great job in creating sophisticated condition statements in the Arduino, thinking in a python way. But the Artemis 
+                                board may crush if the code is long, also the real-time performance will be damaged. For example, I was using the time difference of two consecutive entries to the rotation PID controller to 
+                                calculate the dt for yaw based on GYRO. But once the code gets complex, there's around 30% error of the dt (calculation results in dt = 0.02s, but it should be 1.3 times larger). I might be a good programmer for 
+                                better embedded systems, but the mindset is not the same for an arduino chip.
+                                <br>
+                                3. Open to a restart. If I redo everything in my car earlier in a way I thought was better, I might have avoided those sunk costs I have paid. The fact is I have spent so much time but the bugs are still rolling bigger.
+                                <br>
+                                4. Learn from others. Be open to the ideas with good results, which saves you time for better outcome. You may figure out a better way in the end, but for how long?
+                                <br>
+                                5. Secure every step. Otherwise the bugs will be the rolling snowball, and you don't even know which to begin with.
+                            </p>
+                        </section>
+                        <br>
+                        <p class="lead">THE END</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <script>
+            // 在页面加载后初始化 Highlight.js
+            document.addEventListener('DOMContentLoaded', (event) => {
+                document.querySelectorAll('pre code').forEach((block) => {
+                    hljs.highlightBlock(block);
+                });
+            });
+        </script>
+        <!-- Image element - set the background image for the header in the line below-->
+        <div class="py-5 bg-image-small" style="background-image: url('https://github.com/ReavenH/zh444.github.io/blob/main/assets/Cornell-University-Logo-768x432.png?raw=true')">
+            <!-- Put anything you want here! The spacer below with inline CSS is just for demo purposes!-->
+            <div style="height: 8rem"></div>
+        </div>
+        <!-- Footer-->
+        <footer class="py-5 bg-dark">
+            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Zhongming Huang 2024 (adapted from startbootstrap.com)</p></div>
+        </footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
+    </body>
+</html>
