@@ -10868,3 +10868,10 @@ code {
   font-size: 14px;
   color: #333;
 }
+
+.divider {
+  height: 5px;
+  width: 80%;
+  background-image: linear-gradient(to right, transparent, #333333, transparent);
+  margin: 20px auto; /* 将水平方向的 margin 设置为 auto 实现居中 */
+}
