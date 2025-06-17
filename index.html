@@ -34,9 +34,9 @@
             <div class="text-center my-5">
                 <img class="img-fluid rounded-circle mb-4" style="max-width: 300px; max-height: 300px;" src="https://github.com/ReavenH/zh444.github.io/blob/main/assets/ID_photo.jpg?raw=true" alt="..." />
                 <h1 class="text-white fs-3 fw-bolder">Zhongming (Reaven) Huang</h1>
-                <p class="text-white-50 mb-0">M.Eng. in ECE '24 at Cornell University </p>
-                <p class="text-white-50 mb-0">Seeking Robotics Related Ph.D. Positions Starting in 2025 Fall</p>
-                <p class="text-white-50 mb-0">Interested in building reliable robotic systems that has the potential to operate in real world field tasks.</p>
+                <p class="text-white-50 mb-0">Incoming Ph.D. Student in Mechanical Engineering at the University of Colorado Boulder</p>
+                <!-- <p class="text-white-50 mb-0">Seeking Robotics Related Ph.D. Positions Starting in 2025 Fall</p>
+                <p class="text-white-50 mb-0">Interested in building reliable robotic systems that has the potential to operate in real world field tasks.</p> -->
             </div>
         </header>
         <!-- Content section-->
@@ -49,8 +49,8 @@
                         <p class="lead">"Automation is no longer just a problem for those working in manufacturing. Physical labor was replaced by robots; mental labor is going to be replaced by AI and software." -- Andrew Yang</p>
                         <!-- brief bio here-->
                         <p class="mb-0">
-                            I am currently a Master of Engineering student at the Department of Electrical and Computer Engineering of Cornell University. My current study focuses on the collaborative robotic construction with 4-legged robots. 
-                            I am a member of <a href="https://www.csl.cornell.edu/~nnapp/">Napp Lab</a> and the <a href="https://cei.ece.cornell.edu/">Collective Embodied Intelligence</a> (CEI) Lab, supervised by Prof. Nils Napp and Prof. Kirstin Petersen. My ultimate goal is to advance robust robotic systems that perform field tasks, reducing the need for workers to engage in tedious, physically demanding labor, or hazardous environments. Prior to joining Cornell, I received my Bachelor of Engineering Degree in Telecommunications from Tiangong University, China.
+                            I am an incoming Ph.D. student in the Paul M. Rady Department of Mechanical Engineering at the University of Colorado Boulder, where I will be joining the <a href="https://www.praisecu.com/">PRAISe Lab</a> under the supervision of Prof. Chahat Deep Singh in Fall 2025. Previously, I completed my Master’s degree in Electrical and Computer Engineering at Cornell University, where my research focused on collaborative robotic construction using quadrupedal robots.
+                            At Cornell, I was a member of <a href="https://www.csl.cornell.edu/~nnapp/">Napp Lab</a> and the <a href="https://cei.ece.cornell.edu/">Collective Embodied Intelligence</a> (CEI) Lab, supervised by Prof. Nils Napp and Prof. Kirstin Petersen. My ultimate goal is to advance robust robotic systems that perform field tasks, reducing the need for workers to engage in tedious, physically demanding labor, or hazardous environments.
                         </p>
                     </div>
                 </div>
@@ -65,18 +65,35 @@
                 <br>
                 <div class="row">
                     <h3>Active Projects</h3>
-                    <!-- Card 6 -->
+                    <!-- Card 7 -->
                     <div class="col-md-12 mb-4">
-                        <div class="card h-100 flex-row">
-                            <img src="imgs/mpc.png" class="card-img-left" style="width: 27.5%; object-fit: cover;" alt="Project 6 Image">
+                        <div class="card h-100 flex-row" style="flex-wrap: nowrap;">
+                            <div id="carouselProject1" class="carousel slide d-flex align-items-center" data-bs-ride="carousel" style="display: flex; justify-content: center; align-items: center; width: 300%; height: 100%; margin-top: auto; margin-bottom: auto;">
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active">
+                                        <img src="imgs/1.jpg" class="d-block w-100" alt="Top View" style="object-fit: cover; width: 100%; height: 100%;">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="imgs/3.jpg" class="d-block w-100" alt="Bottom View" style="object-fit: cover; width: 100%; height: 100%;">
+                                    </div>
+                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselProject1" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselProject1" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
                             <div class="card-body">
-                                <h5 class="card-title font-weight-bold">Convex MPC for Quadruped Locomotion</h5>
-                                <p class="card-text">Experimenting with a convex MPC controller in python and simulate in MoJoCo. Code is adapted from <a href="https://github.com/yinghansun/pympc-quadruped/tree/main">Yinghan Sun's implementation</a> of a Mini-Cheetah cMPC controller.</p>
-                                <p class="card-text">ECE 5280 Optimal System Analysis and Design, 2024</p>
+                                <h5 class="card-title font-weight-bold">DIY 3D Printed Quadcopter</h5>
+                                <p class="card-text">This project features a fully hand-designed, 3D-printed 280mm quadcopter equipped with a Pixhawk 6C Mini flight controller, MTF-01 laser and optical flow module, 40A 4-in-1 ESC, a 1500mAh 3S 45C LiPo battery, and four 2300KV motors paired with 5.5-inch propellers. The total weight is approximately 500 grams. While the setup combines Pixhawk with several FPV components in a somewhat improvised fashion, it has proven to be stable and functional during initial tests. However, challenges remain. Weight and battery life are current bottlenecks, especially with plans to integrate onboard visual perception, which would add ~250g and draw an additional 8W of power. To address this, I'm considering a redesigned frame using aluminum alloy trusses with 3D-printed joints for improved weight efficiency. Additionally, switching to 1400KV–1600KV motors is under evaluation to enhance overall power efficiency. If you have any suggestions or thoughts on the setup or possible improvements, I’d love to hear them!</p>
                                 <a href="index.html" class="btn btn-primary">Learn More (TBD)</a>
                             </div>
                         </div>
                     </div>
+                    <h3>Past Projects</h3>
                     <!-- Card 1 -->
                     <div class="col-md-12 mb-4">
                         <div class="card h-100 flex-row" style="flex-wrap: nowrap;">
@@ -116,12 +133,23 @@
                             <div class="card-body">
                                 <h5 class="card-title font-weight-bold">Multi-robot Construction System with Quadruped Robots</h5>
                                 <p class="card-text">Each agent in this system is capable of retrieving, transporting, positioning and fixing minimally processed foam blocks with off-the-shelf T-pins. Instead of operating in the periphiral of the construction site, each agent considers the structure as a graph of traversable paths. This means the robots climb on the structure to build new blocks. Multi-robot collaboration is experimented in simulation with local behavior rules inspired by the TERMES system, with a focus on building with 2x1 blocks and constructing non-lattice structures.</p>
-                                <p class="card-text">Submitted to <i>2025 IEEE International Conference on Robotics and Automation</i> (ICRA), 2024</p>
-                                <a href="https://youtu.be/tlALsAWa7wI" class="btn btn-primary">Learn More</a>
+                                <p class="card-text">Contributed paper <em>Robotic Assembly of Reusable, Rectangular Blocks</em> is to be appear in <i>IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)</i>, 2025.</p>
+                                <a href="https://youtu.be/ZY6KCQzh77c" class="btn btn-primary">Learn More</a>
                             </div>
                         </div>
                     </div>
-                    <h3>Past Projects</h3>
+                    <!-- Card 6 -->
+                    <div class="col-md-12 mb-4">
+                        <div class="card h-100 flex-row">
+                            <img src="imgs/mpc.png" class="card-img-left" style="width: 27.5%; object-fit: cover;" alt="Project 6 Image">
+                            <div class="card-body">
+                                <h5 class="card-title font-weight-bold">Convex MPC for Quadruped Locomotion</h5>
+                                <p class="card-text">Experimenting with a convex MPC controller in python and simulate in MoJoCo. Code is adapted from <a href="https://github.com/yinghansun/pympc-quadruped/tree/main">Yinghan Sun's implementation</a> of a Mini-Cheetah cMPC controller.</p>
+                                <p class="card-text">ECE 5280 Optimal System Analysis and Design, 2024</p>
+                                <a href="index.html" class="btn btn-primary">Learn More (TBD)</a>
+                            </div>
+                        </div>
+                    </div>
                      <!-- Card 5 -->
                      <div class="col-md-12 mb-4">
                         <div class="card h-100 flex-row">
@@ -279,6 +307,7 @@
                 <div class="row">
                     <div class="col-md-12 mb-4">
                         <ul class="list-group">
+                            <li class="list-group-item">Dean's Fellowship of Excellence, Paul M. Rady Mechanical Engineering, CU Boulder, 2025</li>
                             <li class="list-group-item">Excellent Senior Thesis Award, 2023 (Bachelor's Dissertation)</li>
                             <li class="list-group-item">Best Paper Presentation Award at ICoIAS, 2022</li>
                             <li class="list-group-item">Best Paper Presentation Award at PRML, 2022</li>
@@ -332,7 +361,7 @@
         </div>
         <!-- Footer-->
         <footer class="py-5 bg-dark">
-            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Zhongming Huang 2024 (adapted from startbootstrap.com)</p></div>
+            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Zhongming Huang 2025 (adapted from startbootstrap.com)</p></div>
         </footer>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
