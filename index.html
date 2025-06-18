@@ -68,7 +68,7 @@
                     <!-- Card 7 -->
                     <div class="col-md-12 mb-4">
                         <div class="card h-100 flex-row" style="flex-wrap: nowrap;">
-                            <div id="carouselProject1" class="carousel slide d-flex align-items-center" data-bs-ride="carousel" style="display: flex; justify-content: center; align-items: center; width: 300%; height: 100%; margin-top: auto; margin-bottom: auto;">
+                            <div id="carouselProject1" class="carousel slide d-flex align-items-center" data-bs-ride="carousel" style="display: flex; justify-content: center; align-items: center; width: 100%; height: 100%; margin-top: auto; margin-bottom: auto;">
                                 <div class="carousel-inner">
                                     <div class="carousel-item active">
                                         <img src="imgs/1.jpg" class="d-block w-100" alt="Top View" style="object-fit: cover; width: 100%; height: 100%;">
@@ -87,8 +87,12 @@
                                 </button>
                             </div>
                             <div class="card-body">
-                                <h5 class="card-title font-weight-bold">DIY 3D Printed Quadcopter</h5>
-                                <p class="card-text">This project features a fully hand-designed, 3D-printed 280mm quadcopter equipped with a Pixhawk 6C Mini flight controller, MTF-01 laser and optical flow module, 40A 4-in-1 ESC, a 1500mAh 3S 45C LiPo battery, and four 2300KV motors paired with 5.5-inch propellers. The total weight is approximately 500 grams. While the setup combines Pixhawk with several FPV components in a somewhat improvised fashion, it has proven to be stable and functional during initial tests. However, challenges remain. Weight and battery life are current bottlenecks, especially with plans to integrate onboard visual perception, which would add ~250g and draw an additional 8W of power. To address this, I'm considering a redesigned frame using aluminum alloy trusses with 3D-printed joints for improved weight efficiency. Additionally, switching to 1400KV–1600KV motors is under evaluation to enhance overall power efficiency. If you have any suggestions or thoughts on the setup or possible improvements, I’d love to hear them!</p>
+                                <h5 class="card-title font-weight-bold">DIY 3D-Printed Quadcopter</h5>
+                                <p class="card-text">This project presents a fully custom 3D-printed 280mm quadcopter (~500g), equipped with a Pixhawk 6C Mini, MTF-01 optical flow module, 40A 4-in-1 ESC, 1500mAh 3S LiPo battery, and four 2300KV motors with 5.5" props. Despite its improvised integration of FPV components, the system has proven stable in initial tests. 
+                                    <br>
+                                    <br>
+                                    Current limitations include weight and battery life, especially with planned onboard perception (~250g, +8W). To address this, future redesign may use carbon fiber trusses with printed joints for better weight-to-strength ratio, and lower-KV motors (1400–1600KV) are being evaluated to improve efficiency.
+                                </p>
                                 <a href="index.html" class="btn btn-primary">Learn More (TBD)</a>
                             </div>
                         </div>
@@ -97,7 +101,7 @@
                     <!-- Card 1 -->
                     <div class="col-md-12 mb-4">
                         <div class="card h-100 flex-row" style="flex-wrap: nowrap;">
-                            <div id="carouselProject1" class="carousel slide d-flex align-items-center" data-bs-ride="carousel" style="display: flex; justify-content: center; align-items: center; width: 155%; height: 100%; margin-top: auto; margin-bottom: auto;">
+                            <div id="carouselProject2" class="carousel slide d-flex align-items-center" data-bs-ride="carousel" style="display: flex; justify-content: center; align-items: center; width: 155%; height: 100%; margin-top: auto; margin-bottom: auto;">
                                 <div class="carousel-inner">
                                     <div class="carousel-item active">
                                         <img src="imgs/Robot Overview.jpg" class="d-block w-100" alt="Project 1 Image 1" style="object-fit: cover; height: 100%;" style="object-fit: cover; width: 100%; height: 100%;" style="object-fit: cover; width: 100%; height: 100%;">
@@ -120,12 +124,21 @@
                                     <div class="carousel-item">
                                         <img src="imgs/gripper explosive view.png" class="d-block w-100" alt="Project 1 Image 2" style="object-fit: cover; height: 100%;">
                                     </div>
+                                    <div class="carousel-item">
+                                        <img src="imgs/Double 3 Way Topview.png" class="d-block w-100" alt="Project 1 Image 2" style="object-fit: cover; height: 100%;">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="imgs/double3-best.png" class="d-block w-100" alt="Project 1 Image 2" style="object-fit: cover; height: 100%;">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="imgs/1x1 Cover.png" class="d-block w-100" alt="Project 1 Image 2" style="object-fit: cover; height: 100%;">
+                                    </div>
                                 </div>
-                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselProject1" data-bs-slide="prev">
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselProject2" data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Previous</span>
                                 </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#carouselProject1" data-bs-slide="next">
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselProject2" data-bs-slide="next">
                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Next</span>
                                 </button>
@@ -133,7 +146,7 @@
                             <div class="card-body">
                                 <h5 class="card-title font-weight-bold">Multi-robot Construction System with Quadruped Robots</h5>
                                 <p class="card-text">Each agent in this system is capable of retrieving, transporting, positioning and fixing minimally processed foam blocks with off-the-shelf T-pins. Instead of operating in the periphiral of the construction site, each agent considers the structure as a graph of traversable paths. This means the robots climb on the structure to build new blocks. Multi-robot collaboration is experimented in simulation with local behavior rules inspired by the TERMES system, with a focus on building with 2x1 blocks and constructing non-lattice structures.</p>
-                                <p class="card-text">Contributed paper <em>Robotic Assembly of Reusable, Rectangular Blocks</em> is to be appear in <i>IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)</i>, 2025.</p>
+                                <p class="card-text">Contributed paper <em>Robotic Assembly of Reusable, Rectangular Blocks</em> is to appear in <i>IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)</i>, 2025.</p>
                                 <a href="https://youtu.be/ZY6KCQzh77c" class="btn btn-primary">Learn More</a>
                             </div>
                         </div>
@@ -153,7 +166,7 @@
                      <!-- Card 5 -->
                      <div class="col-md-12 mb-4">
                         <div class="card h-100 flex-row">
-                            <div id="carouselProject1" class="carousel slide" data-bs-ride="carousel" style="width: 70%; height: 100%; margin-top: auto; margin-bottom: auto;">
+                            <div id="carouselProject3" class="carousel slide" data-bs-ride="carousel" style="width: 70%; height: 100%; margin-top: auto; margin-bottom: auto;">
                                 <div class="carousel-inner">
                                     <div class="carousel-item active">
                                         <img src="imgs/task7_front_view.png" class="d-block w-100" alt="Project 1 Image 1" style="object-fit: cover; height: 100%;" style="object-fit: cover; width: 100%; height: 100%;" style="object-fit: cover; height: 100%;">
@@ -162,11 +175,11 @@
                                         <img src="assets/FRassets/lab5/task7_top_view.png" class="d-block w-100" alt="Project 1 Image 2" style="object-fit: cover; height: 100%;">
                                     </div>
                                 </div>
-                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselProject1" data-bs-slide="prev">
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselProject3" data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Previous</span>
                                 </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#carouselProject1" data-bs-slide="next">
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselProject3" data-bs-slide="next">
                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Next</span>
                                 </button>
@@ -182,7 +195,7 @@
                     <!-- Card 2 -->
                     <div class="col-md-12 mb-4">
                         <div class="card h-100 flex-row">
-                            <div id="carouselProject1" class="carousel slide d-flex align-items-center" data-bs-ride="carousel" style="display: flex; justify-content: center; align-items: center; width: 155%; height: 100%; margin-top: auto; margin-bottom: auto;">
+                            <div id="carouselProject4" class="carousel slide d-flex align-items-center" data-bs-ride="carousel" style="display: flex; justify-content: center; align-items: center; width: 155%; height: 100%; margin-top: auto; margin-bottom: auto;">
                                 <div class="carousel-inner">
                                     <div class="carousel-item active">
                                         <img src="imgs/instanceDataSamples.png" class="d-block w-100" alt="Project 1 Image 1" style="object-fit: cover; height: 100%;" style="object-fit: cover; width: 100%; height: 100%;" style="object-fit: cover; width: 100%; height: 100%;">
@@ -197,11 +210,11 @@
                                         <img src="imgs/polarMask.png" class="d-block w-100" alt="Project 1 Image 2" style="object-fit: cover; height: 100%;">
                                     </div>
                                 </div>
-                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselProject1" data-bs-slide="prev">
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselProject4" data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Previous</span>
                                 </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#carouselProject1" data-bs-slide="next">
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselProject4" data-bs-slide="next">
                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Next</span>
                                 </button>
@@ -244,7 +257,7 @@
                     <!-- Card 6 -->
                     <div class="col-md-12 mb-4">
                         <div class="card h-100 flex-row" style="min-height: 300px;">
-                            <div id="carouselProject1" class="carousel slide d-flex align-items-center" data-bs-ride="carousel" style="display: flex; justify-content: center; align-items: center; width: 275%; height: 100%; margin-top: auto; margin-bottom: auto;">
+                            <div id="carouselProject5" class="carousel slide d-flex align-items-center" data-bs-ride="carousel" style="display: flex; justify-content: center; align-items: center; width: 275%; height: 100%; margin-top: auto; margin-bottom: auto;">
                                 <div class="carousel-inner">
                                     <div class="carousel-item active">
                                         <img src="imgs/MiscUAV1.jpg" class="d-block w-100" alt="Project 1 Image 1" style="object-fit: cover; height: 100%;" style="object-fit: cover; width: 100%; height: 100%;" style="object-fit: cover; height: 100%;">
@@ -262,11 +275,11 @@
                                         <img src="imgs/fireDetection.png" class="d-block w-100" alt="Project 1 Image 3" style="object-fit: cover; height: 100%;">
                                     </div>
                                 </div>
-                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselProject1" data-bs-slide="prev">
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselProject5" data-bs-slide="prev">
                                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Previous</span>
                                 </button>
-                                <button class="carousel-control-next" type="button" data-bs-target="#carouselProject1" data-bs-slide="next">
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselProject5" data-bs-slide="next">
                                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                     <span class="visually-hidden">Next</span>
                                 </button>
