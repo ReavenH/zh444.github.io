@@ -1,7 +1,78 @@
 <!doctype html>
 <html>
 <head>
-<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'><style type='text/css'>html {overflow-x: initial !important;}</style>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'><style type='text/css'>html {overflow-x: initial !important;}
+/* ===== Mobile-friendly improvements ===== */
+:root { --toc-z: 1000; }
+
+pre, code { white-space: pre-wrap; word-break: break-word; }
+pre { overflow-x: auto; border-radius: 8px; }
+#write { overflow-wrap: anywhere; }
+
+/* General typography tweaks on small screens */
+@media (max-width: 900px) {
+  body { font-size: 17px; line-height: 1.6; }
+  #write { padding: 0 14px; }
+  /* Reduce header anchor offset for smaller top bars */
+  #write h1, #write h2, #write h3, #write h4, #write h5, #write h6 { scroll-margin-top: 64px; }
+
+  /* Make media responsive only on small screens */
+  img, video, iframe { max-width: 100% !important; height: auto !important; }
+}
+
+/* Floating TOC: desktop left fixed, mobile overlay */
+.toc-float .md-toc { text-align: left; }
+@media (min-width: 901px) {
+  .toc-float .md-toc { left: 16px; right: auto; }
+}
+@media (max-width: 900px) {
+  /* Hide the fixed sidebar version and turn it into an overlay */
+  .toc-float .md-toc {
+    position: fixed;
+    top: 10vh;
+    left: 5vw;
+    right: 5vw;
+    width: auto;
+    max-height: 75vh;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 18px 48px rgba(0,0,0,.22);
+    padding: 16px 18px;
+    display: none;
+    z-index: var(--toc-z);
+  }
+  body.toc-open .toc-float .md-toc { display: block; }
+  /* Dim background when TOC open */
+  body.toc-open::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.25);
+    z-index: calc(var(--toc-z) - 1);
+  }
+  /* Show a floating toggle button */
+  #toc-toggle {
+    position: fixed;
+    right: 14px;
+    bottom: 14px;
+    z-index: calc(var(--toc-z) + 1);
+    display: inline-flex;
+  }
+  #toc-toggle button {
+    padding: 10px 14px;
+    font-size: 14px;
+    border: 0;
+    border-radius: 999px;
+    background: #222;
+    color: #fff;
+    box-shadow: 0 6px 18px rgba(0,0,0,.25);
+  }
+}
+@media (min-width: 901px) {
+  #toc-toggle { display: none; }
+}
+
+</style>
 <style type='text/css'  id="style-base">:root { --bg-color: #ffffff; --text-color: #333333; --select-text-bg-color: #B5D6FC; --select-text-font-color: auto; --monospace: "Lucida Console",Consolas,"Courier",monospace; --title-bar-height: 20px; }
 .mac-os-11 { --title-bar-height: 28px; }
 html { font-size: 14px; background-color: var(--bg-color); color: var(--text-color); font-family: "Helvetica Neue", Helvetica, Arial, "Segoe UI Emoji", "SF Pro", sans-serif; -webkit-font-smoothing: antialiased; }
@@ -705,6 +776,7 @@ g[data-mml-node="xypic"] path {
 }
 </style>
 
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 </head>
 <body class='typora-export os-windows'><div class='typora-export-content'>
 <div id='write'  class=''><p><a href='https://reavenh.github.io/zh444.github.io/'><span>back home</span></a></p><blockquote><p><em><strong><span>IROS 2025 Oral:</span></strong></em><span> We will be giving our IROS 2025 oral presentation on Thursday, Oct. 23, and we will hand out homemade original 3D printed souvenirs at the poster session afterwards (</span><strong><span>limited amount!</span></strong><span>).</span></p><ul><li><p><span>Location: Room 103B, Hangzhou International EXPO Center, Hangzhou, China</span></p></li><li><p><span>Time Slot: 3:00PM-3:40PM, Thursday, Oct. 23, 2025</span></p></li></ul></blockquote><hr /><h1 id='robust-robotic-assembly-of-reusable-rectangular-blocks'><span>Robust Robotic Assembly of Reusable Rectangular Blocks</span></h1><p style="text-align:center;">Zhongming Huang, Hongyu Yao, Haocheng Peng, Shih-ming Lin</p><p style="text-align:center;">Advised by: Prof. Kirstin Petersen and Prof. Nils Napp*</p><p style="text-align:center;">Department of Electrical and Computer Engineering</p><p style="text-align:center;">Cornell University</p><p>&nbsp;</p><blockquote><p><em><span>Before you read</span></em><span>: this page is built for everyone to grab a general idea of our work. If you would like to dive deeper, please refer to our paper. This page also contains extra background information not selected in our paper.</span></p></blockquote><p>&nbsp;</p><div style="position:relative;margin:16px auto;max-width:900px;">
@@ -819,5 +891,30 @@ g[data-mml-node="xypic"] path {
     <img src="imgs/IROS25-logo.png" alt="Right Image" height="100">
   </figure>
 </div><p style="text-align:center;">Last Updated: Oct. 10, 2025.</p><p style="text-align:center;">&copy; 2025 Zhongming Huang.</p><p><a href='https://reavenh.github.io/zh444.github.io/'><span>back home</span></a></p></div></div>
+
+<div id="toc-toggle">
+  <button id="toc-toggle-btn" aria-controls="toc" aria-expanded="false">TOC</button>
+</div>
+
+
+<script>
+(function(){
+  var btn = document.getElementById('toc-toggle-btn');
+  if (!btn) return;
+  btn.addEventListener('click', function(){
+    document.body.classList.toggle('toc-open');
+  });
+  // Close overlay when clicking outside the TOC box
+  document.addEventListener('click', function(e){
+    if (!document.body.classList.contains('toc-open')) return;
+    var toc = document.querySelector('.toc-float .md-toc');
+    if (!toc) return;
+    if (!toc.contains(e.target) && e.target !== btn) {
+      document.body.classList.remove('toc-open');
+    }
+  }, true);
+})();
+</script>
+
 </body>
 </html>
