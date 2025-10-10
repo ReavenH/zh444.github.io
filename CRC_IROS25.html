@@ -1,0 +1,823 @@
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'><style type='text/css'>html {overflow-x: initial !important;}</style>
+<style type='text/css'  id="style-base">:root { --bg-color: #ffffff; --text-color: #333333; --select-text-bg-color: #B5D6FC; --select-text-font-color: auto; --monospace: "Lucida Console",Consolas,"Courier",monospace; --title-bar-height: 20px; }
+.mac-os-11 { --title-bar-height: 28px; }
+html { font-size: 14px; background-color: var(--bg-color); color: var(--text-color); font-family: "Helvetica Neue", Helvetica, Arial, "Segoe UI Emoji", "SF Pro", sans-serif; -webkit-font-smoothing: antialiased; }
+h1, h2, h3, h4, h5 { white-space: pre-wrap; }
+body { margin: 0px; padding: 0px; height: auto; inset: 0px; font-size: 1rem; line-height: 1.42857; overflow-x: hidden; background: inherit; }
+iframe { margin: auto; }
+a.url { word-break: break-all; }
+a:active, a:hover { outline: 0px; }
+.in-text-selection, ::selection { text-shadow: none; background: var(--select-text-bg-color); color: var(--select-text-font-color); }
+#write { margin: 0px auto; height: auto; width: inherit; word-break: normal; overflow-wrap: break-word; position: relative; white-space: normal; overflow-x: visible; padding-top: 36px; }
+#write.first-line-indent p { text-indent: 2em; }
+#write.first-line-indent li p, #write.first-line-indent p *, #write.first-line-indent svg * { text-indent: 0px; }
+#write.first-line-indent li { margin-left: 2em; }
+.for-image #write { padding-left: 8px; padding-right: 8px; }
+body.typora-export { padding-left: 30px; padding-right: 30px; }
+.typora-export .footnote-line, .typora-export li, .typora-export p { white-space: pre-wrap; }
+.typora-export .task-list-item input { pointer-events: none; }
+@media screen and (max-width: 500px) {
+  body.typora-export { padding-left: 0px; padding-right: 0px; }
+  #write { padding-left: 20px; padding-right: 20px; }
+}
+#write li > figure:last-child { margin-bottom: 0.5rem; }
+#write ol, #write ul { position: relative; }
+img { max-width: 100%; vertical-align: middle; image-orientation: from-image; }
+button, input, select, textarea { color: inherit; font: inherit; }
+input[type="checkbox"], input[type="radio"] { line-height: normal; padding: 0px; }
+*, ::after, ::before { box-sizing: border-box; }
+#write h1, #write h2, #write h3, #write h4, #write h5, #write h6, #write p, #write pre { width: inherit; position: relative; }
+#write svg h1, #write svg h2, #write svg h3, #write svg h4, #write svg h5, #write svg h6, #write svg p { position: static; white-space: nowrap; overflow: visible; }
+foreignobject { overflow: visible; }
+p { line-height: inherit; }
+h1, h2, h3, h4, h5, h6 { break-after: avoid-page; break-inside: avoid; orphans: 4; }
+p { orphans: 4; }
+li p { orphans: 1; }
+h1 { font-size: 2rem; }
+h2 { font-size: 1.8rem; }
+h3 { font-size: 1.6rem; }
+h4 { font-size: 1.4rem; }
+h5 { font-size: 1.2rem; }
+h6 { font-size: 1rem; }
+.md-math-block, .md-rawblock, h1, h2, h3, h4, h5, h6, p { margin-top: 1rem; margin-bottom: 1rem; }
+.hidden { display: none; }
+.md-blockmeta { color: rgb(204, 204, 204); font-weight: 700; font-style: italic; }
+a { cursor: pointer; }
+sup.md-footnote { padding: 2px 4px; background-color: rgba(238, 238, 238, 0.7); color: rgb(85, 85, 85); border-radius: 4px; cursor: pointer; }
+sup.md-footnote a, sup.md-footnote a:hover { color: inherit; text-transform: inherit; text-decoration: inherit; }
+#write input[type="checkbox"] { cursor: pointer; width: inherit; height: inherit; }
+figure { overflow-x: auto; margin: 1.2em 0px; max-width: calc(100% + 16px); padding: 0px; }
+figure > table { margin: 0px; }
+thead, tr { break-inside: avoid; break-after: auto; }
+thead { display: table-header-group; }
+table { border-collapse: collapse; border-spacing: 0px; width: 100%; overflow: auto; break-inside: auto; text-align: left; }
+table.md-table td { min-width: 32px; }
+.CodeMirror-gutters { border-right: 0px; background-color: inherit; }
+.CodeMirror-linenumber { user-select: none; }
+.CodeMirror { text-align: left; }
+.CodeMirror-placeholder { opacity: 0.3; }
+.CodeMirror pre { padding: 0px 4px; }
+.CodeMirror-lines { padding: 0px; }
+div.hr:focus { cursor: none; }
+#write pre { white-space: pre-wrap; }
+#write.fences-no-line-wrapping pre { white-space: pre; }
+#write pre.ty-contain-cm { white-space: normal; }
+.CodeMirror-gutters { margin-right: 4px; }
+.md-fences { font-size: 0.9rem; display: block; break-inside: avoid; text-align: left; overflow: visible; white-space: pre; background: inherit; position: relative !important; }
+.md-fences-adv-panel { width: 100%; margin-top: 10px; text-align: center; padding-top: 0px; padding-bottom: 8px; overflow-x: auto; }
+#write .md-fences.mock-cm { white-space: pre-wrap; }
+.md-fences.md-fences-with-lineno { padding-left: 0px; }
+#write.fences-no-line-wrapping .md-fences.mock-cm { white-space: pre; overflow-x: auto; }
+.md-fences.mock-cm.md-fences-with-lineno { padding-left: 8px; }
+.CodeMirror-line, twitterwidget { break-inside: avoid; }
+svg { break-inside: avoid; }
+.footnotes { opacity: 0.8; font-size: 0.9rem; margin-top: 1em; margin-bottom: 1em; }
+.footnotes + .footnotes { margin-top: 0px; }
+.md-reset { margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: top; background: 0px 0px; text-decoration: none; text-shadow: none; float: none; position: static; width: auto; height: auto; white-space: nowrap; cursor: inherit; -webkit-tap-highlight-color: transparent; line-height: normal; font-weight: 400; text-align: left; box-sizing: content-box; direction: ltr; }
+li div { padding-top: 0px; }
+blockquote { margin: 1rem 0px; }
+li .mathjax-block, li p { margin: 0.5rem 0px; }
+li blockquote { margin: 1rem 0px; }
+li { margin: 0px; position: relative; }
+blockquote > :last-child { margin-bottom: 0px; }
+blockquote > :first-child, li > :first-child { margin-top: 0px; }
+.footnotes-area { color: rgb(136, 136, 136); margin-top: 0.714rem; padding-bottom: 0.143rem; white-space: normal; }
+#write .footnote-line { white-space: pre-wrap; }
+@media print {
+  body, html { border: 1px solid transparent; height: 99%; break-after: avoid; break-before: avoid; font-variant-ligatures: no-common-ligatures; }
+  #write { margin-top: 0px; border-color: transparent !important; padding-top: 0px !important; padding-bottom: 0px !important; }
+  .typora-export * { -webkit-print-color-adjust: exact; }
+  .typora-export #write { break-after: avoid; }
+  .typora-export #write::after { height: 0px; }
+  .is-mac table { break-inside: avoid; }
+  #write > p:nth-child(1) { margin-top: 0px; }
+  .typora-export-show-outline .typora-export-sidebar { display: none; }
+  figure { overflow-x: visible; }
+}
+.footnote-line { margin-top: 0.714em; font-size: 0.7em; }
+a img, img a { cursor: pointer; }
+pre.md-meta-block { font-size: 0.8rem; min-height: 0.8rem; white-space: pre-wrap; background: rgb(204, 204, 204); display: block; overflow-x: hidden; }
+p > .md-image:only-child:not(.md-img-error) img, p > img:only-child { display: block; margin: auto; }
+#write.first-line-indent p > .md-image:only-child:not(.md-img-error) img { left: -2em; position: relative; }
+p > .md-image:only-child { display: inline-block; width: 100%; }
+#write .MathJax_Display { margin: 0.8em 0px 0px; }
+.md-math-block { width: 100%; }
+.md-math-block:not(:empty)::after { display: none; }
+.MathJax_ref { fill: currentcolor; }
+[contenteditable="true"]:active, [contenteditable="true"]:focus, [contenteditable="false"]:active, [contenteditable="false"]:focus { outline: 0px; box-shadow: none; }
+.md-task-list-item { position: relative; list-style-type: none; }
+.task-list-item.md-task-list-item { padding-left: 0px; }
+.md-task-list-item > input { position: absolute; top: 0px; left: 0px; margin-left: -1.2em; margin-top: calc(1em - 10px); border: none; }
+.math { font-size: 1rem; }
+.md-toc { min-height: 3.58rem; position: relative; font-size: 0.9rem; border-radius: 10px; }
+.md-toc-content { position: relative; margin-left: 0px; }
+.md-toc-content::after, .md-toc::after { display: none; }
+.md-toc-item { display: block; color: rgb(65, 131, 196); }
+.md-toc-item a { text-decoration: none; }
+.md-toc-inner:hover { text-decoration: underline; }
+.md-toc-inner { display: inline-block; cursor: pointer; }
+.md-toc-h1 .md-toc-inner { margin-left: 0px; font-weight: 700; }
+.md-toc-h2 .md-toc-inner { margin-left: 2em; }
+.md-toc-h3 .md-toc-inner { margin-left: 4em; }
+.md-toc-h4 .md-toc-inner { margin-left: 6em; }
+.md-toc-h5 .md-toc-inner { margin-left: 8em; }
+.md-toc-h6 .md-toc-inner { margin-left: 10em; }
+@media screen and (max-width: 48em) {
+  .md-toc-h3 .md-toc-inner { margin-left: 3.5em; }
+  .md-toc-h4 .md-toc-inner { margin-left: 5em; }
+  .md-toc-h5 .md-toc-inner { margin-left: 6.5em; }
+  .md-toc-h6 .md-toc-inner { margin-left: 8em; }
+}
+a.md-toc-inner { font-size: inherit; font-style: inherit; font-weight: inherit; line-height: inherit; }
+.footnote-line a:not(.reversefootnote) { color: inherit; }
+.reversefootnote { font-family: ui-monospace, sans-serif; }
+.md-attr { display: none; }
+.md-fn-count::after { content: "."; }
+code, pre, samp, tt { font-family: var(--monospace); }
+kbd { margin: 0px 0.1em; padding: 0.1em 0.6em; font-size: 0.8em; color: rgb(36, 39, 41); background: rgb(255, 255, 255); border: 1px solid rgb(173, 179, 185); border-radius: 3px; box-shadow: rgba(12, 13, 14, 0.2) 0px 1px 0px, rgb(255, 255, 255) 0px 0px 0px 2px inset; white-space: nowrap; vertical-align: middle; }
+.md-comment { color: rgb(162, 127, 3); opacity: 0.6; font-family: var(--monospace); }
+code { text-align: left; vertical-align: initial; }
+a.md-print-anchor { white-space: pre !important; border-width: initial !important; border-style: none !important; border-color: initial !important; display: inline-block !important; position: absolute !important; width: 1px !important; right: 0px !important; outline: 0px !important; background: 0px 0px !important; text-decoration: initial !important; text-shadow: initial !important; }
+.os-windows.monocolor-emoji .md-emoji { font-family: "Segoe UI Symbol", sans-serif; }
+.md-diagram-panel > svg { max-width: 100%; }
+[lang="flow"] svg, [lang="mermaid"] svg { max-width: 100%; height: auto; }
+[lang="mermaid"] .node text { font-size: 1rem; }
+table tr th { border-bottom: 0px; }
+video { max-width: 100%; display: block; margin: 0px auto; }
+iframe { max-width: 100%; width: 100%; border: none; }
+.highlight td, .highlight tr { border: 0px; }
+mark { background: rgb(255, 255, 0); color: rgb(0, 0, 0); }
+.md-html-inline .md-plain, .md-html-inline strong, mark .md-inline-math, mark strong { color: inherit; }
+.md-expand mark .md-meta { opacity: 0.3 !important; }
+mark .md-meta { color: rgb(0, 0, 0); }
+@media print {
+  .typora-export h1, .typora-export h2, .typora-export h3, .typora-export h4, .typora-export h5, .typora-export h6 { break-inside: avoid; }
+}
+.md-diagram-panel .messageText { stroke: none !important; }
+.md-diagram-panel .start-state { fill: var(--node-fill); }
+.md-diagram-panel .edgeLabel rect { opacity: 1 !important; }
+.md-fences.md-fences-math { font-size: 1em; }
+.md-fences-advanced:not(.md-focus) { padding: 0px; white-space: nowrap; border: 0px; }
+.md-fences-advanced:not(.md-focus) { background: inherit; }
+.mermaid-svg { margin: auto; }
+.typora-export-show-outline .typora-export-content { max-width: 1440px; margin: auto; display: flex; flex-direction: row; }
+.typora-export-sidebar { width: 300px; font-size: 0.8rem; margin-top: 80px; margin-right: 18px; }
+.typora-export-show-outline #write { --webkit-flex: 2; flex: 2 1 0%; }
+.typora-export-sidebar .outline-content { position: fixed; top: 0px; max-height: 100%; overflow: hidden auto; padding-bottom: 30px; padding-top: 60px; width: 300px; }
+@media screen and (max-width: 1024px) {
+  .typora-export-sidebar, .typora-export-sidebar .outline-content { width: 240px; }
+}
+@media screen and (max-width: 800px) {
+  .typora-export-sidebar { display: none; }
+}
+.outline-content li, .outline-content ul { margin-left: 0px; margin-right: 0px; padding-left: 0px; padding-right: 0px; list-style: none; overflow-wrap: anywhere; }
+.outline-content ul { margin-top: 0px; margin-bottom: 0px; }
+.outline-content strong { font-weight: 400; }
+.outline-expander { width: 1rem; height: 1.42857rem; position: relative; display: table-cell; vertical-align: middle; cursor: pointer; padding-left: 4px; }
+.outline-expander::before { content: ""; position: relative; font-family: Ionicons; display: inline-block; font-size: 8px; vertical-align: middle; }
+.outline-item { padding-top: 3px; padding-bottom: 3px; cursor: pointer; }
+.outline-expander:hover::before { content: ""; }
+.outline-h1 > .outline-item { padding-left: 0px; }
+.outline-h2 > .outline-item { padding-left: 1em; }
+.outline-h3 > .outline-item { padding-left: 2em; }
+.outline-h4 > .outline-item { padding-left: 3em; }
+.outline-h5 > .outline-item { padding-left: 4em; }
+.outline-h6 > .outline-item { padding-left: 5em; }
+.outline-label { cursor: pointer; display: table-cell; vertical-align: middle; text-decoration: none; color: inherit; }
+.outline-label:hover { text-decoration: underline; }
+.outline-item:hover { border-color: rgb(245, 245, 245); background-color: var(--item-hover-bg-color); }
+.outline-item:hover { margin-left: -28px; margin-right: -28px; border-left: 28px solid transparent; border-right: 28px solid transparent; }
+.outline-item-single .outline-expander::before, .outline-item-single .outline-expander:hover::before { display: none; }
+.outline-item-open > .outline-item > .outline-expander::before { content: ""; }
+.outline-children { display: none; }
+.info-panel-tab-wrapper { display: none; }
+.outline-item-open > .outline-children { display: block; }
+.typora-export .outline-item { padding-top: 1px; padding-bottom: 1px; }
+.typora-export .outline-item:hover { margin-right: -8px; border-right: 8px solid transparent; }
+.typora-export .outline-expander::before { content: "+"; font-family: inherit; top: -1px; }
+.typora-export .outline-expander:hover::before, .typora-export .outline-item-open > .outline-item > .outline-expander::before { content: "−"; }
+.typora-export-collapse-outline .outline-children { display: none; }
+.typora-export-collapse-outline .outline-item-open > .outline-children, .typora-export-no-collapse-outline .outline-children { display: block; }
+.typora-export-no-collapse-outline .outline-expander::before { content: "" !important; }
+.typora-export-show-outline .outline-item-active > .outline-item .outline-label { font-weight: 700; }
+.md-inline-math-container mjx-container { zoom: 0.95; }
+mjx-container { break-inside: avoid; }
+.md-alert.md-alert-note { border-left-color: rgb(9, 105, 218); }
+.md-alert.md-alert-important { border-left-color: rgb(130, 80, 223); }
+.md-alert.md-alert-warning { border-left-color: rgb(154, 103, 0); }
+.md-alert.md-alert-tip { border-left-color: rgb(31, 136, 61); }
+.md-alert.md-alert-caution { border-left-color: rgb(207, 34, 46); }
+.md-alert { padding: 0px 1em; margin-bottom: 16px; color: inherit; border-left: 0.25em solid rgb(0, 0, 0); }
+.md-alert-text-note { color: rgb(9, 105, 218); }
+.md-alert-text-important { color: rgb(130, 80, 223); }
+.md-alert-text-warning { color: rgb(154, 103, 0); }
+.md-alert-text-tip { color: rgb(31, 136, 61); }
+.md-alert-text-caution { color: rgb(207, 34, 46); }
+.md-alert-text { font-size: 0.9rem; font-weight: 700; }
+.md-alert-text svg { fill: currentcolor; position: relative; top: 0.125em; margin-right: 1ch; overflow: visible; }
+.md-alert-text-container::after { content: attr(data-text); text-transform: capitalize; pointer-events: none; margin-right: 1ch; }
+
+</style>
+<style type='text/css'  id="style-theme_css">html {
+	font-size: 19px;
+}
+
+html, body {
+	margin: auto;
+	background: #fefefe;
+	-webkit-font-smoothing: antialiased;
+}
+body {
+	font-family: "Vollkorn", Palatino, Times;
+	color: #333;
+	line-height: 1.4;
+	text-align: justify;
+}
+
+#write {
+	max-width: 960px;
+	margin: 0 auto;
+	margin-bottom: 2em;
+	line-height: 1.53;
+	padding-top: 40px;
+}
+
+@media only screen and (min-width: 1400px) {
+	#write {
+		max-width: 1100px;
+	}
+}
+
+@media print {
+	html {
+		font-size: 13px;
+	}
+}
+
+/* Typography
+-------------------------------------------------------- */
+
+#write>h1:first-child,
+h1 {
+	margin-top: 1.6em;
+	font-weight: normal;
+}
+
+h1 {
+	font-size:3em;
+}
+
+h2 {
+	margin-top:2em;
+	font-weight: normal;
+}
+
+h3 {
+	font-weight: normal;
+	font-style: italic;
+	margin-top: 3em;
+}
+
+h1, 
+h2, 
+h3{
+	text-align: center;
+}
+
+h2:after{
+	border-bottom: 1px solid #2f2f2f;
+    content: '';
+    width: 100px;
+    display: block;
+    margin: 0 auto;
+    height: 1px;
+}
+
+h1+h2, h2+h3 {
+	margin-top: 0.83em;
+}
+
+p,
+.mathjax-block {
+	margin-top: 0;
+	-webkit-hypens: auto;
+	-moz-hypens: auto;
+	hyphens: auto;
+}
+ul {
+	list-style: square;
+	padding-left: 1.2em;
+}
+ol {
+	padding-left: 1.2em;
+}
+
+@media print {
+	ol {
+		padding-left: 40px;
+	}
+}
+
+blockquote {
+	margin-left: 1em;
+	padding-left: 1em;
+	border-left: 1px solid #ddd;
+}
+code,
+pre {
+	font-family: "Consolas", "Menlo", "Monaco", monospace, serif;
+	font-size: .9em;
+	background: white;
+}
+.md-fences{
+	margin-left: 1em;
+	padding-left: 1em;
+	border: 1px solid #ddd;
+	padding-bottom: 8px;
+	padding-top: 6px;
+	margin-bottom: 1.5em;
+}
+
+a {
+	color: #2484c1;
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
+}
+a img {
+	border: none;
+}
+h1 a,
+h1 a:hover {
+	color: #333;
+	text-decoration: none;
+}
+hr {
+	color: #ddd;
+	height: 1px;
+	margin: 2em 0;
+	border-top: solid 1px #ddd;
+	border-bottom: none;
+	border-left: 0;
+	border-right: 0;
+}
+.ty-table-edit {
+	background: #ededed;
+    padding-top: 4px;
+}
+table {
+	margin-bottom: 1.333333rem
+}
+table th,
+table td {
+	padding: 8px;
+	line-height: 1.333333rem;
+	vertical-align: top;
+	border-top: 1px solid #ddd
+}
+table th {
+	font-weight: bold
+}
+table thead th {
+	vertical-align: bottom
+}
+table caption+thead tr:first-child th,
+table caption+thead tr:first-child td,
+table colgroup+thead tr:first-child th,
+table colgroup+thead tr:first-child td,
+table thead:first-child tr:first-child th,
+table thead:first-child tr:first-child td {
+	border-top: 0
+}
+table tbody+tbody {
+	border-top: 2px solid #ddd
+}
+
+.task-list{
+	padding:0;
+}
+
+.md-task-list-item {
+	padding-left: 1.6rem;
+}
+
+.md-task-list-item > input:before {
+	content: '\221A';
+	display: inline-block;
+	width: 1.33333333rem;
+  	height: 1.6rem;
+	vertical-align: middle;
+	text-align: center;
+	color: #ddd;
+	background-color: #fefefe;
+}
+
+.md-task-list-item > input:checked:before,
+.md-task-list-item > input[checked]:before{
+	color: inherit;
+}
+.md-tag {
+	color: inherit;
+	font: inherit;
+}
+#write pre.md-meta-block {
+	min-height: 35px;
+	padding: 0.5em 1em;
+}
+#write pre.md-meta-block {
+	white-space: pre;
+	background: #f8f8f8;
+	border: 0px;
+	color: #999;
+	
+	width: 100vw;
+	max-width: calc(100% + 60px);
+	margin-left: -30px;
+	border-left: 30px #f8f8f8 solid;
+	border-right: 30px #f8f8f8 solid;
+
+	margin-bottom: 2em;
+	margin-top: -1.3333333333333rem;
+	padding-top: 26px;
+	padding-bottom: 10px;
+	line-height: 1.8em;
+	font-size: 0.9em;
+	font-size: 0.76em;
+	padding-left: 0;
+}
+.md-img-error.md-image>.md-meta{
+	vertical-align: bottom;
+}
+#write>h5.md-focus:before {
+	top: 2px;
+}
+
+.md-toc {
+	margin-top: 40px;
+}
+
+.md-toc-content {
+	padding-bottom: 20px;
+}
+
+.outline-expander:before {
+	color: inherit;
+	font-size: 14px;
+	top: auto;
+	content: "\f0da";
+	font-family: FontAwesome;
+}
+
+.outline-expander:hover:before,
+.outline-item-open>.outline-item>.outline-expander:before {
+  	content: "\f0d7";
+}
+
+/** source code mode */
+#typora-source {
+	font-family: Courier, monospace;
+    color: #6A6A6A;
+}
+
+.html-for-mac #typora-sidebar {
+    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+}
+
+.cm-s-typora-default .cm-header, 
+.cm-s-typora-default .cm-property,
+.CodeMirror.cm-s-typora-default div.CodeMirror-cursor {
+	color: #428bca;
+}
+
+.cm-s-typora-default .cm-atom, .cm-s-typora-default .cm-number {
+	color: #777777;
+}
+
+.typora-node .file-list-item-parent-loc, 
+.typora-node .file-list-item-time, 
+.typora-node .file-list-item-summary {
+	font-family: arial, sans-serif;
+}
+
+.md-task-list-item>input {
+    margin-left: -1.3em;
+    margin-top: calc(1rem - 12px);
+}
+
+.md-mathjax-midline {
+	background: #fafafa;
+}
+
+.md-fences .code-tooltip {
+	bottom: -2em !important;
+}
+
+.dropdown-menu .divider {
+	border-color: #e5e5e5;
+}</style>
+<style type='text/css'  id="style-mathjax">
+mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+  min-height: 1px;
+  min-width: 1px;
+}
+
+mjx-container[jax="SVG"] > svg a {
+  fill: blue;
+  stroke: blue;
+}
+
+mjx-assistive-mml {
+  position: absolute !important;
+  top: 0px;
+  left: 0px;
+  clip: rect(1px, 1px, 1px, 1px);
+  padding: 1px 0px 0px 0px !important;
+  border: 0px !important;
+  display: block !important;
+  width: auto !important;
+  overflow: hidden !important;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+mjx-assistive-mml[display="block"] {
+  width: 100% !important;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][display="true"][width="full"] {
+  display: flex;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line], svg[data-table] > g > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame], svg[data-table] > g > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed, svg[data-table] > g > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted, svg[data-table] > g > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > g > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+mjx-container[jax="SVG2"] path[data-c], mjx-container[jax="SVG2"] use[data-c] {
+  stroke-width: 3;
+}
+
+g[data-mml-node="xypic"] path {
+  stroke-width: inherit;
+}
+
+.MathJax g[data-mml-node="xypic"] path {
+  stroke-width: inherit;
+}
+</style>
+<style type='text/css'  id="style-mathjax-ni">mjx-container[jax="SVG"] path[data-c], mjx-container[jax="SVG"] use[data-c] {
+							stroke-width: 0;
+						}</style>
+<style type='text/css'  id="style-lp">ol, ul {padding-left: 40px}</style>
+
+<title>Robust Robotic Assembly of Reusable Rectangular Blocks</title>
+
+<style>
+/* Floating TOC */
+.toc-float .md-toc {
+  position: fixed;
+  top: 96px;
+  left: 24px;
+  width: 260px;
+  max-height: 70vh;
+  overflow: auto;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 6px 24px rgba(0,0,0,.08);
+  z-index: 999;
+  font-size: 14px;
+  line-height: 1.35;
+  text-align: left;
+}
+.toc-float .md-toc-content { padding-left: 0 !important; }
+.toc-float .md-toc-item { margin: 4px 0; }
+.toc-float .md-toc-inner { color: #444; text-decoration: none; }
+.toc-float .md-toc-inner:hover { text-decoration: underline; }
+@media (max-width: 1100px) {
+  .toc-float .md-toc { display: none;   text-align: left;
+}
+}
+#write h1, #write h2, #write h3, #write h4, #write h5, #write h6 {
+  scroll-margin-top: 80px;
+}
+</style>
+
+</head>
+<body class='typora-export os-windows'><div class='typora-export-content'>
+<div id='write'  class=''><p><a href='https://reavenh.github.io/zh444.github.io/'><span>back home</span></a></p><blockquote><p><em><strong><span>IROS 2025 Oral:</span></strong></em><span> We will be giving our IROS 2025 oral presentation on Thursday, Oct. 23, and we will hand out homemade original 3D printed souvenirs at the poster session afterwards (</span><strong><span>limited amount!</span></strong><span>).</span></p><ul><li><p><span>Location: Room 103B, Hangzhou International EXPO Center, Hangzhou, China</span></p></li><li><p><span>Time Slot: 3:00PM-3:40PM, Thursday, Oct. 23, 2025</span></p></li></ul></blockquote><hr /><h1 id='robust-robotic-assembly-of-reusable-rectangular-blocks'><span>Robust Robotic Assembly of Reusable Rectangular Blocks</span></h1><p style="text-align:center;">Zhongming Huang, Hongyu Yao, Haocheng Peng, Shih-ming Lin</p><p style="text-align:center;">Advised by: Prof. Kirstin Petersen and Prof. Nils Napp*</p><p style="text-align:center;">Department of Electrical and Computer Engineering</p><p style="text-align:center;">Cornell University</p><p>&nbsp;</p><blockquote><p><em><span>Before you read</span></em><span>: this page is built for everyone to grab a general idea of our work. If you would like to dive deeper, please refer to our paper. This page also contains extra background information not selected in our paper.</span></p></blockquote><p>&nbsp;</p><div style="position:relative;margin:16px auto;max-width:900px;">
+  <!-- 自适应比例，默认 16:9；min-height 保证别太矮 -->
+  <div style="position:relative;aspect-ratio:16/9;min-height:480px;">
+    <iframe
+      src="https://www.youtube.com/embed/ZY6KCQzh77c?rel=0&modestbranding=1"
+      style="position:absolute;inset:0;width:100%;height:100%;border:0;"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;"
+      allowfullscreen>
+    </iframe>
+    <div style="font-size:0.9em; margin-top:6px; text-align:center;">Video 1. Introduction: Robust Robotic Assembly of Reusable Rectangular Blocks</div>
+  </div>
+</div><hr /><div class="toc-float">
+<div class='md-toc' mdtype='toc'><p class="md-toc-content" role="list"><span role="listitem" class="md-toc-item md-toc-h1" data-ref="n182"><a class="md-toc-inner" href="#robust-robotic-assembly-of-reusable-rectangular-blocks">Robust Robotic Assembly of Reusable Rectangular Blocks</a></span><span role="listitem" class="md-toc-item md-toc-h2" data-ref="n1070"><a class="md-toc-inner" href="#table-of-contents">Table of Contents</a></span><span role="listitem" class="md-toc-item md-toc-h2" data-ref="n1073"><a class="md-toc-inner" href="#overview">Overview</a></span><span role="listitem" class="md-toc-item md-toc-h3" data-ref="n7"><a class="md-toc-inner" href="#general-introduction-of-robotic-construction">General Introduction of Robotic Construction</a></span><span role="listitem" class="md-toc-item md-toc-h3" data-ref="n44"><a class="md-toc-inner" href="#collective-robotic-construction-crc-and-termes-system">Collective Robotic Construction (CRC) and TERMES System</a></span><span role="listitem" class="md-toc-item md-toc-h3" data-ref="n139"><a class="md-toc-inner" href="#our-work">Our Work</a></span><span role="listitem" class="md-toc-item md-toc-h2" data-ref="n175"><a class="md-toc-inner" href="#our-contribution">Our Contribution</a></span><span role="listitem" class="md-toc-item md-toc-h3" data-ref="n261"><a class="md-toc-inner" href="#off-the-shelf-and-reusable-materials-and-fasteners">Off-the-shelf and Reusable Materials and Fasteners</a></span><span role="listitem" class="md-toc-item md-toc-h3" data-ref="n177"><a class="md-toc-inner" href="#specialized-grasp-and-nailing-mechanism">Specialized Grasp and Nailing Mechanism</a></span><span role="listitem" class="md-toc-item md-toc-h3" data-ref="n836"><a class="md-toc-inner" href="#improved-local-rule-set-and-compiler">Improved Local Rule Set and Compiler</a></span><span role="listitem" class="md-toc-item md-toc-h3" data-ref="n181"><a class="md-toc-inner" href="#perception-and-control">Perception and Control</a></span><span role="listitem" class="md-toc-item md-toc-h3" data-ref="n541"><a class="md-toc-inner" href="#building-an-l-shaped-staircase">Building an L-shaped Staircase</a></span><span role="listitem" class="md-toc-item md-toc-h2" data-ref="n216"><a class="md-toc-inner" href="#future-work">Future Work</a></span><span role="listitem" class="md-toc-item md-toc-h2" data-ref="n200"><a class="md-toc-inner" href="#behind-the-scene">Behind the Scene</a></span><span role="listitem" class="md-toc-item md-toc-h3" data-ref="n220"><a class="md-toc-inner" href="#block-dispenser">Block Dispenser</a></span><span role="listitem" class="md-toc-item md-toc-h3" data-ref="n221"><a class="md-toc-inner" href="#real-time-visualizer">Real-time Visualizer</a></span></p></div>
+</div><hr /><h2 id='overview'><span>Overview</span></h2><h3 id='general-introduction-of-robotic-construction'><span>General Introduction of Robotic Construction</span></h3><p><span>Automated construction has emerged as a key frontier in robotics, prized for its potential to reduce human labor and to operate reliably in challenging or hazardous environments. Over recent years, a diverse set of construction robots has been developed, which can be broadly grouped into the following categories (may not be precise enough, for introduction only):</span></p><ul><li><p><span>FDM Printing Robots: similar to desktop-scale FDM printing (some may use gantry systems, others use a robot arm to hold the extruder), a cementitious material is extruded layer by layer, and steel reinforcement may be co-fabricated in situ.</span></p><ul><li><p><span>most existing commercial applications.</span></p></li></ul></li><li><p><span>Weaving Robots: they construct a structure by weaving/winding systems build load-bearing 3D lattices without traditional formwork.</span></p><ul><li><p><a href='https://www.icd.uni-stuttgart.de/projects/buga-fiber-pavilion/'><span>BUGA Fiber Pavilion</span></a><span>.</span></p></li></ul></li><li><p><span>Truss Building Robots: they can climb on the truss framework while transporting and fixing more trusses onto the existing structure.</span></p><ul><li><p><a href='https://ntrs.nasa.gov/api/citations/20160002086/downloads/20160002086.pdf'><span>NASA Universal Truss System</span></a><span>.</span></p></li><li><p><a href='https://www.itech.uni-stuttgart.de/itech-thesis-projects/2018-distributed-robotic-assembly-system-for-in-situ-timber-construction/'><span>Distributed Robotic Assembly System for In Situ Timber Construction</span></a><span>.</span></p></li></ul></li><li><p><span>Block Placing Robots: they stack building blocks (e.g. foam bricks) similar to their body size, to form a structure.</span></p><ul><li><p><strong><span>Our robot.</span></strong></p></li><li><p><a href='https://seas.harvard.edu/news/2014/02/robotic-construction-crew-needs-no-foreman'><span>TERMES system</span></a><span>.</span></p></li><li><p><a href='https://idsc.ethz.ch/research-dandrea/research-projects/archive/flying-machine-enabled-construction.html?utm_source=chatgpt.com'><span>Flying Machine Enabled Construction</span></a><span>.</span></p></li></ul></li><li><p><span>Self-reconfigurable Modular Robots: they use their bodies as building elements, climbing over one another to form and reconfigure diverse structures.</span></p><ul><li><p><a href='https://www.modlabupenn.org/environment-augmentation-with-modular-robots/'><span>Environment Augmentation with Modular Robots</span></a><span>.</span></p></li></ul></li><li><p><span>...</span></p></li></ul><h3 id='collective-robotic-construction-crc-and-termes-system'><span>Collective Robotic Construction (CRC) and TERMES System</span></h3><p><span>Most of the previously mentioned systems do not rely on gantry mechanisms. Instead, they transport and attach building elements by locomoting around the site, flying over the structure, or climbing directly on it. Our construction robot falls into the category of </span><strong><span>climbing robots</span></strong><span> (see this </span><a href='https://www.science.org/doi/10.1126/scirobotics.aau8479'><span>Science Robotics review</span></a><span> for a definition). Also. most of these works consisted of a group of agents to parallelize the construction process. When it comes to multi-robot construction, we would naturally expect the system to be:</span></p><ul><li><p><span>scalable (structure size, agent amount);</span></p></li><li><p><span>generalizable (lower demand on specific the building material);</span></p></li><li><p><span>cost-efficient (both material and the agents themselves).</span></p></li></ul><p><span>One way to achieve those goals is to draw inspiration from the nature, adopting how insects build large structures exploiting collective intelligence. Many insects only have low-level perception and communication, such as </span><a href='https://en.wikipedia.org/wiki/Termite#Nests'><span>termites</span></a><span> (most termites are even blind). Nevertheless, they as a collective can still build structures way larger than their body size. Natural systems like this represents great value in guiding how we design each agent, as well as how they organize and collaborate. </span></p><p><span>Inspired by the termite&#39;s ecosystem, the </span><a href='https://seas.harvard.edu/news/2014/02/robotic-construction-crew-needs-no-foreman'><span>TERMES system</span></a><span> was introduced, where each robot is equipped with simple sensors and actuators, yet together they can assemble structures </span><strong><span>much larger than themselves</span></strong><span> by climbing, navigating, and manipulating specialized building blocks. Unlike traditional construction methods that rely on centralized planning or heavy machinery, TERMES embraces </span><strong><span>collective intelligence</span></strong><span>: multiple identical robots act independently, following local rules and responding to their immediate environment. This decentralized design makes the system </span><strong><span>robust, scalable, and cost-effective</span></strong><span>, capable of operating in challenging environments such as disaster zones or extraterrestrial surfaces. </span></p><p><span>In simple words, the original TERMES system mainly contributed to:</span></p><ul><li><p><span>robot and material co-design (i.e., fabricated specific foam blocks with visual patten and magnets);</span></p></li><li><p><span>structure complier (i.e., how to translate the target 3D structure into feasible combination of building blocks, and present it as a grid map with traversing directions and target height);</span></p></li><li><p><span>local rules (i.e., how each agent choose the next action, solely based on the directed grid map, and the observation of a very close vicinity, with very frugal perception).</span></p></li></ul><blockquote><p><span>Note: the compiler and local rules are highly correlated. The structure compiler will only be executed once, before construction starts, then the directed grid map will be downloaded to each agent with identical local rules. </span></p></blockquote><h3 id='our-work'><span>Our Work</span></h3><p><span>Multiple papers on the TERMES system have been published in </span><em><span>Science</span></em><span>, </span><em><span>RSS</span></em><span>, and </span><em><span>RAS</span></em><span>. However, one significant limitation remains: </span><strong><span>generalizability</span></strong><span>. This challenge can be broken down into several aspects.</span></p><p><span>First, the system relies on highly specific building materials. While this approach is beneficial for prototyping and concept verification, it is far from practical for real-world deployment. The TERMES system, for instance, employed lab-fabricated foam blocks with visual markers, customized geometries for grasping and climbing, and magnets embedded in the corners for fastening.</span></p><p><span>Second, the system uses an impractical layer pattern. The blocks are identical squares, each corresponding to a cell in the directed grid map, but they cannot form interlocking patterns across layers. In contrast, real-world masonry follows a staggered, interlocking arrangement, where each brick overlaps two beneath it. The absence of such interlocking leads to &quot;vertical runs,&quot; which we have tested in simulation to be structurally weaker in earthquake-like stress tests. Interlocking, by comparison, provides far greater resilience.</span></p><p><span>To address these limitations, our system aims to:</span></p><ul><li><p><span>adopt off-the-shelf and reusable materials and fasteners,</span></p></li><li><p><span>design local rules that guarantee interlocking features wherever feasible,</span></p></li><li><p><span>and develop a compiler that actively minimizes vertical runs.</span></p></li></ul><h2 id='our-contribution'><span>Our Contribution</span></h2><blockquote><p><span>Note: in this section, we only introduce ideas and mechanisms. For detailed tests and proofs, please refer to our paper.</span></p></blockquote><div style="display: flex; justify-content: center; gap: 20px;">
+  <figure style="text-align: center;">
+    <img src="imgs/compiler_demo.png" alt="Left Image" height="250">
+    <figcaption>Figure 1. Compiler that Actively Minimizes Vertical "Runs"</figcaption>
+  </figure>
+  <figure style="text-align: center;">
+    <img src="imgs/Robot Overview.jpg" alt="Right Image" height="250">
+    <figcaption>Figure 2. Our Robot with Grasp and Nailing Mechanism (and a block dispenser is on the backscene)</figcaption>
+  </figure>
+</div><p><span>The figures above shows our core contributions:</span></p><ul><li><p><span>a compiler that actively minimizes vertical runs, and compiles the target structure into a directed grid map;</span></p></li><li><p><span>a local rule running on the robot to decide its route and whether to place a 2 by 1 block at each grid, it allows parallel construction that eventually results in Figure 1;</span></p></li><li><p><span>minimally processed materials (Figure 2-G);</span></p></li><li><p><span>specialized grasp and nailing mechanism (Figure 2-A);</span></p></li><li><p><span>perception and gait control with visual feedback (Figure 2-D);</span></p></li></ul><p><span>Other contributions not selected in our paper will be briefed in Section &quot;Behind the Scene&quot;.</span></p><h3 id='off-the-shelf-and-reusable-materials-and-fasteners'><span>Off-the-shelf and Reusable Materials and Fasteners</span></h3><div style="display: flex; justify-content: center; gap: 20px;">
+  <figure style="text-align: center;">
+    <img src="imgs/TERMES Carrying a Block.png" alt="Left Image" height="250">
+    <figcaption>Figure 3. TERMES Agents Building a Structure</figcaption>
+  </figure>
+  <figure style="text-align: center;">
+    <img src="imgs/bricks.jpg" alt="Right Image" height="250">
+    <figcaption>Figure 4. Our Minimally Processed Reusable Foam Bricks</figcaption>
+  </figure>
+</div><p><span>Instead of spending hours to mold the specifically designed blocks that TERMES uses, we cut Kingspan insulation foam boards into </span><mjx-container class="MathJax" jax="SVG" style="position: relative;"><svg xmlns="http://www.w3.org/2000/svg" width="7.291ex" height="1.557ex" role="img" focusable="false" viewBox="0 -666 3222.4 688" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" style="vertical-align: -0.05ex;"><defs><path id="MJX-13-TEX-N-32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path><path id="MJX-13-TEX-N-30" d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z"></path><path id="MJX-13-TEX-N-D7" d="M630 29Q630 9 609 9Q604 9 587 25T493 118L389 222L284 117Q178 13 175 11Q171 9 168 9Q160 9 154 15T147 29Q147 36 161 51T255 146L359 250L255 354Q174 435 161 449T147 471Q147 480 153 485T168 490Q173 490 175 489Q178 487 284 383L389 278L493 382Q570 459 587 475T609 491Q630 491 630 471Q630 464 620 453T522 355L418 250L522 145Q606 61 618 48T630 29Z"></path><path id="MJX-13-TEX-N-31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mn"><use data-c="32" xlink:href="#MJX-13-TEX-N-32"></use><use data-c="30" xlink:href="#MJX-13-TEX-N-30" transform="translate(500,0)"></use></g><g data-mml-node="mo" transform="translate(1222.2,0)"><use data-c="D7" xlink:href="#MJX-13-TEX-N-D7"></use></g><g data-mml-node="mn" transform="translate(2222.4,0)"><use data-c="31" xlink:href="#MJX-13-TEX-N-31"></use><use data-c="30" xlink:href="#MJX-13-TEX-N-30" transform="translate(500,0)"></use></g></g></g></svg><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>20</mn><mo>×</mo><mn>10</mn></math></mjx-assistive-mml></mjx-container><script type="math/tex">20\times10</script><span> cm rectangular foam blocks, each weights </span><mjx-container class="MathJax" jax="SVG" style="position: relative;"><svg xmlns="http://www.w3.org/2000/svg" width="4.651ex" height="1.557ex" role="img" focusable="false" viewBox="0 -666 2055.8 688" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" style="vertical-align: -0.05ex;"><defs><path id="MJX-20-TEX-N-223C" d="M55 166Q55 241 101 304T222 367Q260 367 296 349T362 304T421 252T484 208T554 189Q616 189 655 236T694 338Q694 350 698 358T708 367Q722 367 722 334Q722 260 677 197T562 134H554Q517 134 481 152T414 196T355 248T292 293T223 311Q179 311 145 286Q109 257 96 218T80 156T69 133Q55 133 55 166Z"></path><path id="MJX-20-TEX-N-33" d="M127 463Q100 463 85 480T69 524Q69 579 117 622T233 665Q268 665 277 664Q351 652 390 611T430 522Q430 470 396 421T302 350L299 348Q299 347 308 345T337 336T375 315Q457 262 457 175Q457 96 395 37T238 -22Q158 -22 100 21T42 130Q42 158 60 175T105 193Q133 193 151 175T169 130Q169 119 166 110T159 94T148 82T136 74T126 70T118 67L114 66Q165 21 238 21Q293 21 321 74Q338 107 338 175V195Q338 290 274 322Q259 328 213 329L171 330L168 332Q166 335 166 348Q166 366 174 366Q202 366 232 371Q266 376 294 413T322 525V533Q322 590 287 612Q265 626 240 626Q208 626 181 615T143 592T132 580H135Q138 579 143 578T153 573T165 566T175 555T183 540T186 520Q186 498 172 481T127 463Z"></path><path id="MJX-20-TEX-N-38" d="M70 417T70 494T124 618T248 666Q319 666 374 624T429 515Q429 485 418 459T392 417T361 389T335 371T324 363L338 354Q352 344 366 334T382 323Q457 264 457 174Q457 95 399 37T249 -22Q159 -22 101 29T43 155Q43 263 172 335L154 348Q133 361 127 368Q70 417 70 494ZM286 386L292 390Q298 394 301 396T311 403T323 413T334 425T345 438T355 454T364 471T369 491T371 513Q371 556 342 586T275 624Q268 625 242 625Q201 625 165 599T128 534Q128 511 141 492T167 463T217 431Q224 426 228 424L286 386ZM250 21Q308 21 350 55T392 137Q392 154 387 169T375 194T353 216T330 234T301 253T274 270Q260 279 244 289T218 306L210 311Q204 311 181 294T133 239T107 157Q107 98 150 60T250 21Z"></path></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mo"><use data-c="223C" xlink:href="#MJX-20-TEX-N-223C"></use></g><g data-mml-node="mn" transform="translate(1055.8,0)"><use data-c="33" xlink:href="#MJX-20-TEX-N-33"></use><use data-c="38" xlink:href="#MJX-20-TEX-N-38" transform="translate(500,0)"></use></g></g></g></svg><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mo>∼</mo><mn>38</mn></math></mjx-assistive-mml></mjx-container><script type="math/tex">\sim 38</script><span> g. We attach dotted lines for visual navigation, as the only addition to the block. Each block only costs less than 10 minutes to make, it could be much faster in massive production.</span></p><figure style="text-align: center;">
+  <img src="imgs/nails.jpg" alt="Description" width="300">
+  <figcaption>Figure 5. Our Nails (T-pins)</figcaption>
+</figure><p><span>In accordance with the minimally processed blocks, we choose T-pins (T-shaped steel staples) to fasten the blocks. Each T-pin is able to penetrate into two layers of blocks, providing </span><mjx-container class="MathJax" jax="SVG" style="position: relative;"><svg xmlns="http://www.w3.org/2000/svg" width="4.023ex" height="1.579ex" role="img" focusable="false" viewBox="0 -676 1778 698" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" style="vertical-align: -0.05ex;"><defs><path id="MJX-24-TEX-N-30" d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z"></path><path id="MJX-24-TEX-N-2E" d="M78 60Q78 84 95 102T138 120Q162 120 180 104T199 61Q199 36 182 18T139 0T96 17T78 60Z"></path><path id="MJX-24-TEX-N-37" d="M55 458Q56 460 72 567L88 674Q88 676 108 676H128V672Q128 662 143 655T195 646T364 644H485V605L417 512Q408 500 387 472T360 435T339 403T319 367T305 330T292 284T284 230T278 162T275 80Q275 66 275 52T274 28V19Q270 2 255 -10T221 -22Q210 -22 200 -19T179 0T168 40Q168 198 265 368Q285 400 349 489L395 552H302Q128 552 119 546Q113 543 108 522T98 479L95 458V455H55V458Z"></path></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mn"><use data-c="30" xlink:href="#MJX-24-TEX-N-30"></use><use data-c="2E" xlink:href="#MJX-24-TEX-N-2E" transform="translate(500,0)"></use><use data-c="37" xlink:href="#MJX-24-TEX-N-37" transform="translate(778,0)"></use><use data-c="37" xlink:href="#MJX-24-TEX-N-37" transform="translate(1278,0)"></use></g></g></g></svg><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0.77</mn></math></mjx-assistive-mml></mjx-container><script type="math/tex">0.77</script><span>N of friction to hold two layers together. In construction, each block will be fastened by </span><mjx-container class="MathJax" jax="SVG" style="position: relative;"><svg xmlns="http://www.w3.org/2000/svg" width="1.131ex" height="1.532ex" role="img" focusable="false" viewBox="0 -677 500 677" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" style="vertical-align: 0px;"><defs><path id="MJX-26-TEX-N-34" d="M462 0Q444 3 333 3Q217 3 199 0H190V46H221Q241 46 248 46T265 48T279 53T286 61Q287 63 287 115V165H28V211L179 442Q332 674 334 675Q336 677 355 677H373L379 671V211H471V165H379V114Q379 73 379 66T385 54Q393 47 442 46H471V0H462ZM293 211V545L74 212L183 211H293Z"></path></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mn"><use data-c="34" xlink:href="#MJX-26-TEX-N-34"></use></g></g></g></svg><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>4</mn></math></mjx-assistive-mml></mjx-container><script type="math/tex">4</script><span> T-pins on the four corners. </span></p><h3 id='specialized-grasp-and-nailing-mechanism'><span>Specialized Grasp and Nailing Mechanism</span></h3><p><span>The co-design of materials and robot is a balancing trade-off. With our building materials easy to get, our robots should be more specialized in manipulation with those materials, which is more generalizable for future applications. Specifically, we designed:</span></p><ul><li><p><span>a gripper to grasp, carry and place the blocks;</span></p></li><li><p><span>a pair of nailing mechanisms to store and fix the T-pins.</span></p></li></ul><figure style="text-align: center;">
+  <img src="imgs/gripper exploded view.drawio.png" alt="Description" width="1200">
+  <figcaption>Figure 6. Exploded View of the Gripper and Nailing Mechanism (only one nailing mechanism is displayed for clarity)</figcaption>
+</figure><p><span>The gripper is controlled by two MG-90 servo motors, as shown in parts (i) and (ii) of subfigure A:</span></p><ul><li><p><span>the flipping servo controls the rotation of the whole gripper. When placing the block, (ii) will drive the gripper to rotate for </span><mjx-container class="MathJax" jax="SVG" style="position: relative;"><svg xmlns="http://www.w3.org/2000/svg" width="3.394ex" height="1.557ex" role="img" focusable="false" viewBox="0 -666 1500 688" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" style="vertical-align: -0.05ex;"><defs><path id="MJX-28-TEX-N-31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path><path id="MJX-28-TEX-N-38" d="M70 417T70 494T124 618T248 666Q319 666 374 624T429 515Q429 485 418 459T392 417T361 389T335 371T324 363L338 354Q352 344 366 334T382 323Q457 264 457 174Q457 95 399 37T249 -22Q159 -22 101 29T43 155Q43 263 172 335L154 348Q133 361 127 368Q70 417 70 494ZM286 386L292 390Q298 394 301 396T311 403T323 413T334 425T345 438T355 454T364 471T369 491T371 513Q371 556 342 586T275 624Q268 625 242 625Q201 625 165 599T128 534Q128 511 141 492T167 463T217 431Q224 426 228 424L286 386ZM250 21Q308 21 350 55T392 137Q392 154 387 169T375 194T353 216T330 234T301 253T274 270Q260 279 244 289T218 306L210 311Q204 311 181 294T133 239T107 157Q107 98 150 60T250 21Z"></path><path id="MJX-28-TEX-N-30" d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z"></path></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mn"><use data-c="31" xlink:href="#MJX-28-TEX-N-31"></use><use data-c="38" xlink:href="#MJX-28-TEX-N-38" transform="translate(500,0)"></use><use data-c="30" xlink:href="#MJX-28-TEX-N-30" transform="translate(1000,0)"></use></g></g></g></svg><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>180</mn></math></mjx-assistive-mml></mjx-container><script type="math/tex">180</script><span> degrees (around the Y-axis, i.e., roll angle) to flip over the block from the robot&#39;s back to the ground (see Figure 7 for details);</span></p></li><li><p><span>the distal servo controls the opening and closing of the jaws (vi) of the gripper, as well as the reload and push-out of the T-pins (which will be highlighted next). When fetching a new block from the dispenser, the jaws simply opens and closes to hold the block very tightly.</span></p></li></ul><figure style="text-align: center;">
+  <img src="imgs/Sequence of Block Placement.drawio.png" alt="Description" width="800">
+  <figcaption>Figure 7. Sequence of Placing a Block (from 1 to 8)</figcaption>
+</figure><p><span>The figure above demonstrates the whole process of placing and aligning a new block (nailing T-pins is not included here and will be shown next). From 1 to 8:</span></p><ol><li><p><span>The robot arrives at a grid and decides to place a 2 by 1 rectangular block.</span></p></li><li><p><span>The robot lowers the linkage and prepares to rotate the gripper.</span></p><blockquote><p><span>Note: the pair of linkages incorporate a sliding rail inside, enabling the gripper to fall to its lower end under the effect of gravity and inertia.</span></p></blockquote></li><li><p><span>The block is rotated to vertical position, and the gripper will temporarily slightly open to eliminate the gap between the block and the bottom end of the gripper, under the effect of gravity.</span></p></li><li><p><span>The gripper rotates, and the block touches the ground, the robot will align this block with the existing structure.</span></p></li><li><p><span>Alignment finished, the gripper jaw opens to release the block.</span></p></li><li><p><span>The linkages lift up the gripper and the robot prepares for nailing.</span></p></li><li><p><span>The gripper rotates to the initial pose.</span></p></li><li><p><span>The gripper can slide back to the proximal end of the linkages while walking.</span></p></li></ol><p><span>The nailing mechanism only has one degree of freedom, and we connect the magnetic sliders (iii) with the spools (v) on each jaw with fishing wires. In this way, when the jaws open, the slider can be pulled back and one T-pin on each side can be attracted to the slider. When the jaws close, the T-pin on each side can be pushed out and ready to be nailed. </span></p><blockquote><p><span>Note:</span></p><p><span>We precisely adjusted the tightness of the spools and the dimensions of the track and magazine (vii, viii) to ensure:</span></p><ul><li><p><span>the grasp and placement of a block will not unexpectedly push out a T-pin;</span></p></li><li><p><span>for each side, only one T-pin can be pushed out a a time;</span></p></li><li><p><span>T-pins do not get stuck in the track.</span></p></li></ul><p><span>This part requires intensive engineering efforts.</span></p></blockquote><p><span>The following video shows how the robot nails two T-pins at the corners of a block at one time. When the process is finished, the robot will swing its linkages and smash the T-pins with the hammers (iv), to drive them into the next layer of blocks.</span></p><video src="imgs/nails.mp4" controls width="720">
+  Your browser does not support the video tag.
+    <p style="font-size:14px; color:#555; margin-top:6px;">
+    Video 2. Placing Two T-pins at a Time
+  </p>
+</video><p style="text-align:center;">Video 2. Placing Two T-pins at a Time</p><video src="imgs/ac65c7020c8c0277332269cd15691250.mp4" controls muted width="720">
+  Your browser does not support the video tag.
+</video><p style="text-align:center;">Video 3. Placing and Securing Two T-Pins for the Next Layer</p><h3 id='improved-local-rule-set-and-compiler'><span>Improved Local Rule Set and Compiler</span></h3><p><span>Our system introduces an </span><strong><span>improved compiler</span></strong><span> that automatically optimizes the placement of overlapping rectangular blocks in user-specified structures. Instead of relying on manually defined entry and exit sub-structures, the compiler uses a constraint satisfaction solver to generate and rank all possible tiling solutions, favoring those with shorter seams and stronger interlocking patterns. This approach not only reduces tedious human intervention but also greatly improves stability, as shown in simulation tests where optimized overlaps allowed towers to withstand significantly greater disturbance before collapse.</span></p><figure style="text-align: center;">
+  <img src="imgs/test_structures_color.png" alt="Description" width="800">
+</figure><figure style="text-align: center;">
+  <img src="imgs/runs_color.png" alt="Description" width="400">
+</figure><div style="display:flex; gap:16px; justify-content:center; align-items:flex-start; flex-wrap:wrap;">
+  <figure style="margin:0; text-align:center; flex:1 1 300px; max-width:360px;">
+    <img src="imgs/double3-best-annotated.png" alt="Image 1" style="width:100%; height:auto;">
+  </figure>
+  <figure style="margin:0; text-align:center; flex:1 1 300px; max-width:360px;">
+    <img src="imgs/double3-med-annotated.png" alt="Image 2" style="width:100%; height:auto;">
+  </figure>
+  <figure style="margin:0; text-align:center; flex:1 1 300px; max-width:360px;">
+    <img src="imgs/double3-worst-annotated.png" alt="Image 3" style="width:100%; height:auto;">
+  </figure>
+  <figcaption>Figure 8. a)-c): three types of wall intersections; d)-e): comparison of interlocking layers and layers of "runs"; f)-h): compilation results of a target structure</figcaption>
+</div><p>&nbsp;</p><p><span>In the above figures: a–c) Top views of test structures with travel directions and location heights, where circled intersections differ and starred cells mark optional occupancy for compiler optimization; d) side view shows preferred interlocking; e) examples of vertically aligned runs, from 2-layer on the left to 3-layer on the right caused by single gray blocks; f–h) alternative block placement solutions for the double 3-way structure ranked lexicographically by run length and number: best (00.00.37) with no 4- or 3-layer runs and 37 2-layer runs, median (06.17.10) with 6/17/10 runs, and worst (33.02.02) with 33/2/2 runs.</span></p><p><span>At the same time, we extend the </span><strong><span>local rule set</span></strong><span> that governs distributed construction. Each robot relies solely on its local perception, now extended to three grid cells away, to determine whether the block can be placed at the current location. These rules ensure that robots always build on a stable foundation, avoid conflicts through simple traffic policies, and collectively complete user-defined structures without centralized coordination. Together, the compiler and the local rule set enable scalable, robust, and fully decentralized robotic construction, where multiple robots can collaborate in parallel to assemble large, stable structures with minimal overhead.</span></p><div style="display:flex; margin:0 auto; gap:16px; align-items:flex-start; flex-wrap:wrap;">
+  <figure style="flex:1 1 320px; max-width:320px;">
+    <img src="imgs/local sensing range.png" alt="Demo image" style="width:100%; height:auto; border-radius:6px;">
+    <figcaption style="font-size:0.9em; margin-top:6px;">Figure 9. Local Sensing Range</figcaption>
+  </figure>
+  <div style="flex:1 1 320px; max-width:320px;">
+    <div style="position:relative; width:100%; aspect-ratio:16/16; background:#000; border-radius:6px; overflow:hidden;">
+      <video src="imgs/local rule set execution demo.mp4" controls style="position:absolute; inset:0; width:100%; height:100%;"></video>
+    </div>
+    <div style="font-size:0.9em; margin-top:6px; text-align:center;">Video 4. Single or Multiple Robots Constructing Different Walls (number of agents can be increased without theoretical upper bound)</div>
+  </div>
+</div><h3 id='perception-and-control'><span>Perception and Control</span></h3><p><span>Our robot obtains its yaw from the dotted lines on the floor and adjusts its gait to follow its path, as well as climb and turn. </span></p><p><span>The following videos demonstrate how we extract the yaw angle from the detection of dotted circles. Our experiments show that the dotted-line pattern is significantly more reliable than other visual markers such as AprilTags, straight lines, or chessboard patterns, especially when frames are seriously blurred during robot locomotion. The relative yaw is calculated from the gradient between neighboring circle centers, meaning that a valid yaw reading can be obtained whenever at least two circles are detected, with accuracy improving as more circles are identified. In addition, the robot detects intersections of orthogonal dotted lines, where each cross corresponds to a grid cell in the directed grid map, allowing synchronization between the robot’s physical position and its logical location in the map. Finally, by carefully tuning both the circle size and the camera resolution, the system achieves yaw estimation at up to 60 fps with less than </span><mjx-container class="MathJax" jax="SVG" style="position: relative;"><svg xmlns="http://www.w3.org/2000/svg" width="4.147ex" height="1.824ex" role="img" focusable="false" viewBox="0 -750 1833 806" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" style="vertical-align: -0.127ex;"><defs><path id="MJX-31-TEX-N-31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path><path id="MJX-31-TEX-N-35" d="M164 157Q164 133 148 117T109 101H102Q148 22 224 22Q294 22 326 82Q345 115 345 210Q345 313 318 349Q292 382 260 382H254Q176 382 136 314Q132 307 129 306T114 304Q97 304 95 310Q93 314 93 485V614Q93 664 98 664Q100 666 102 666Q103 666 123 658T178 642T253 634Q324 634 389 662Q397 666 402 666Q410 666 410 648V635Q328 538 205 538Q174 538 149 544L139 546V374Q158 388 169 396T205 412T256 420Q337 420 393 355T449 201Q449 109 385 44T229 -22Q148 -22 99 32T50 154Q50 178 61 192T84 210T107 214Q132 214 148 197T164 157Z"></path><path id="MJX-31-TEX-N-25" d="M465 605Q428 605 394 614T340 632T319 641Q332 608 332 548Q332 458 293 403T202 347Q145 347 101 402T56 548Q56 637 101 693T202 750Q241 750 272 719Q359 642 464 642Q580 642 650 732Q662 748 668 749Q670 750 673 750Q682 750 688 743T693 726Q178 -47 170 -52Q166 -56 160 -56Q147 -56 142 -45Q137 -36 142 -27Q143 -24 363 304Q469 462 525 546T581 630Q528 605 465 605ZM207 385Q235 385 263 427T292 548Q292 617 267 664T200 712Q193 712 186 709T167 698T147 668T134 615Q132 595 132 548V527Q132 436 165 403Q183 385 203 385H207ZM500 146Q500 234 544 290T647 347Q699 347 737 292T776 146T737 0T646 -56Q590 -56 545 0T500 146ZM651 -18Q679 -18 707 24T736 146Q736 215 711 262T644 309Q637 309 630 306T611 295T591 265T578 212Q577 200 577 146V124Q577 -18 647 -18H651Z"></path></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mn"><use data-c="31" xlink:href="#MJX-31-TEX-N-31"></use><use data-c="35" xlink:href="#MJX-31-TEX-N-35" transform="translate(500,0)"></use></g><g data-mml-node="mi" transform="translate(1000,0)"><use data-c="25" xlink:href="#MJX-31-TEX-N-25"></use></g></g></g></svg><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>15</mn><mi mathvariant="normal">%</mi></math></mjx-assistive-mml></mjx-container><script type="math/tex">15\%</script><span> Raspberry Pi 4B resource, which further enhances pose perception during walking.</span></p><video src="imgs/Hough Circle Detection.mp4" controls muted width="720">
+  Your browser does not support the video tag.
+</video><p style="text-align:center;">Video 5. Dotted Line Detection during Highly Dynamic Locomotion</p><video src="imgs/Pose Result Demo.mp4" controls muted width="720">
+  Your browser does not support the video tag.
+</video><p style="text-align:center;">Video 6. Yaw Extraction from the Dotted Line Patterns</p><p><span>A central challenge in designing climbing and load-bearing quadruped robots is ensuring that the gait remains stable while respecting the torque limitations of small servo motors. Each leg of our robot has three servos, and the front and back joints are particularly sensitive to gravitational load amplification. To quantify this effect, we analyzed the </span><strong><span>torque amplification ratio (TAR)</span></strong><span> across the leg’s workspace. When TAR = 1, the servos quickly overheat under load; our experiments showed that the servos can operate reliably at TAR ≤ 0.85. This constraint guided the design of the gait, ensuring that the foot trajectories always stay within a safe operating region.</span></p><figure style="text-align: center;">
+  <img src="imgs/combine_v6.png" alt="Description" width="800">
+    <figcaption>Figure 10. Torque Analysis, Gait Cycle and Anti-slip Foot</figcaption>
+</figure><p><span>Initially, the commercial platform shipped with a pre-configured </span><strong><span>trot gait</span></strong><span>, where diagonal legs move in pairs. While efficient for fast locomotion, this gait is not well suited for carrying heavy payloads or maintaining balance on narrow structures. We therefore discarded the trot gait in favor of a </span><strong><span>creep gait</span></strong><span>. In the creep gait, three legs remain on the ground at all times, forming a stable support triangle. The robot continuously adjusts its center of mass so that it stays within this support polygon, significantly improving stability during climbing and block placement.</span></p><p><span>To further enhance performance, we redesigned the </span><strong><span>leg linkages and feet</span></strong><span>. The original nylon feet caused slippage, especially during on-axis turns. Our new detachable feet are fitted with molded silicone pads, which more than doubled both static and dynamic friction in standardized tests. This improvement greatly reduced drift during turning and allowed the robot to execute precise maneuvers on the structure.</span></p><p><span>With the new gait control and mechanical modifications, the robot demonstrated reliable mobility under load. Its turning radius was reduced to 58.5 mm, which directly informed the minimum block width of 40 cm used in our system. Overall, the combination of torque-aware gait design, the adoption of a stable creep gait, and high-friction feet enabled the robot to walk, turn, and climb while carrying blocks, providing the foundation for robust autonomous construction.</span></p><h3 id='building-an-l-shaped-staircase'><span>Building an L-shaped Staircase</span></h3><p><span>The video below demonstrates our prototype robot building an 2-layered L-shaped staircase autonomously. The video is speeded.</span></p><video src="imgs/building a L-shaped staircase demo.mp4" controls width="720">
+  Your browser does not support the video tag.
+</video><p style="text-align:center;">Video 7. Demostration Video of Building an L-shaped Two-layered Staircase</p><figure style="text-align: center;">
+  <img src="imgs/Drawing8-Cropped.png" alt="Description" width="720">
+  <figcaption>Figure 11. Video frames with time stamps from a 45-minute demonstration in which the robot autonomously constructs an L-shaped staircase; each column shows the key block-building primitives: (1) retrieving, (2) placing and aligning, and (3–4) fastening two T-pins at each end.</figcaption>
+</figure><h2 id='future-work'><span>Future Work</span></h2><p><span>Besides rectilinear walls, we have also established a theoretical guarantee for compiling and constructing curved walls by incorporating tilt angles into the edges of the directed grid map. Our simulations verified that the robots can build curved walls in much the same way as rectilinear ones, with the added capability of tilt angle detection. However, we have not yet resolved how to properly align a new block with an existing curved wall, given the current method our robot uses for block alignment.</span></p><p><span>Our robot is also capable of locomoting on a corbeled structure, and in theory, we can construct such structures by following a specific placement order (see Fig. 11 of our paper). However, the structural strength of partial assemblies still needs to be improved before the robot can reliably operate on a corbeled arch.</span></p><figure style="text-align: center;">
+  <img src="imgs/curved and cantilever structure.png" alt="Description" width="800">
+  <figcaption>Figure 12. The Robot Walking on Curved and Cantilever Structures</figcaption>
+</figure><h2 id='behind-the-scene'><span>Behind the Scene</span></h2><h3 id='block-dispenser'><span>Block Dispenser</span></h3><figure style="text-align: center;">
+  <img src="imgs/docker_new.png" alt="Description" width="800">
+  <figcaption>Figure 13. The Block Dispenser</figcaption>
+</figure><p><span>In the demo video, the robot carries one block at a time and retrieves subsequent blocks from the dispenser, which ensures that the entire workflow is fully automated. The dispenser consists of the following components:</span></p><ul><li><p><strong><span>A and D</span></strong><span>: flexible rollers (red part made of TPU, transparent part made of DragonSkin);</span></p></li><li><p><strong><span>B and E</span></strong><span>: shaft gears driven by separate motors, with rollers fixed to the shaft ends;</span></p></li><li><p><strong><span>C</span></strong><span>: trigger switches used to detect the position of the bottom block;</span></p></li><li><p><strong><span>F</span></strong><span>: motors.</span></p></li></ul><p><span>For precise localization during block retrieval, the dispenser is rigidly connected to a dotted cross marker.</span></p><h3 id='real-time-visualizer'><span>Real-time Visualizer</span></h3><div style="display: flex; justify-content: center; gap: 20px;">
+  <figure style="text-align: center;">
+    <img src="imgs/OpenGL demo.png" alt="Left Image" height="250">
+    <figcaption>Figure 14. The OpenGL Real-time Visualizer</figcaption>
+  </figure>
+  <figure style="text-align: center;">
+    <img src="imgs/move simulation and pitch data.png" alt="Right Image" height="250">
+    <figcaption>Figure 15. Real-time Pose in the Visualizer with IMU Readings</figcaption>
+  </figure>
+</div><p><span>We developed a cross-platform real-time visualizer that receives pose and status information from the robots. Communication between the robots and the PC is established via Wi-Fi using UDP.</span></p><p><span>As shown in the figures, the visualizer is capable of:</span></p><ul><li><p><span>displaying kinematics and inverse kinematics in real time,</span></p></li><li><p><span>providing users with updates on the current structure status as well as the robot’s pose and location.</span></p></li></ul><p><span>The system is lightweight and can run smoothly on a Raspberry Pi 4B, which proved especially valuable for debugging.</span></p><hr /><p style="text-align:center;">THE END</p><div style="display: flex; justify-content: center; gap: 20px;">
+  <figure style="text-align: center;">
+    <img src="imgs/lab-logos.png" alt="Left Image" height="120">
+  </figure>
+</div><div style="display: flex; justify-content: center; gap: 20px;">
+  <figure style="text-align: center;">
+    <img src="imgs/Cornell_College_of_Engineering_Logo.svg" alt="Left Image" height="100">
+  </figure>
+  <figure style="text-align: center;">
+    <img src="imgs/IROS25-logo.png" alt="Right Image" height="100">
+  </figure>
+</div><p style="text-align:center;">Last Updated: Oct. 10, 2025.</p><p style="text-align:center;">&copy; 2025 Zhongming Huang.</p><p><a href='https://reavenh.github.io/zh444.github.io/'><span>back home</span></a></p></div></div>
+</body>
+</html>
